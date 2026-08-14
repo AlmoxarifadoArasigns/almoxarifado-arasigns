@@ -1,1034 +1,148 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
-<title>ARASIGNS - Controle de Almoxarifado</title>
-
-<script src="https://unpkg.com/html5-qrcode"></script>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #ffffff;
-    color: #111111;
-}
+/* =====================================================
+   LAYOUT MAIS COMPACTO
+===================================================== */
 
 .container {
     width: 100%;
-    max-width: 700px;
+    max-width: 600px;
     margin: auto;
-    padding: 25px 18px 50px;
+    padding: 15px 14px 30px;
 }
+
+
+/* LOGO */
 
 .logo {
     text-align: center;
-    font-size: 48px;
+    font-size: 38px;
     font-weight: 900;
     letter-spacing: 1px;
-    margin-top: 10px;
+    margin-top: 3px;
 }
+
 
 .subtitulo {
     text-align: center;
-    font-size: 25px;
+    font-size: 19px;
     color: #777;
-    margin-bottom: 35px;
+    margin-bottom: 18px;
 }
+
+
+/* STATUS */
 
 .status-card {
     background: #eeeeee;
-    border-radius: 25px;
-    padding: 35px 20px;
+    border-radius: 20px;
+    padding: 20px 15px;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 14px;
 }
+
 
 .status-titulo {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
 }
+
 
 .codigo {
-    font-size: 48px;
+    font-size: 38px;
     font-weight: bold;
-    margin-top: 25px;
+    margin-top: 12px;
 }
 
+
 .etapa {
-    margin-top: 20px;
-    font-size: 22px;
+    margin-top: 10px;
+    font-size: 18px;
     font-weight: bold;
 }
+
+
+/* CÂMERA */
 
 .camera-area {
     width: 100%;
+    max-width: 600px;
+    height: 145px;
+    margin: 0 auto 12px;
     overflow: hidden;
-    border-radius: 25px;
-    margin-bottom: 20px;
+    border-radius: 18px;
     background: #111;
+    position: relative;
 }
 
+
 #reader {
-    width: 100%;
+    width: 100% !important;
+    height: 145px !important;
 }
+
+
+#reader video {
+    width: 100% !important;
+    height: 145px !important;
+    object-fit: cover !important;
+}
+
+
+/* BOTÕES */
 
 .btn {
     width: 100%;
     border: none;
-    border-radius: 25px;
-    padding: 22px;
-    font-size: 25px;
+    border-radius: 20px;
+    padding: 17px;
+    font-size: 21px;
     font-weight: bold;
-    margin-bottom: 18px;
+    margin-bottom: 11px;
     cursor: pointer;
 }
 
-.btn-camera {
-    background: #111;
-    color: white;
-}
 
-.btn-csv {
-    background: #16963b;
-    color: white;
-}
-
-.btn-limpar {
-    background: #dddddd;
-    color: #111;
-}
-
-.movimentacoes {
-    background: #eeeeee;
-    border-radius: 25px;
-    padding: 25px;
-    margin-top: 20px;
-}
-
-.movimentacoes h2 {
-    font-size: 27px;
-    margin-top: 0;
-}
-
-.movimento {
-    background: white;
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.movimento strong {
-    font-size: 18px;
-}
-
-.movimento small {
-    color: #777;
-}
-
-.contador {
-    text-align: center;
-    font-size: 18px;
-    color: #666;
-    margin-top: 15px;
-}
+/* STATUS CÂMERA */
 
 .aviso {
     text-align: center;
-    font-size: 19px;
+    font-size: 16px;
     font-weight: bold;
-    margin: 15px 0;
-}
-
-.verde {
-    color: #16963b;
-}
-
-.vermelho {
-    color: #d71919;
-}
-
-</style>
-</head>
-
-
-<body>
-
-<div class="container">
-
-    <div class="logo">
-        ARASIGNS
-    </div>
-
-    <div class="subtitulo">
-        Controle de Almoxarifado
-    </div>
-
-
-    <!-- STATUS -->
-
-    <div class="status-card">
-
-        <div class="status-titulo">
-            Último código lido:
-        </div>
-
-        <div
-            id="ultimoCodigo"
-            class="codigo"
-        >
-            —
-        </div>
-
-        <div
-            id="etapa"
-            class="etapa"
-        >
-            👤 Aguardando funcionário...
-        </div>
-
-    </div>
-
-
-    <!-- CAMERA -->
-
-    <div class="camera-area">
-
-        <div id="reader"></div>
-
-    </div>
-
-
-    <!-- BOTÃO DA CÂMERA -->
-
-    <button
-        id="btnCamera"
-        class="btn btn-camera"
-        onclick="alternarCamera()"
-    >
-        🟢 CÂMERA ATIVA
-    </button>
-
-
-    <!-- STATUS DA CAMERA -->
-
-    <div
-        id="statusCamera"
-        class="aviso verde"
-    >
-        📷 Câmera funcionando
-    </div>
-
-
-    <!-- CSV -->
-
-    <button
-        class="btn btn-csv"
-        onclick="gerarCSV()"
-    >
-        📊 GERAR CSV
-    </button>
-
-
-    <!-- LIMPAR -->
-
-    <button
-        class="btn btn-limpar"
-        onclick="limparRegistros()"
-    >
-        🗑️ LIMPAR REGISTROS
-    </button>
-
-
-    <!-- MOVIMENTAÇÕES -->
-
-    <div class="movimentacoes">
-
-        <h2>
-            Movimentações
-        </h2>
-
-        <div id="listaMovimentacoes">
-            Nenhuma movimentação registrada.
-        </div>
-
-        <div
-            id="contador"
-            class="contador"
-        >
-            0 movimentações
-        </div>
-
-    </div>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   CONFIGURAÇÃO
-===================================================== */
-
-let scanner = null;
-
-let cameraAtiva = false;
-
-let processando = false;
-
-let esperandoFuncionario = true;
-
-let funcionarioAtual = null;
-
-let movimentacoes =
-    JSON.parse(
-        localStorage.getItem("arasigns_movimentacoes")
-    ) || [];
-
-
-/* =====================================================
-   BIP
-===================================================== */
-
-function bip(frequencia = 900, duracao = 120) {
-
-    try {
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-        const audio =
-            new AudioContext();
-
-        const oscillator =
-            audio.createOscillator();
-
-        const gain =
-            audio.createGain();
-
-        oscillator.connect(gain);
-
-        gain.connect(audio.destination);
-
-        oscillator.frequency.value =
-            frequencia;
-
-        oscillator.type =
-            "sine";
-
-        gain.gain.value =
-            0.2;
-
-        oscillator.start();
-
-        setTimeout(() => {
-
-            oscillator.stop();
-
-            audio.close();
-
-        }, duracao);
-
-    } catch (erro) {
-
-        console.log(
-            "Não foi possível emitir o bip.",
-            erro
-        );
-
-    }
-
+    margin: 7px 0 12px;
 }
 
 
-/* =====================================================
-   INICIAR CAMERA
-===================================================== */
+/* MOVIMENTAÇÕES */
 
-async function iniciarCamera() {
-
-    if (cameraAtiva) {
-        return;
-    }
-
-    document.getElementById(
-        "statusCamera"
-    ).innerText =
-        "📷 Iniciando câmera...";
-
-    document.getElementById(
-        "statusCamera"
-    ).className =
-        "aviso";
-
-
-    try {
-
-        scanner =
-            new Html5Qrcode("reader");
-
-
-        await scanner.start(
-
-            {
-                facingMode: "environment"
-            },
-
-            {
-                fps: 10,
-
-                qrbox: function(
-                    largura,
-                    altura
-                ) {
-
-                    const tamanho =
-                        Math.min(
-                            largura,
-                            altura
-                        ) * 0.70;
-
-                    return {
-                        width: tamanho,
-                        height: tamanho
-                    };
-
-                },
-
-                aspectRatio: 1.0
-
-            },
-
-            codigoLido,
-
-            function(error) {
-
-                // Erros normais de leitura
-                // são ignorados.
-
-            }
-
-        );
-
-
-        cameraAtiva = true;
-
-
-        document.getElementById(
-            "btnCamera"
-        ).innerText =
-            "🟢 CÂMERA ATIVA";
-
-
-        document.getElementById(
-            "statusCamera"
-        ).innerText =
-            "📷 Câmera funcionando";
-
-
-        document.getElementById(
-            "statusCamera"
-        ).className =
-            "aviso verde";
-
-
-    } catch (erro) {
-
-        console.error(erro);
-
-
-        document.getElementById(
-            "statusCamera"
-        ).innerText =
-            "⚠️ Permita o acesso à câmera";
-
-
-        document.getElementById(
-            "statusCamera"
-        ).className =
-            "aviso vermelho";
-
-    }
-
+.movimentacoes {
+    background: #eeeeee;
+    border-radius: 20px;
+    padding: 18px;
+    margin-top: 10px;
 }
 
 
-/* =====================================================
-   PARAR CAMERA
-===================================================== */
-
-async function pararCamera() {
-
-    if (!scanner) {
-        return;
-    }
-
-
-    try {
-
-        await scanner.stop();
-
-        await scanner.clear();
-
-    } catch (erro) {
-
-        console.log(erro);
-
-    }
-
-
-    scanner = null;
-
-    cameraAtiva = false;
-
-
-    document.getElementById(
-        "btnCamera"
-    ).innerText =
-        "📷 ATIVAR CÂMERA";
-
-
-    document.getElementById(
-        "statusCamera"
-    ).innerText =
-        "Câmera pausada";
-
-
-    document.getElementById(
-        "statusCamera"
-    ).className =
-        "aviso";
-
+.movimentacoes h2 {
+    font-size: 23px;
+    margin-top: 0;
 }
 
 
-/* =====================================================
-   ALTERNAR CAMERA
-===================================================== */
-
-function alternarCamera() {
-
-    if (cameraAtiva) {
-
-        pararCamera();
-
-    } else {
-
-        iniciarCamera();
-
-    }
-
+.movimento {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
 }
 
 
-/* =====================================================
-   CÓDIGO FOI LIDO
-===================================================== */
-
-function codigoLido(codigo) {
-
-
-    /*
-       Evita o mesmo código sendo lido
-       várias vezes seguidas.
-    */
-
-    if (processando) {
-        return;
-    }
-
-
-    processando = true;
-
-
-    setTimeout(() => {
-
-        processando = false;
-
-    }, 1200);
-
-
-    codigo =
-        String(codigo)
-        .trim();
-
-
-    if (!codigo) {
-        return;
-    }
-
-
-    /* -----------------------------------------------
-       MOSTRA CÓDIGO
-    ------------------------------------------------ */
-
-    document.getElementById(
-        "ultimoCodigo"
-    ).innerText =
-        codigo;
-
-
-    /* -----------------------------------------------
-       BIP
-    ------------------------------------------------ */
-
-    bip();
-
-
-    /* -----------------------------------------------
-       PRIMEIRO SCAN = FUNCIONÁRIO
-    ------------------------------------------------ */
-
-    if (esperandoFuncionario) {
-
-
-        funcionarioAtual =
-            codigo;
-
-
-        esperandoFuncionario =
-            false;
-
-
-        document.getElementById(
-            "etapa"
-        ).innerText =
-            "🔧 Aguardando ferramenta...";
-
-
-        document.getElementById(
-            "etapa"
-        ).className =
-            "etapa verde";
-
-
-        return;
-
-    }
-
-
-    /* -----------------------------------------------
-       SEGUNDO SCAN = FERRAMENTA
-    ------------------------------------------------ */
-
-    const ferramenta =
-        codigo;
-
-
-    const agora =
-        new Date();
-
-
-    const registro = {
-
-        data:
-            agora.toLocaleDateString(
-                "pt-BR"
-            ),
-
-        hora:
-            agora.toLocaleTimeString(
-                "pt-BR"
-            ),
-
-        funcionario:
-            funcionarioAtual,
-
-        ferramenta:
-            ferramenta
-
-    };
-
-
-    movimentacoes.push(
-        registro
-    );
-
-
-    /* -----------------------------------------------
-       SALVA NO CELULAR
-    ------------------------------------------------ */
-
-    localStorage.setItem(
-
-        "arasigns_movimentacoes",
-
-        JSON.stringify(
-            movimentacoes
-        )
-
-    );
-
-
-    /* -----------------------------------------------
-       VOLTA A ESPERAR FUNCIONÁRIO
-    ------------------------------------------------ */
-
-    funcionarioAtual =
-        null;
-
-
-    esperandoFuncionario =
-        true;
-
-
-    document.getElementById(
-        "etapa"
-    ).innerText =
-        "👤 Aguardando funcionário...";
-
-
-    document.getElementById(
-        "etapa"
-    ).className =
-        "etapa";
-
-
-    atualizarLista();
-
-
+.movimento strong {
+    font-size: 16px;
 }
 
 
-/* =====================================================
-   ATUALIZAR LISTA
-===================================================== */
-
-function atualizarLista() {
-
-    const lista =
-        document.getElementById(
-            "listaMovimentacoes"
-        );
-
-
-    const contador =
-        document.getElementById(
-            "contador"
-        );
-
-
-    contador.innerText =
-        movimentacoes.length +
-        (
-            movimentacoes.length === 1
-                ? " movimentação"
-                : " movimentações"
-        );
-
-
-    if (
-        movimentacoes.length === 0
-    ) {
-
-        lista.innerHTML =
-            "Nenhuma movimentação registrada.";
-
-        return;
-
-    }
-
-
-    /*
-       Mostra primeiro os registros
-       mais recentes.
-    */
-
-    const registros =
-        [...movimentacoes]
-        .reverse();
-
-
-    lista.innerHTML =
-        registros
-        .map(
-            function(registro) {
-
-                return `
-
-                    <div class="movimento">
-
-                        <strong>
-                            👤 ${escaparHTML(registro.funcionario)}
-                        </strong>
-
-                        <br>
-
-                        🔧 ${escaparHTML(registro.ferramenta)}
-
-                        <br>
-
-                        <small>
-                            ${registro.data}
-                            às
-                            ${registro.hora}
-                        </small>
-
-                    </div>
-
-                `;
-
-            }
-        )
-        .join("");
-
+.contador {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-top: 10px;
 }
-
-
-/* =====================================================
-   PROTEÇÃO HTML
-===================================================== */
-
-function escaparHTML(texto) {
-
-    return String(texto)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-/* =====================================================
-   GERAR CSV
-===================================================== */
-
-function gerarCSV() {
-
-
-    if (
-        movimentacoes.length === 0
-    ) {
-
-        alert(
-            "Não existem movimentações para exportar."
-        );
-
-        return;
-
-    }
-
-
-    let csv =
-        "DATA,HORA,FUNCIONARIO,FERRAMENTA\n";
-
-
-    movimentacoes.forEach(
-        function(registro) {
-
-            csv +=
-                `"${registro.data}",` +
-                `"${registro.hora}",` +
-                `"${registro.funcionario}",` +
-                `"${registro.ferramenta}"\n`;
-
-        }
-    );
-
-
-    /*
-       BOM para o Excel reconhecer
-       acentos corretamente.
-    */
-
-    const BOM =
-        "\uFEFF";
-
-
-    const blob =
-        new Blob(
-            [
-                BOM + csv
-            ],
-            {
-                type:
-                    "text/csv;charset=utf-8;"
-            }
-        );
-
-
-    const url =
-        URL.createObjectURL(
-            blob
-        );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-
-    const agora =
-        new Date();
-
-
-    const nomeArquivo =
-        "ARASIGNS_MOVIMENTACOES_" +
-        agora
-        .toISOString()
-        .slice(0, 10) +
-        ".csv";
-
-
-    link.href =
-        url;
-
-
-    link.download =
-        nomeArquivo;
-
-
-    document.body.appendChild(
-        link
-    );
-
-
-    link.click();
-
-
-    document.body.removeChild(
-        link
-    );
-
-
-    URL.revokeObjectURL(
-        url
-    );
-
-}
-
-
-/* =====================================================
-   LIMPAR REGISTROS
-===================================================== */
-
-function limparRegistros() {
-
-
-    if (
-        movimentacoes.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    const confirmar =
-        confirm(
-            "Tem certeza que deseja apagar TODAS as movimentações?"
-        );
-
-
-    if (!confirmar) {
-        return;
-    }
-
-
-    movimentacoes = [];
-
-
-    localStorage.removeItem(
-        "arasigns_movimentacoes"
-    );
-
-
-    funcionarioAtual =
-        null;
-
-
-    esperandoFuncionario =
-        true;
-
-
-    document.getElementById(
-        "ultimoCodigo"
-    ).innerText =
-        "—";
-
-
-    document.getElementById(
-        "etapa"
-    ).innerText =
-        "👤 Aguardando funcionário...";
-
-
-    atualizarLista();
-
-}
-
-
-/* =====================================================
-   INICIALIZAÇÃO
-===================================================== */
-
-atualizarLista();
-
-
-/*
-   ⭐ IMPORTANTE ⭐
-
-   Ao abrir o site, tenta ligar
-   a câmera automaticamente.
-
-   O pequeno atraso ajuda o Safari
-   do iPhone a carregar a página
-   antes de pedir acesso à câmera.
-*/
-
-window.addEventListener(
-    "load",
-    function() {
-
-        setTimeout(
-            function() {
-
-                iniciarCamera();
-
-            },
-            500
-        );
-
-    }
-);
-
-</script>
-
-</body>
-</html>

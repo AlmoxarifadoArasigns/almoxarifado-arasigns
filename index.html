@@ -2,15 +2,15 @@
 <html lang="pt-BR">
 
 <head>
-
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
 <title>ARASIGNS - Controle de Almoxarifado</title>
 
-<!-- Leitor de código de barras -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
@@ -20,861 +20,599 @@ content="width=device-width, initial-scale=1.0">
 }
 
 body {
-
     margin: 0;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f3f3f3;
-
-    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #111111;
 }
-
 
 .container {
-
+    width: 100%;
     max-width: 700px;
-
     margin: auto;
-
-    padding: 20px;
-
+    padding: 25px 18px 50px;
 }
-
-
-.card {
-
-    background: white;
-
-    border-radius: 25px;
-
-    padding: 30px;
-
-    box-shadow:
-        0 10px 30px
-        rgba(0,0,0,0.12);
-
-}
-
 
 .logo {
-
     text-align: center;
-
-    font-size: 42px;
-
+    font-size: 48px;
     font-weight: 900;
-
+    letter-spacing: 1px;
+    margin-top: 10px;
 }
 
-
-.subtitle {
-
+.subtitulo {
     text-align: center;
-
+    font-size: 25px;
     color: #777;
-
-    font-size: 21px;
-
-    margin-bottom: 25px;
-
+    margin-bottom: 35px;
 }
 
-
-/* STATUS */
-
-.status {
-
-    background: #eee;
-
-    border-radius: 18px;
-
-    padding: 20px;
-
+.status-card {
+    background: #eeeeee;
+    border-radius: 25px;
+    padding: 35px 20px;
     text-align: center;
-
-    margin-bottom: 15px;
-
+    margin-bottom: 25px;
 }
 
-
-.status-title {
-
-    font-size: 17px;
-
+.status-titulo {
+    font-size: 25px;
     font-weight: bold;
-
 }
-
 
 .codigo {
-
-    font-size: 42px;
-
-    font-weight: 900;
-
-    margin-top: 8px;
-
-}
-
-
-/* ESTADO */
-
-.estado {
-
-    text-align: center;
-
-    font-size: 19px;
-
+    font-size: 48px;
     font-weight: bold;
-
-    margin: 15px 0;
-
+    margin-top: 25px;
 }
 
+.etapa {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
 
-/* CAMERA */
-
-.camera-box {
-
-    display: none;
-
-    background: #111;
-
-    border-radius: 18px;
-
+.camera-area {
+    width: 100%;
     overflow: hidden;
-
-    margin-bottom: 15px;
-
+    border-radius: 25px;
+    margin-bottom: 20px;
+    background: #111;
 }
-
 
 #reader {
-
     width: 100%;
-
 }
 
-
-#reader video {
-
-    width: 100% !important;
-
-    border-radius: 18px;
-
-}
-
-
-.camera-ativa {
-
-    display: block;
-
-}
-
-
-/* BOTÕES */
-
-button {
-
+.btn {
     width: 100%;
-
     border: none;
-
-    border-radius: 18px;
-
-    padding: 20px;
-
-    font-size: 20px;
-
+    border-radius: 25px;
+    padding: 22px;
+    font-size: 25px;
     font-weight: bold;
-
+    margin-bottom: 18px;
     cursor: pointer;
-
-    margin-top: 10px;
-
 }
-
-
-button:active {
-
-    transform: scale(0.98);
-
-}
-
 
 .btn-camera {
-
     background: #111;
-
     color: white;
-
 }
 
-
-.btn-camera.parar {
-
-    background: #b00020;
-
-}
-
-
-.btn-export {
-
-    background: #168a3a;
-
+.btn-csv {
+    background: #16963b;
     color: white;
-
 }
 
-
-.btn-clear {
-
-    background: #ddd;
-
+.btn-limpar {
+    background: #dddddd;
     color: #111;
-
 }
-
-
-/* MOVIMENTAÇÕES */
 
 .movimentacoes {
-
-    margin-top: 25px;
-
-    background: #eee;
-
-    border-radius: 18px;
-
-    padding: 20px;
-
+    background: #eeeeee;
+    border-radius: 25px;
+    padding: 25px;
+    margin-top: 20px;
 }
-
 
 .movimentacoes h2 {
-
+    font-size: 27px;
     margin-top: 0;
-
 }
-
 
 .movimento {
-
     background: white;
-
-    border-radius: 13px;
-
+    border-radius: 15px;
     padding: 15px;
-
     margin-bottom: 10px;
-
 }
-
 
 .movimento strong {
-
-    display: block;
-
-    margin-bottom: 5px;
-
+    font-size: 18px;
 }
 
-
-.info {
-
+.movimento small {
     color: #777;
-
-    font-size: 14px;
-
 }
-
 
 .contador {
-
     text-align: center;
-
+    font-size: 18px;
     color: #666;
-
     margin-top: 15px;
-
 }
-
-
-/* AVISO */
 
 .aviso {
-
-    background: #fff3cd;
-
-    color: #856404;
-
-    border-radius: 12px;
-
-    padding: 12px;
-
-    margin-top: 15px;
-
     text-align: center;
-
-    font-size: 14px;
-
+    font-size: 19px;
+    font-weight: bold;
+    margin: 15px 0;
 }
 
+.verde {
+    color: #16963b;
+}
+
+.vermelho {
+    color: #d71919;
+}
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div class="container">
 
+    <div class="logo">
+        ARASIGNS
+    </div>
 
-<div class="card">
-
-
-<div class="logo">
-
-ARASIGNS
-
-</div>
+    <div class="subtitulo">
+        Controle de Almoxarifado
+    </div>
 
 
-<div class="subtitle">
+    <!-- STATUS -->
 
-Controle de Almoxarifado
+    <div class="status-card">
 
-</div>
+        <div class="status-titulo">
+            Último código lido:
+        </div>
 
+        <div
+            id="ultimoCodigo"
+            class="codigo"
+        >
+            —
+        </div>
 
+        <div
+            id="etapa"
+            class="etapa"
+        >
+            👤 Aguardando funcionário...
+        </div>
 
-<!-- ÚLTIMO CÓDIGO -->
-
-<div class="status">
-
-<div class="status-title">
-
-Último código lido:
-
-</div>
-
-
-<div
-id="ultimoCodigo"
-class="codigo">
-
-—
-
-</div>
-
-</div>
+    </div>
 
 
+    <!-- CAMERA -->
 
-<!-- CAMERA -->
+    <div class="camera-area">
 
-<div
-id="cameraBox"
-class="camera-box">
+        <div id="reader"></div>
 
-<div id="reader"></div>
-
-</div>
+    </div>
 
 
+    <!-- BOTÃO DA CÂMERA -->
 
-<!-- ESTADO -->
-
-<div
-id="estado"
-class="estado">
-
-👤 Aguardando funcionário
-
-</div>
-
+    <button
+        id="btnCamera"
+        class="btn btn-camera"
+        onclick="alternarCamera()"
+    >
+        🟢 CÂMERA ATIVA
+    </button>
 
 
-<!-- BOTÃO CAMERA -->
+    <!-- STATUS DA CAMERA -->
 
-<button
-id="btnCamera"
-class="btn-camera"
-onclick="alternarCamera()">
-
-📷 ABRIR CÂMERA
-
-</button>
+    <div
+        id="statusCamera"
+        class="aviso verde"
+    >
+        📷 Câmera funcionando
+    </div>
 
 
+    <!-- CSV -->
 
-<!-- EXPORTAR -->
-
-<button
-class="btn-export"
-onclick="exportarCSV()">
-
-📊 GERAR CSV
-
-</button>
+    <button
+        class="btn btn-csv"
+        onclick="gerarCSV()"
+    >
+        📊 GERAR CSV
+    </button>
 
 
+    <!-- LIMPAR -->
 
-<!-- LIMPAR -->
-
-<button
-class="btn-clear"
-onclick="limparRegistros()">
-
-🗑️ LIMPAR REGISTROS
-
-</button>
+    <button
+        class="btn btn-limpar"
+        onclick="limparRegistros()"
+    >
+        🗑️ LIMPAR REGISTROS
+    </button>
 
 
+    <!-- MOVIMENTAÇÕES -->
 
-<div
-class="aviso">
+    <div class="movimentacoes">
 
-A câmera permanece aberta para registrar várias movimentações.
+        <h2>
+            Movimentações
+        </h2>
+
+        <div id="listaMovimentacoes">
+            Nenhuma movimentação registrada.
+        </div>
+
+        <div
+            id="contador"
+            class="contador"
+        >
+            0 movimentações
+        </div>
+
+    </div>
 
 </div>
-
-
-
-<!-- MOVIMENTAÇÕES -->
-
-<div class="movimentacoes">
-
-
-<h2>
-
-Movimentações
-
-</h2>
-
-
-<div id="lista">
-
-Nenhuma movimentação registrada.
-
-</div>
-
-
-<div
-id="contador"
-class="contador">
-
-0 movimentações
-
-</div>
-
-
-</div>
-
-
-</div>
-
-</div>
-
 
 
 <script>
 
-
-/* ==================================================
-   CONFIGURAÇÕES
-================================================== */
-
+/* =====================================================
+   CONFIGURAÇÃO
+===================================================== */
 
 let scanner = null;
 
-let cameraLigada = false;
+let cameraAtiva = false;
 
+let processando = false;
 
-/*
-   ETAPA DO PROCESSO
-
-   funcionario
-   ↓
-   item
-   ↓
-   funcionario
-*/
-
-
-let etapa = "funcionario";
-
+let esperandoFuncionario = true;
 
 let funcionarioAtual = null;
 
-
-/*
-   Evita o mesmo código ser lido
-   várias vezes seguidas
-*/
-
-
-let ultimoScan = "";
-
-let momentoUltimoScan = 0;
-
-
-/*
-   BANCO LOCAL
-*/
-
-
 let movimentacoes =
-
-JSON.parse(
-
-localStorage.getItem(
-"arasigns_movimentacoes"
-)
-
-) || [];
+    JSON.parse(
+        localStorage.getItem("arasigns_movimentacoes")
+    ) || [];
 
 
+/* =====================================================
+   BIP
+===================================================== */
 
-/* ==================================================
-   ABRIR / FECHAR CAMERA
-================================================== */
+function bip(frequencia = 900, duracao = 120) {
 
+    try {
 
-async function alternarCamera() {
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
 
+        const audio =
+            new AudioContext();
 
-    if (cameraLigada) {
+        const oscillator =
+            audio.createOscillator();
 
-        pararCamera();
+        const gain =
+            audio.createGain();
 
-        return;
+        oscillator.connect(gain);
+
+        gain.connect(audio.destination);
+
+        oscillator.frequency.value =
+            frequencia;
+
+        oscillator.type =
+            "sine";
+
+        gain.gain.value =
+            0.2;
+
+        oscillator.start();
+
+        setTimeout(() => {
+
+            oscillator.stop();
+
+            audio.close();
+
+        }, duracao);
+
+    } catch (erro) {
+
+        console.log(
+            "Não foi possível emitir o bip.",
+            erro
+        );
 
     }
-
-
-    await iniciarCamera();
 
 }
 
 
-
-/* ==================================================
+/* =====================================================
    INICIAR CAMERA
-================================================== */
-
+===================================================== */
 
 async function iniciarCamera() {
+
+    if (cameraAtiva) {
+        return;
+    }
+
+    document.getElementById(
+        "statusCamera"
+    ).innerText =
+        "📷 Iniciando câmera...";
+
+    document.getElementById(
+        "statusCamera"
+    ).className =
+        "aviso";
 
 
     try {
 
-
-        document
-        .getElementById("cameraBox")
-        .classList.add("camera-ativa");
-
-
-        document
-        .getElementById("btnCamera")
-        .innerText =
-        "⛔ FECHAR CÂMERA";
-
-
-        document
-        .getElementById("btnCamera")
-        .classList.add("parar");
-
-
-        /*
-           Cria o leitor
-        */
-
-
         scanner =
-        new Html5Qrcode("reader");
-
-
-        /*
-           Procura câmera traseira
-        */
-
-
-        const cameras =
-        await Html5Qrcode.getCameras();
-
-
-        if (!cameras ||
-            cameras.length === 0) {
-
-            throw new Error(
-                "Nenhuma câmera encontrada."
-            );
-
-        }
-
-
-        let cameraId =
-        cameras[0].id;
-
-
-        /*
-           Tenta encontrar
-           câmera traseira
-        */
-
-
-        const traseira =
-        cameras.find(
-            camera =>
-                camera.label
-                .toLowerCase()
-                .includes("back")
-                ||
-                camera.label
-                .toLowerCase()
-                .includes("rear")
-                ||
-                camera.label
-                .toLowerCase()
-                .includes("traseira")
-        );
-
-
-        if (traseira) {
-
-            cameraId =
-            traseira.id;
-
-        }
-
-
-        /*
-           Inicia scanner
-        */
+            new Html5Qrcode("reader");
 
 
         await scanner.start(
 
-            cameraId,
+            {
+                facingMode: "environment"
+            },
 
             {
-
                 fps: 10,
 
-                qrbox: {
+                qrbox: function(
+                    largura,
+                    altura
+                ) {
 
-                    width: 280,
+                    const tamanho =
+                        Math.min(
+                            largura,
+                            altura
+                        ) * 0.70;
 
-                    height: 180
+                    return {
+                        width: tamanho,
+                        height: tamanho
+                    };
 
                 },
 
-                aspectRatio: 1.777
+                aspectRatio: 1.0
 
             },
 
             codigoLido,
 
-            erroLeitura => {
+            function(error) {
 
-                /*
-                   Ignora erros normais
-                   de procura do código.
-                */
+                // Erros normais de leitura
+                // são ignorados.
 
             }
 
         );
 
 
-        cameraLigada = true;
+        cameraAtiva = true;
 
 
-        atualizarEstado();
+        document.getElementById(
+            "btnCamera"
+        ).innerText =
+            "🟢 CÂMERA ATIVA";
 
 
-    }
+        document.getElementById(
+            "statusCamera"
+        ).innerText =
+            "📷 Câmera funcionando";
 
-    catch (erro) {
 
+        document.getElementById(
+            "statusCamera"
+        ).className =
+            "aviso verde";
+
+
+    } catch (erro) {
 
         console.error(erro);
 
 
-        document
-        .getElementById("cameraBox")
-        .classList.remove("camera-ativa");
+        document.getElementById(
+            "statusCamera"
+        ).innerText =
+            "⚠️ Permita o acesso à câmera";
 
 
-        document
-        .getElementById("btnCamera")
-        .innerText =
-        "📷 ABRIR CÂMERA";
-
-
-        document
-        .getElementById("btnCamera")
-        .classList.remove("parar");
-
-
-        alert(
-
-            "❌ Não consegui abrir a câmera.\n\n" +
-
-            "Verifique se o navegador permitiu o acesso à câmera."
-
-        );
+        document.getElementById(
+            "statusCamera"
+        ).className =
+            "aviso vermelho";
 
     }
 
 }
 
 
-
-/* ==================================================
+/* =====================================================
    PARAR CAMERA
-================================================== */
-
+===================================================== */
 
 async function pararCamera() {
+
+    if (!scanner) {
+        return;
+    }
 
 
     try {
 
+        await scanner.stop();
 
-        if (scanner) {
+        await scanner.clear();
 
-            await scanner.stop();
-
-            scanner.clear();
-
-            scanner = null;
-
-        }
-
-
-    }
-
-    catch (erro) {
+    } catch (erro) {
 
         console.log(erro);
 
     }
 
 
-    cameraLigada = false;
+    scanner = null;
+
+    cameraAtiva = false;
 
 
-    document
-    .getElementById("cameraBox")
-    .classList.remove("camera-ativa");
+    document.getElementById(
+        "btnCamera"
+    ).innerText =
+        "📷 ATIVAR CÂMERA";
 
 
-    document
-    .getElementById("btnCamera")
-    .innerText =
-    "📷 ABRIR CÂMERA";
+    document.getElementById(
+        "statusCamera"
+    ).innerText =
+        "Câmera pausada";
 
 
-    document
-    .getElementById("btnCamera")
-    .classList.remove("parar");
+    document.getElementById(
+        "statusCamera"
+    ).className =
+        "aviso";
 
 }
 
 
+/* =====================================================
+   ALTERNAR CAMERA
+===================================================== */
 
-/* ==================================================
+function alternarCamera() {
+
+    if (cameraAtiva) {
+
+        pararCamera();
+
+    } else {
+
+        iniciarCamera();
+
+    }
+
+}
+
+
+/* =====================================================
    CÓDIGO FOI LIDO
-================================================== */
-
+===================================================== */
 
 function codigoLido(codigo) {
 
 
-    codigo =
-    String(codigo)
-    .trim();
-
-
     /*
-       Proteção contra
-       múltiplas leituras
+       Evita o mesmo código sendo lido
+       várias vezes seguidas.
     */
 
-
-    const agora =
-    Date.now();
-
-
-    if (
-
-        codigo === ultimoScan &&
-
-        agora - momentoUltimoScan < 1500
-
-    ) {
-
+    if (processando) {
         return;
-
     }
 
 
-    ultimoScan =
-    codigo;
+    processando = true;
 
 
-    momentoUltimoScan =
-    agora;
+    setTimeout(() => {
+
+        processando = false;
+
+    }, 1200);
 
 
+    codigo =
+        String(codigo)
+        .trim();
 
-    /*
+
+    if (!codigo) {
+        return;
+    }
+
+
+    /* -----------------------------------------------
        MOSTRA CÓDIGO
-    */
+    ------------------------------------------------ */
+
+    document.getElementById(
+        "ultimoCodigo"
+    ).innerText =
+        codigo;
 
 
-    document
-    .getElementById("ultimoCodigo")
-    .innerText =
-    codigo;
-
-
-
-    /*
-       SOM
-    */
-
+    /* -----------------------------------------------
+       BIP
+    ------------------------------------------------ */
 
     bip();
 
 
+    /* -----------------------------------------------
+       PRIMEIRO SCAN = FUNCIONÁRIO
+    ------------------------------------------------ */
 
-    /*
-       PRIMEIRO BIP
-       FUNCIONÁRIO
-    */
-
-
-    if (etapa === "funcionario") {
+    if (esperandoFuncionario) {
 
 
         funcionarioAtual =
-        codigo;
+            codigo;
 
 
-        etapa =
-        "item";
+        esperandoFuncionario =
+            false;
 
 
-        atualizarEstado();
+        document.getElementById(
+            "etapa"
+        ).innerText =
+            "🔧 Aguardando ferramenta...";
+
+
+        document.getElementById(
+            "etapa"
+        ).className =
+            "etapa verde";
 
 
         return;
@@ -882,93 +620,47 @@ function codigoLido(codigo) {
     }
 
 
+    /* -----------------------------------------------
+       SEGUNDO SCAN = FERRAMENTA
+    ------------------------------------------------ */
 
-    /*
-       SEGUNDO BIP
-       ITEM
-    */
-
-
-    if (etapa === "item") {
-
-
-        registrarMovimentacao(
-
-            funcionarioAtual,
-
-            codigo
-
-        );
-
-
-        funcionarioAtual =
-        null;
-
-
-        etapa =
-        "funcionario";
-
-
-        atualizarEstado();
-
-    }
-
-}
-
-
-
-/* ==================================================
-   REGISTRAR
-================================================== */
-
-
-function registrarMovimentacao(
-
-    funcionario,
-
-    item
-
-) {
+    const ferramenta =
+        codigo;
 
 
     const agora =
-    new Date();
+        new Date();
 
 
     const registro = {
 
+        data:
+            agora.toLocaleDateString(
+                "pt-BR"
+            ),
 
-        dataHora:
-        agora.toLocaleString(
-            "pt-BR"
-        ),
-
+        hora:
+            agora.toLocaleTimeString(
+                "pt-BR"
+            ),
 
         funcionario:
-        funcionario,
+            funcionarioAtual,
 
-
-        item:
-        item
+        ferramenta:
+            ferramenta
 
     };
 
 
-    /*
-       Coloca o mais recente
-       no topo
-    */
-
-
-    movimentacoes.unshift(
+    movimentacoes.push(
         registro
     );
 
 
-    /*
+    /* -----------------------------------------------
        SALVA NO CELULAR
-    */
-
+    ------------------------------------------------ */
 
     localStorage.setItem(
 
@@ -981,398 +673,245 @@ function registrarMovimentacao(
     );
 
 
+    /* -----------------------------------------------
+       VOLTA A ESPERAR FUNCIONÁRIO
+    ------------------------------------------------ */
+
+    funcionarioAtual =
+        null;
+
+
+    esperandoFuncionario =
+        true;
+
+
+    document.getElementById(
+        "etapa"
+    ).innerText =
+        "👤 Aguardando funcionário...";
+
+
+    document.getElementById(
+        "etapa"
+    ).className =
+        "etapa";
+
+
     atualizarLista();
 
-}
-
-
-
-/* ==================================================
-   ATUALIZAR ESTADO
-================================================== */
-
-
-function atualizarEstado() {
-
-
-    const estado =
-    document.getElementById(
-        "estado"
-    );
-
-
-    if (etapa === "funcionario") {
-
-
-        estado.innerText =
-        "👤 Aguardando funcionário";
-
-
-        estado.style.color =
-        "#111";
-
-
-    }
-
-
-    else {
-
-
-        estado.innerText =
-        "🔧 Agora leia o produto ou ferramenta";
-
-
-        estado.style.color =
-        "#168a3a";
-
-    }
 
 }
 
 
-
-/* ==================================================
-   BIP
-================================================== */
-
-
-function bip() {
-
-
-    try {
-
-
-        const AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext;
-
-
-        const audio =
-        new AudioContext();
-
-
-        const oscillator =
-        audio.createOscillator();
-
-
-        const gain =
-        audio.createGain();
-
-
-        oscillator.connect(
-            gain
-        );
-
-
-        gain.connect(
-            audio.destination
-        );
-
-
-        oscillator.frequency.value =
-        900;
-
-
-        gain.gain.value =
-        0.15;
-
-
-        oscillator.start();
-
-
-        oscillator.stop(
-            audio.currentTime + 0.12
-        );
-
-
-    }
-
-    catch (erro) {
-
-        console.log(erro);
-
-    }
-
-}
-
-
-
-/* ==================================================
-   LISTA
-================================================== */
-
+/* =====================================================
+   ATUALIZAR LISTA
+===================================================== */
 
 function atualizarLista() {
 
-
     const lista =
-    document.getElementById(
-        "lista"
-    );
+        document.getElementById(
+            "listaMovimentacoes"
+        );
 
 
     const contador =
-    document.getElementById(
-        "contador"
-    );
-
-
-    if (
-        movimentacoes.length === 0
-    ) {
-
-
-        lista.innerHTML =
-        "Nenhuma movimentação registrada.";
-
-
-        contador.innerText =
-        "0 movimentações";
-
-
-        return;
-
-    }
-
-
-
-    lista.innerHTML = "";
-
-
-
-    movimentacoes.forEach(
-
-        mov => {
-
-
-            const div =
-            document.createElement(
-                "div"
-            );
-
-
-            div.className =
-            "movimento";
-
-
-            div.innerHTML =
-
-
-                "<strong>👤 Funcionário: " +
-
-                escapar(
-                    mov.funcionario
-                ) +
-
-                "</strong>" +
-
-
-                "<strong>🔧 Item: " +
-
-                escapar(
-                    mov.item
-                ) +
-
-                "</strong>" +
-
-
-                "<div class='info'>" +
-
-                "🕒 " +
-
-                escapar(
-                    mov.dataHora
-                ) +
-
-                "</div>";
-
-
-            lista.appendChild(
-                div
-            );
-
-
-        }
-
-    );
-
+        document.getElementById(
+            "contador"
+        );
 
 
     contador.innerText =
-
         movimentacoes.length +
-
         (
-
             movimentacoes.length === 1
-
-            ? " movimentação"
-
-            : " movimentações"
-
+                ? " movimentação"
+                : " movimentações"
         );
-
-}
-
-
-
-/* ==================================================
-   SEGURANÇA
-================================================== */
-
-
-function escapar(valor) {
-
-
-    const div =
-    document.createElement(
-        "div"
-    );
-
-
-    div.textContent =
-    valor;
-
-
-    return div.innerHTML;
-
-}
-
-
-
-/* ==================================================
-   EXPORTAR CSV
-================================================== */
-
-
-function exportarCSV() {
 
 
     if (
         movimentacoes.length === 0
     ) {
 
-
-        alert(
-            "⚠️ Não existem movimentações para exportar."
-        );
-
+        lista.innerHTML =
+            "Nenhuma movimentação registrada.";
 
         return;
 
     }
 
 
+    /*
+       Mostra primeiro os registros
+       mais recentes.
+    */
+
+    const registros =
+        [...movimentacoes]
+        .reverse();
+
+
+    lista.innerHTML =
+        registros
+        .map(
+            function(registro) {
+
+                return `
+
+                    <div class="movimento">
+
+                        <strong>
+                            👤 ${escaparHTML(registro.funcionario)}
+                        </strong>
+
+                        <br>
+
+                        🔧 ${escaparHTML(registro.ferramenta)}
+
+                        <br>
+
+                        <small>
+                            ${registro.data}
+                            às
+                            ${registro.hora}
+                        </small>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   PROTEÇÃO HTML
+===================================================== */
+
+function escaparHTML(texto) {
+
+    return String(texto)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   GERAR CSV
+===================================================== */
+
+function gerarCSV() {
+
+
+    if (
+        movimentacoes.length === 0
+    ) {
+
+        alert(
+            "Não existem movimentações para exportar."
+        );
+
+        return;
+
+    }
+
 
     let csv =
-
-        "DATA/HORA;" +
-
-        "FUNCIONÁRIO;" +
-
-        "CÓDIGO ITEM\n";
-
+        "DATA,HORA,FUNCIONARIO,FERRAMENTA\n";
 
 
     movimentacoes.forEach(
-
-        mov => {
-
+        function(registro) {
 
             csv +=
-
-                '"' +
-
-                limparCSV(
-                    mov.dataHora
-                ) +
-
-                '";"' +
-
-                limparCSV(
-                    mov.funcionario
-                ) +
-
-                '";"' +
-
-                limparCSV(
-                    mov.item
-                ) +
-
-                '"\n';
+                `"${registro.data}",` +
+                `"${registro.hora}",` +
+                `"${registro.funcionario}",` +
+                `"${registro.ferramenta}"\n`;
 
         }
-
     );
 
+
+    /*
+       BOM para o Excel reconhecer
+       acentos corretamente.
+    */
+
+    const BOM =
+        "\uFEFF";
 
 
     const blob =
-    new Blob(
-
-        [
-            "\ufeff" +
-            csv
-        ],
-
-        {
-
-            type:
-            "text/csv;charset=utf-8;"
-
-        }
-
-    );
-
+        new Blob(
+            [
+                BOM + csv
+            ],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
 
 
     const url =
-    URL.createObjectURL(
-        blob
-    );
+        URL.createObjectURL(
+            blob
+        );
 
 
     const link =
-    document.createElement(
-        "a"
-    );
+        document.createElement(
+            "a"
+        );
+
+
+    const agora =
+        new Date();
+
+
+    const nomeArquivo =
+        "ARASIGNS_MOVIMENTACOES_" +
+        agora
+        .toISOString()
+        .slice(0, 10) +
+        ".csv";
 
 
     link.href =
-    url;
-
-
-
-    const hoje =
-    new Date();
-
-
-    const data =
-
-        hoje.getFullYear() +
-
-        "-" +
-
-        String(
-            hoje.getMonth() + 1
-        ).padStart(2, "0") +
-
-        "-" +
-
-        String(
-            hoje.getDate()
-        ).padStart(2, "0");
-
+        url;
 
 
     link.download =
-
-        "ARASIGNS_MOVIMENTACOES_" +
-
-        data +
-
-        ".csv";
-
+        nomeArquivo;
 
 
     document.body.appendChild(
@@ -1392,55 +931,12 @@ function exportarCSV() {
         url
     );
 
-
-
-    alert(
-
-        "📊 CSV GERADO!\n\n" +
-
-        movimentacoes.length +
-
-        " movimentações exportadas."
-
-    );
-
 }
 
 
-
-/* ==================================================
-   LIMPAR CSV
-================================================== */
-
-
-function limparCSV(valor) {
-
-
-    return String(valor)
-
-        .replace(
-            /"/g,
-            '""'
-        )
-
-        .replace(
-            /\n/g,
-            " "
-        )
-
-        .replace(
-            /\r/g,
-            " "
-        );
-
-}
-
-
-
-/* ==================================================
+/* =====================================================
    LIMPAR REGISTROS
-================================================== */
-
+===================================================== */
 
 function limparRegistros() {
 
@@ -1449,39 +945,20 @@ function limparRegistros() {
         movimentacoes.length === 0
     ) {
 
-
-        alert(
-            "Não existem registros."
-        );
-
-
         return;
 
     }
-
 
 
     const confirmar =
-    confirm(
-
-        "⚠️ ATENÇÃO!\n\n" +
-
-        "Isso vai apagar todas as movimentações deste aparelho.\n\n" +
-
-        "Gere o CSV antes de continuar.\n\n" +
-
-        "Deseja realmente apagar?"
-
-    );
-
+        confirm(
+            "Tem certeza que deseja apagar TODAS as movimentações?"
+        );
 
 
     if (!confirmar) {
-
         return;
-
     }
-
 
 
     movimentacoes = [];
@@ -1493,43 +970,65 @@ function limparRegistros() {
 
 
     funcionarioAtual =
-    null;
+        null;
 
 
-    etapa =
-    "funcionario";
+    esperandoFuncionario =
+        true;
 
 
-    document
-    .getElementById(
+    document.getElementById(
         "ultimoCodigo"
-    )
-    .innerText =
-    "—";
+    ).innerText =
+        "—";
 
 
-    atualizarEstado();
+    document.getElementById(
+        "etapa"
+    ).innerText =
+        "👤 Aguardando funcionário...";
 
 
     atualizarLista();
 
-
 }
 
 
-
-/* ==================================================
-   INICIALIZA
-================================================== */
-
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
 
 atualizarLista();
 
-atualizarEstado();
 
+/*
+   ⭐ IMPORTANTE ⭐
+
+   Ao abrir o site, tenta ligar
+   a câmera automaticamente.
+
+   O pequeno atraso ajuda o Safari
+   do iPhone a carregar a página
+   antes de pedir acesso à câmera.
+*/
+
+window.addEventListener(
+    "load",
+    function() {
+
+        setTimeout(
+            function() {
+
+                iniciarCamera();
+
+            },
+            500
+        );
+
+    }
+);
 
 </script>
 
 </body>
-
 </html>

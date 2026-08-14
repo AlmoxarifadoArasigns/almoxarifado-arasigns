@@ -1,712 +1,433 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Almoxarifado Arasigns</title>
-
-<script
-src="https://unpkg.com/html5-qrcode"
-type="text/javascript">
-</script>
+<title>ARASIGNS - Controle de Almoxarifado</title>
 
 <style>
 
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
     margin: 0;
-    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #f3f3f3;
+    color: #111;
 }
 
 .container {
-    max-width: 500px;
-    margin: auto;
-    background: white;
+    max-width: 650px;
+    margin: 30px auto;
     padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+}
+
+.card {
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 5px;
+    font-size: 42px;
+    margin: 0;
 }
 
-.subtitulo {
+.subtitle {
     text-align: center;
     color: #777;
-    margin-bottom: 25px;
+    font-size: 22px;
+    margin-bottom: 30px;
 }
 
 .status {
-    padding: 18px;
-    background: #eeeeee;
-    border-radius: 12px;
-    margin-bottom: 15px;
-}
-
-.titulo {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 8px;
-}
-
-.nome {
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.mensagem {
+    background: #eee;
+    border-radius: 18px;
+    padding: 25px;
     text-align: center;
+    margin-bottom: 20px;
+}
+
+.status-title {
     font-size: 18px;
     font-weight: bold;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 15px;
 }
 
-.aguardando {
-    background: #eeeeee;
-    color: #333;
+.codigo {
+    font-size: 45px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
-.sucesso {
-    background: #d9f7df;
-    color: #16752c;
-}
-
-.erro {
-    background: #ffdede;
-    color: #a40000;
-}
-
-#reader {
+button {
     width: 100%;
-    margin-top: 15px;
+    border: none;
+    border-radius: 18px;
+    padding: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+.btn-scan {
+    background: #111;
+    color: white;
+}
+
+.btn-export {
+    background: #1b8f3a;
+    color: white;
+}
+
+.btn-clear {
+    background: #ddd;
+    color: #111;
+}
+
+.movimentacoes {
+    margin-top: 25px;
+    background: #eee;
+    border-radius: 18px;
+    padding: 20px;
+}
+
+.movimento {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.movimento strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info {
+    color: #666;
+    font-size: 14px;
 }
 
 </style>
-
 </head>
 
 <body>
 
-
 <div class="container">
 
+<div class="card">
 
 <h1>ARASIGNS</h1>
 
-<div class="subtitulo">
+<div class="subtitle">
 Controle de Almoxarifado
 </div>
 
-
-<!-- FUNCIONÁRIO -->
-
 <div class="status">
 
-<div class="titulo">
-FUNCIONÁRIO
+<div class="status-title">
+Último código lido:
 </div>
 
-<div id="funcionario" class="nome">
-
-Aguardando...
-
-</div>
-
-</div>
-
-
-<!-- PRODUTO -->
-
-<div class="status">
-
-<div class="titulo">
-PRODUTO / FERRAMENTA
-</div>
-
-<div id="produto" class="nome">
-
-Aguardando...
-
+<div class="codigo" id="ultimoCodigo">
+—
 </div>
 
 </div>
 
+<button class="btn-scan" onclick="lerCodigo()">
+📷 LER CÓDIGO
+</button>
 
-<!-- MENSAGEM -->
+<button class="btn-export" onclick="exportarCSV()">
+📥 EXPORTAR CSV
+</button>
 
-<div id="mensagem"
-class="mensagem aguardando">
+<button class="btn-clear" onclick="limparRegistros()">
+🗑️ LIMPAR REGISTROS
+</button>
 
-Aguardando crachá...
+<div class="movimentacoes">
+
+<h2>
+Movimentações
+</h2>
+
+<div id="listaMovimentacoes">
+Nenhuma movimentação registrada.
+</div>
 
 </div>
 
-
-<!-- CÂMERA -->
-
-<div id="reader"></div>
-
-
 </div>
 
+</div>
 
 <script>
 
-
-// ======================================================
-// BANCO TEMPORÁRIO
-// ======================================================
-
-
-// FUNCIONÁRIOS
-
-const funcionarios = {
-
-    "84921": "RAFA BOQUETA",
-
-    "10002": "JOÃO",
-
-    "10003": "CARLOS"
-
-};
-
-
-// PRODUTOS / FERRAMENTAS
-
-const produtos = {
-
-    "7892145000037": "PARAFUSADEIRA MAKITA #03",
-
-    "20002": "LIXADEIRA #02",
-
-    "20003": "BATERIA #07"
-
-};
-
-
-// ======================================================
-// CONTROLE
-// ======================================================
+let movimentacoes =
+JSON.parse(localStorage.getItem("arasigns_movimentacoes")) || [];
 
 let etapa = "funcionario";
 
 let funcionarioAtual = null;
 
-let leitor = null;
 
-let processando = false;
+// ================================
+// LEITURA DO CÓDIGO
+// ================================
 
+function lerCodigo() {
 
-// ======================================================
-// SOM
-// ======================================================
+    let codigo = prompt("Digite ou escaneie o código:");
 
-function tocarBip(tipo) {
+    if (!codigo) return;
 
-    const AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext;
+    codigo = codigo.trim();
 
-    if (!AudioContext) {
-        return;
-    }
+    document.getElementById("ultimoCodigo").innerText = codigo;
 
-    const audio =
-        new AudioContext();
-
-    const oscilador =
-        audio.createOscillator();
-
-    const ganho =
-        audio.createGain();
-
-
-    oscilador.connect(ganho);
-
-    ganho.connect(audio.destination);
-
-
-    if (tipo === "funcionario") {
-
-        // BIP curto
-        oscilador.frequency.value = 800;
-
-        ganho.gain.value = 0.15;
-
-        oscilador.start();
-
-        setTimeout(function() {
-
-            oscilador.stop();
-
-            audio.close();
-
-        }, 100);
-
-    }
-
-
-    else if (tipo === "produto") {
-
-        // BIP mais agudo
-        oscilador.frequency.value = 1200;
-
-        ganho.gain.value = 0.15;
-
-        oscilador.start();
-
-        setTimeout(function() {
-
-            oscilador.stop();
-
-            audio.close();
-
-        }, 150);
-
-    }
-
-
-    else if (tipo === "erro") {
-
-        // BIP grave
-        oscilador.frequency.value = 300;
-
-        ganho.gain.value = 0.20;
-
-        oscilador.start();
-
-        setTimeout(function() {
-
-            oscilador.stop();
-
-            audio.close();
-
-        }, 300);
-
-    }
-
-}
-
-
-// ======================================================
-// INICIAR LEITOR
-// ======================================================
-
-function iniciarLeitor() {
-
-
-    if (leitor) {
-        return;
-    }
-
-
-    leitor =
-        new Html5Qrcode("reader");
-
-
-    const configuracao = {
-
-        fps: 10,
-
-        qrbox: {
-
-            width: 280,
-
-            height: 150
-
-        }
-
-    };
-
-
-    leitor.start(
-
-        {
-            facingMode: "environment"
-        },
-
-        configuracao,
-
-
-        function(codigo) {
-
-            processarCodigo(codigo);
-
-        },
-
-
-        function(error) {
-
-            // Erros durante a procura do código
-            // são ignorados.
-
-        }
-
-
-    ).catch(function(error) {
-
-        document.getElementById(
-            "mensagem"
-        ).innerText =
-        "Erro ao acessar a câmera.";
-
-        console.log(error);
-
-    });
-
-}
-
-
-// ======================================================
-// PROCESSAR CÓDIGO
-// ======================================================
-
-function processarCodigo(codigo) {
-
-
-    if (processando) {
-        return;
-    }
-
-
-    processando = true;
-
-
-    // ==================================================
-    // PRIMEIRO BIP
-    // FUNCIONÁRIO
-    // ==================================================
+    // PRIMEIRO BIP = FUNCIONÁRIO
 
     if (etapa === "funcionario") {
 
+        funcionarioAtual = codigo;
 
-        if (!funcionarios[codigo]) {
+        etapa = "item";
 
-
-            tocarBip("erro");
-
-
-            mostrarMensagem(
-                "❌ Crachá não cadastrado",
-                "erro"
-            );
-
-
-            processando = false;
-
-            return;
-
-        }
-
-
-        // Funcionário encontrado
-
-        funcionarioAtual =
-            funcionarios[codigo];
-
-
-        document.getElementById(
-            "funcionario"
-        ).innerText =
-            funcionarioAtual;
-
-
-        document.getElementById(
-            "produto"
-        ).innerText =
-            "Aguardando...";
-
-
-        tocarBip("funcionario");
-
-
-        mostrarMensagem(
-            "Passe o produto ou ferramenta",
-            "aguardando"
+        alert(
+            "👤 FUNCIONÁRIO REGISTRADO\n\n" +
+            "Código: " + codigo +
+            "\n\nAgora leia o produto ou ferramenta."
         );
 
-
-        etapa = "produto";
-
-
-        reiniciarLeitor();
-
-
         return;
-
     }
 
 
-    // ==================================================
-    // SEGUNDO BIP
-    // PRODUTO / FERRAMENTA
-    // ==================================================
+    // SEGUNDO BIP = ITEM
 
-    if (etapa === "produto") {
+    if (etapa === "item") {
 
-
-        if (!produtos[codigo]) {
-
-
-            tocarBip("erro");
-
-
-            mostrarMensagem(
-                "❌ Produto não cadastrado",
-                "erro"
-            );
-
-
-            processando = false;
-
-            return;
-
-        }
-
-
-        const nomeProduto =
-            produtos[codigo];
-
-
-        document.getElementById(
-            "produto"
-        ).innerText =
-            nomeProduto;
-
-
-        tocarBip("produto");
-
-
-        mostrarMensagem(
-            "✅ MOVIMENTAÇÃO REGISTRADA",
-            "sucesso"
-        );
-
+        let item = codigo;
 
         registrarMovimentacao(
-
             funcionarioAtual,
-
-            codigo,
-
-            nomeProduto
-
+            item
         );
 
+        funcionarioAtual = null;
 
-        etapa = "finalizado";
-
-
-        pararLeitor();
-
-
-        // Espera 2 segundos
-        // e volta para o próximo funcionário
-
-        setTimeout(function() {
-
-            resetarSistema();
-
-        }, 2000);
+        etapa = "funcionario";
 
     }
 
 }
 
 
-// ======================================================
+// ================================
 // REGISTRAR MOVIMENTAÇÃO
-// ======================================================
+// ================================
 
-function registrarMovimentacao(
+function registrarMovimentacao(funcionario, item) {
 
-    funcionario,
-    codigo,
-    produto
+    let agora = new Date();
 
-) {
+    let movimentacao = {
 
+        dataHora: agora.toLocaleString("pt-BR"),
 
-    const agora =
-        new Date();
+        funcionario: funcionario,
 
-
-    const movimentacao = {
-
-        data:
-            agora.toLocaleString("pt-BR"),
-
-        funcionario:
-            funcionario,
-
-        codigo:
-            codigo,
-
-        produto:
-            produto,
-
-        movimento:
-            "SAÍDA"
+        item: item
 
     };
 
+    movimentacoes.unshift(movimentacao);
 
-    console.log(
-        "MOVIMENTAÇÃO:",
-        movimentacao
+    localStorage.setItem(
+        "arasigns_movimentacoes",
+        JSON.stringify(movimentacoes)
+    );
+
+    atualizarLista();
+
+    alert(
+        "✅ MOVIMENTAÇÃO REGISTRADA!\n\n" +
+        "Funcionário: " + funcionario +
+        "\nItem: " + item
     );
 
 }
 
 
-// ======================================================
-// REINICIAR LEITOR
-// ======================================================
+// ================================
+// MOSTRAR MOVIMENTAÇÕES
+// ================================
 
-function reiniciarLeitor() {
+function atualizarLista() {
 
+    let lista =
+        document.getElementById("listaMovimentacoes");
 
-    pararLeitor();
+    if (movimentacoes.length === 0) {
 
+        lista.innerHTML =
+            "Nenhuma movimentação registrada.";
 
-    setTimeout(function() {
-
-
-        processando = false;
-
-
-        iniciarLeitor();
-
-
-    }, 500);
-
-}
-
-
-// ======================================================
-// PARAR LEITOR
-// ======================================================
-
-function pararLeitor() {
-
-
-    if (!leitor) {
         return;
     }
 
+    lista.innerHTML = "";
 
-    leitor.stop()
+    movimentacoes.forEach(function(mov) {
 
-    .then(function() {
+        let div =
+            document.createElement("div");
 
+        div.className = "movimento";
 
-        leitor.clear();
+        div.innerHTML =
 
-        leitor = null;
+            "<strong>👤 Funcionário: " +
+            mov.funcionario +
+            "</strong>" +
 
+            "<strong>🔧 Item: " +
+            mov.item +
+            "</strong>" +
 
-    })
+            "<div class='info'>" +
+            "🕒 " + mov.dataHora +
+            "</div>";
 
-    .catch(function(error) {
-
-
-        leitor = null;
-
-        console.log(error);
-
+        lista.appendChild(div);
 
     });
 
 }
 
 
-// ======================================================
-// RESETAR SISTEMA
-// ======================================================
+// ================================
+// EXPORTAR CSV
+// ================================
 
-function resetarSistema() {
+function exportarCSV() {
 
+    if (movimentacoes.length === 0) {
 
-    etapa = "funcionario";
+        alert(
+            "Não existem movimentações para exportar."
+        );
 
+        return;
+    }
 
-    funcionarioAtual = null;
-
-
-    processando = false;
-
-
-    document.getElementById(
-        "funcionario"
-    ).innerText =
-        "Aguardando...";
+    let csv =
+        "DATA/HORA;FUNCIONÁRIO;CÓDIGO ITEM\n";
 
 
-    document.getElementById(
-        "produto"
-    ).innerText =
-        "Aguardando...";
+    movimentacoes.forEach(function(mov) {
+
+        csv +=
+            '"' + mov.dataHora + '";' +
+            '"' + mov.funcionario + '";' +
+            '"' + mov.item + '"\n';
+
+    });
 
 
-    mostrarMensagem(
-        "Aguardando crachá...",
-        "aguardando"
+    let blob = new Blob(
+        ["\ufeff" + csv],
+        {
+            type: "text/csv;charset=utf-8;"
+        }
     );
 
 
-    iniciarLeitor();
+    let url =
+        URL.createObjectURL(blob);
+
+
+    let link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        "movimentacoes_arasigns.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
 
 }
 
 
-// ======================================================
-// MENSAGEM
-// ======================================================
+// ================================
+// LIMPAR REGISTROS
+// ================================
 
-function mostrarMensagem(
-    texto,
-    tipo
-) {
+function limparRegistros() {
+
+    if (movimentacoes.length === 0) {
+
+        alert(
+            "Não existem registros."
+        );
+
+        return;
+    }
 
 
-    const elemento =
-        document.getElementById(
-            "mensagem"
+    let confirmar =
+        confirm(
+            "⚠️ ATENÇÃO!\n\n" +
+            "Isso vai apagar todas as movimentações deste dispositivo.\n\n" +
+            "Você já exportou o CSV?"
         );
 
 
-    elemento.innerText =
-        texto;
+    if (!confirmar) return;
 
 
-    elemento.className =
-        "mensagem " + tipo;
+    movimentacoes = [];
+
+    localStorage.removeItem(
+        "arasigns_movimentacoes"
+    );
+
+    atualizarLista();
+
+    document.getElementById(
+        "ultimoCodigo"
+    ).innerText = "—";
+
+
+    alert(
+        "🗑️ Registros apagados."
+    );
 
 }
 
 
-// ======================================================
-// INICIAR SISTEMA
-// ======================================================
+// ================================
+// CARREGAR AO ABRIR
+// ================================
 
-iniciarLeitor();
-
+atualizarLista();
 
 </script>
 
-
 </body>
-
 </html>
-```

@@ -1,204 +1,588 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Almoxarifado Arasigns</title>
+<meta charset="UTF-8">
 
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            margin: 0;
-            padding: 20px;
-        }
+<title>Almoxarifado Arasigns</title>
 
-        .container {
-            max-width: 500px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
-        }
+<script
+src="https://unpkg.com/html5-qrcode"
+type="text/javascript">
+</script>
 
-        h1 {
-            text-align: center;
-            margin-bottom: 5px;
-        }
+<style>
 
-        .subtitulo {
-            text-align: center;
-            color: #777;
-            margin-bottom: 20px;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+    padding: 20px;
+}
 
-        #reader {
-            width: 100%;
-            margin-bottom: 20px;
-        }
+.container {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+}
 
-        .status {
-            padding: 15px;
-            background: #eeeeee;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
+h1 {
+    text-align: center;
+    margin-bottom: 5px;
+}
 
-        .codigo {
-            font-size: 25px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 10px;
-        }
+.subtitulo {
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
 
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: #111;
-            color: white;
-            font-size: 17px;
-            cursor: pointer;
-        }
+.status {
+    padding: 18px;
+    background: #eeeeee;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
 
-        button:disabled {
-            background: #aaa;
-        }
+.titulo {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+}
 
-        .item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-    </style>
+.nome {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.codigo {
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+#reader {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.mensagem {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.sucesso {
+    background: #d9f7df;
+    color: #16752c;
+    border-radius: 12px;
+}
+
+.aguardando {
+    background: #eeeeee;
+    color: #333;
+    border-radius: 12px;
+}
+
+.item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <h1>ARASIGNS</h1>
 
-    <div class="subtitulo">
-        Controle de Almoxarifado
-    </div>
+<h1>ARASIGNS</h1>
 
-    <div class="status">
+<div class="subtitulo">
+Controle de Almoxarifado
+</div>
 
-        <strong>Último código lido:</strong>
 
-        <div id="resultado" class="codigo">
-            Nenhum
-        </div>
+<!-- FUNCIONÁRIO -->
 
-    </div>
+<div class="status">
 
-    <div id="reader"></div>
+<div class="titulo">
+FUNCIONÁRIO
+</div>
 
-    <button onclick="iniciarLeitor()">
-        📷 LER CÓDIGO
-    </button>
+<div id="funcionario"
+class="nome">
 
-    <br><br>
-
-    <div class="status">
-
-        <strong>Movimentação</strong>
-
-        <div id="lista">
-            Nenhum item registrado.
-        </div>
-
-    </div>
+Aguardando...
 
 </div>
 
+</div>
+
+
+<!-- ITEM -->
+
+<div class="status">
+
+<div class="titulo">
+ITEM / FERRAMENTA
+</div>
+
+<div id="item"
+class="nome">
+
+Aguardando...
+
+</div>
+
+</div>
+
+
+<!-- MENSAGEM -->
+
+<div id="mensagem"
+class="mensagem aguardando">
+
+Aponte o crachá para a câmera
+
+</div>
+
+
+<!-- LEITOR -->
+
+<div id="reader"></div>
+
+
+</div>
+
+
 <script>
 
-let leitor;
-let itens = [];
+
+// ==============================
+// BANCO TEMPORÁRIO
+// ==============================
+
+
+// Funcionários
+const funcionarios = {
+
+    "84921": "RAFA BOQUETA",
+
+    "10002": "JOÃO",
+
+    "10003": "CARLOS"
+
+};
+
+
+// Ferramentas / produtos
+const produtos = {
+
+    "7892145000037": "PARAFUSADEIRA MAKITA #03",
+
+    "20002": "LIXADEIRA #02",
+
+    "20003": "BATERIA #07"
+
+};
+
+
+// ==============================
+// CONTROLE
+// ==============================
+
+
+let etapa = "funcionario";
+
+let funcionarioAtual = null;
+
+let leitor = null;
+
+let processando = false;
+
+
+// ==============================
+// INICIAR LEITOR
+// ==============================
+
 
 function iniciarLeitor() {
 
+
     if (leitor) {
+
         return;
+
     }
+
 
     leitor = new Html5Qrcode("reader");
 
+
     const configuracao = {
+
         fps: 10,
+
         qrbox: {
+
             width: 280,
+
             height: 150
+
         }
+
     };
 
+
     leitor.start(
-        { facingMode: "environment" },
+
+        {
+            facingMode: "environment"
+        },
+
         configuracao,
+
 
         function(codigo) {
 
-            document.getElementById("resultado").innerText = codigo;
-
-            adicionarItem(codigo);
-
-            leitor.stop().then(() => {
-                leitor = null;
-            });
+            processarCodigo(codigo);
 
         },
 
+
         function(error) {
-            // Erros de leitura são normais enquanto a câmera procura o código.
+
+            // Ignora erros enquanto procura o código
+
         }
+
 
     ).catch(function(error) {
 
-        alert("Não foi possível abrir a câmera: " + error);
+        document.getElementById("mensagem").innerText =
+        "Erro ao acessar a câmera";
+
+        console.log(error);
 
     });
 
 }
 
-function adicionarItem(codigo) {
 
-    itens.push(codigo);
+// ==============================
+// PROCESSAR CÓDIGO
+// ==============================
 
-    atualizarLista();
+
+function processarCodigo(codigo) {
+
+
+    if (processando) {
+
+        return;
+
+    }
+
+
+    processando = true;
+
+
+    // ==========================
+    // BIP 1 - FUNCIONÁRIO
+    // ==========================
+
+
+    if (etapa === "funcionario") {
+
+
+        if (!funcionarios[codigo]) {
+
+
+            mostrarMensagem(
+                "❌ Crachá não cadastrado"
+            );
+
+
+            processando = false;
+
+            return;
+
+        }
+
+
+        funcionarioAtual =
+        funcionarios[codigo];
+
+
+        document.getElementById(
+            "funcionario"
+        ).innerText =
+        funcionarioAtual;
+
+
+        document.getElementById(
+            "item"
+        ).innerText =
+        "Aguardando item...";
+
+
+        mostrarMensagem(
+            "🟢 Funcionário identificado! Agora passe o produto."
+        );
+
+
+        etapa = "item";
+
+
+        reiniciarLeitor();
+
+
+        return;
+
+    }
+
+
+    // ==========================
+    // BIP 2 - PRODUTO
+    // ==========================
+
+
+    if (etapa === "item") {
+
+
+        if (!produtos[codigo]) {
+
+
+            mostrarMensagem(
+                "❌ Produto não cadastrado"
+            );
+
+
+            processando = false;
+
+            return;
+
+        }
+
+
+        const nomeProduto =
+        produtos[codigo];
+
+
+        document.getElementById(
+            "item"
+        ).innerText =
+        nomeProduto;
+
+
+        mostrarMensagem(
+            "✅ MOVIMENTAÇÃO REGISTRADA"
+        );
+
+
+        registrarMovimentacao(
+            funcionarioAtual,
+            codigo,
+            nomeProduto
+        );
+
+
+        etapa = "finalizado";
+
+
+        pararLeitor();
+
+
+        setTimeout(function() {
+
+
+            resetarSistema();
+
+
+        }, 2500);
+
+
+    }
 
 }
 
-function atualizarLista() {
 
-    const lista = document.getElementById("lista");
+// ==============================
+// REGISTRO
+// ==============================
 
-    lista.innerHTML = "";
 
-    itens.forEach(function(item, index) {
+function registrarMovimentacao(
+    funcionario,
+    codigo,
+    produto
+) {
 
-        const div = document.createElement("div");
 
-        div.className = "item";
+    const agora =
+    new Date();
 
-        div.innerHTML =
-            "<strong>" +
-            (index + 1) +
-            ".</strong> " +
-            item;
 
-        lista.appendChild(div);
+    console.log({
+
+        data:
+        agora.toLocaleString("pt-BR"),
+
+        funcionario:
+        funcionario,
+
+        codigo:
+        codigo,
+
+        produto:
+        produto,
+
+        movimento:
+        "SAÍDA"
+
+    });
+
+
+}
+
+
+// ==============================
+// REINICIAR LEITOR
+// ==============================
+
+
+function reiniciarLeitor() {
+
+
+    pararLeitor();
+
+
+    setTimeout(function() {
+
+
+        processando = false;
+
+        iniciarLeitor();
+
+
+    }, 500);
+
+}
+
+
+// ==============================
+// PARAR LEITOR
+// ==============================
+
+
+function pararLeitor() {
+
+
+    if (!leitor) {
+
+        return;
+
+    }
+
+
+    leitor.stop().then(function() {
+
+
+        leitor.clear();
+
+        leitor = null;
+
+
+    }).catch(function(error) {
+
+
+        leitor = null;
+
+        console.log(error);
+
 
     });
 
 }
+
+
+// ==============================
+// RESETAR SISTEMA
+// ==============================
+
+
+function resetarSistema() {
+
+
+    etapa = "funcionario";
+
+    funcionarioAtual = null;
+
+    processando = false;
+
+
+    document.getElementById(
+        "funcionario"
+    ).innerText =
+    "Aguardando...";
+
+
+    document.getElementById(
+        "item"
+    ).innerText =
+    "Aguardando...";
+
+
+    mostrarMensagem(
+        "Aponte o crachá para a câmera"
+    );
+
+
+    iniciarLeitor();
+
+}
+
+
+// ==============================
+// MENSAGEM
+// ==============================
+
+
+function mostrarMensagem(texto) {
+
+
+    document.getElementById(
+        "mensagem"
+    ).innerText =
+    texto;
+
+}
+
+
+// ==============================
+// COMEÇAR
+// ==============================
+
+
+iniciarLeitor();
+
 
 </script>
 
+
 </body>
+
 </html>

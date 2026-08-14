@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -58,18 +59,8 @@ h1 {
 }
 
 .nome {
-    font-size: 24px;
+    font-size: 23px;
     font-weight: bold;
-}
-
-.codigo {
-    font-size: 18px;
-    margin-top: 5px;
-}
-
-#reader {
-    width: 100%;
-    margin-top: 15px;
 }
 
 .mensagem {
@@ -77,29 +68,33 @@ h1 {
     font-size: 18px;
     font-weight: bold;
     padding: 15px;
-}
-
-.sucesso {
-    background: #d9f7df;
-    color: #16752c;
     border-radius: 12px;
+    margin-bottom: 15px;
 }
 
 .aguardando {
     background: #eeeeee;
     color: #333;
-    border-radius: 12px;
 }
 
-.item {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
+.sucesso {
+    background: #d9f7df;
+    color: #16752c;
+}
+
+.erro {
+    background: #ffdede;
+    color: #a40000;
+}
+
+#reader {
+    width: 100%;
+    margin-top: 15px;
 }
 
 </style>
 
 </head>
-
 
 <body>
 
@@ -122,8 +117,7 @@ Controle de Almoxarifado
 FUNCIONÁRIO
 </div>
 
-<div id="funcionario"
-class="nome">
+<div id="funcionario" class="nome">
 
 Aguardando...
 
@@ -132,16 +126,15 @@ Aguardando...
 </div>
 
 
-<!-- ITEM -->
+<!-- PRODUTO -->
 
 <div class="status">
 
 <div class="titulo">
-ITEM / FERRAMENTA
+PRODUTO / FERRAMENTA
 </div>
 
-<div id="item"
-class="nome">
+<div id="produto" class="nome">
 
 Aguardando...
 
@@ -155,12 +148,12 @@ Aguardando...
 <div id="mensagem"
 class="mensagem aguardando">
 
-Aponte o crachá para a câmera
+Aguardando crachá...
 
 </div>
 
 
-<!-- LEITOR -->
+<!-- CÂMERA -->
 
 <div id="reader"></div>
 
@@ -171,12 +164,13 @@ Aponte o crachá para a câmera
 <script>
 
 
-// ==============================
+// ======================================================
 // BANCO TEMPORÁRIO
-// ==============================
+// ======================================================
 
 
-// Funcionários
+// FUNCIONÁRIOS
+
 const funcionarios = {
 
     "84921": "RAFA BOQUETA",
@@ -188,7 +182,8 @@ const funcionarios = {
 };
 
 
-// Ferramentas / produtos
+// PRODUTOS / FERRAMENTAS
+
 const produtos = {
 
     "7892145000037": "PARAFUSADEIRA MAKITA #03",
@@ -200,10 +195,9 @@ const produtos = {
 };
 
 
-// ==============================
+// ======================================================
 // CONTROLE
-// ==============================
-
+// ======================================================
 
 let etapa = "funcionario";
 
@@ -214,22 +208,111 @@ let leitor = null;
 let processando = false;
 
 
-// ==============================
-// INICIAR LEITOR
-// ==============================
+// ======================================================
+// SOM
+// ======================================================
 
+function tocarBip(tipo) {
+
+    const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioContext) {
+        return;
+    }
+
+    const audio =
+        new AudioContext();
+
+    const oscilador =
+        audio.createOscillator();
+
+    const ganho =
+        audio.createGain();
+
+
+    oscilador.connect(ganho);
+
+    ganho.connect(audio.destination);
+
+
+    if (tipo === "funcionario") {
+
+        // BIP curto
+        oscilador.frequency.value = 800;
+
+        ganho.gain.value = 0.15;
+
+        oscilador.start();
+
+        setTimeout(function() {
+
+            oscilador.stop();
+
+            audio.close();
+
+        }, 100);
+
+    }
+
+
+    else if (tipo === "produto") {
+
+        // BIP mais agudo
+        oscilador.frequency.value = 1200;
+
+        ganho.gain.value = 0.15;
+
+        oscilador.start();
+
+        setTimeout(function() {
+
+            oscilador.stop();
+
+            audio.close();
+
+        }, 150);
+
+    }
+
+
+    else if (tipo === "erro") {
+
+        // BIP grave
+        oscilador.frequency.value = 300;
+
+        ganho.gain.value = 0.20;
+
+        oscilador.start();
+
+        setTimeout(function() {
+
+            oscilador.stop();
+
+            audio.close();
+
+        }, 300);
+
+    }
+
+}
+
+
+// ======================================================
+// INICIAR LEITOR
+// ======================================================
 
 function iniciarLeitor() {
 
 
     if (leitor) {
-
         return;
-
     }
 
 
-    leitor = new Html5Qrcode("reader");
+    leitor =
+        new Html5Qrcode("reader");
 
 
     const configuracao = {
@@ -265,15 +348,18 @@ function iniciarLeitor() {
 
         function(error) {
 
-            // Ignora erros enquanto procura o código
+            // Erros durante a procura do código
+            // são ignorados.
 
         }
 
 
     ).catch(function(error) {
 
-        document.getElementById("mensagem").innerText =
-        "Erro ao acessar a câmera";
+        document.getElementById(
+            "mensagem"
+        ).innerText =
+        "Erro ao acessar a câmera.";
 
         console.log(error);
 
@@ -282,28 +368,25 @@ function iniciarLeitor() {
 }
 
 
-// ==============================
+// ======================================================
 // PROCESSAR CÓDIGO
-// ==============================
-
+// ======================================================
 
 function processarCodigo(codigo) {
 
 
     if (processando) {
-
         return;
-
     }
 
 
     processando = true;
 
 
-    // ==========================
-    // BIP 1 - FUNCIONÁRIO
-    // ==========================
-
+    // ==================================================
+    // PRIMEIRO BIP
+    // FUNCIONÁRIO
+    // ==================================================
 
     if (etapa === "funcionario") {
 
@@ -311,8 +394,12 @@ function processarCodigo(codigo) {
         if (!funcionarios[codigo]) {
 
 
+            tocarBip("erro");
+
+
             mostrarMensagem(
-                "❌ Crachá não cadastrado"
+                "❌ Crachá não cadastrado",
+                "erro"
             );
 
 
@@ -323,28 +410,34 @@ function processarCodigo(codigo) {
         }
 
 
+        // Funcionário encontrado
+
         funcionarioAtual =
-        funcionarios[codigo];
+            funcionarios[codigo];
 
 
         document.getElementById(
             "funcionario"
         ).innerText =
-        funcionarioAtual;
+            funcionarioAtual;
 
 
         document.getElementById(
-            "item"
+            "produto"
         ).innerText =
-        "Aguardando item...";
+            "Aguardando...";
+
+
+        tocarBip("funcionario");
 
 
         mostrarMensagem(
-            "🟢 Funcionário identificado! Agora passe o produto."
+            "Passe o produto ou ferramenta",
+            "aguardando"
         );
 
 
-        etapa = "item";
+        etapa = "produto";
 
 
         reiniciarLeitor();
@@ -355,19 +448,23 @@ function processarCodigo(codigo) {
     }
 
 
-    // ==========================
-    // BIP 2 - PRODUTO
-    // ==========================
+    // ==================================================
+    // SEGUNDO BIP
+    // PRODUTO / FERRAMENTA
+    // ==================================================
 
-
-    if (etapa === "item") {
+    if (etapa === "produto") {
 
 
         if (!produtos[codigo]) {
 
 
+            tocarBip("erro");
+
+
             mostrarMensagem(
-                "❌ Produto não cadastrado"
+                "❌ Produto não cadastrado",
+                "erro"
             );
 
 
@@ -379,24 +476,32 @@ function processarCodigo(codigo) {
 
 
         const nomeProduto =
-        produtos[codigo];
+            produtos[codigo];
 
 
         document.getElementById(
-            "item"
+            "produto"
         ).innerText =
-        nomeProduto;
+            nomeProduto;
+
+
+        tocarBip("produto");
 
 
         mostrarMensagem(
-            "✅ MOVIMENTAÇÃO REGISTRADA"
+            "✅ MOVIMENTAÇÃO REGISTRADA",
+            "sucesso"
         );
 
 
         registrarMovimentacao(
+
             funcionarioAtual,
+
             codigo,
+
             nomeProduto
+
         );
 
 
@@ -406,63 +511,68 @@ function processarCodigo(codigo) {
         pararLeitor();
 
 
-        setTimeout(function() {
+        // Espera 2 segundos
+        // e volta para o próximo funcionário
 
+        setTimeout(function() {
 
             resetarSistema();
 
-
-        }, 2500);
-
+        }, 2000);
 
     }
 
 }
 
 
-// ==============================
-// REGISTRO
-// ==============================
-
+// ======================================================
+// REGISTRAR MOVIMENTAÇÃO
+// ======================================================
 
 function registrarMovimentacao(
+
     funcionario,
     codigo,
     produto
+
 ) {
 
 
     const agora =
-    new Date();
+        new Date();
 
 
-    console.log({
+    const movimentacao = {
 
         data:
-        agora.toLocaleString("pt-BR"),
+            agora.toLocaleString("pt-BR"),
 
         funcionario:
-        funcionario,
+            funcionario,
 
         codigo:
-        codigo,
+            codigo,
 
         produto:
-        produto,
+            produto,
 
         movimento:
-        "SAÍDA"
+            "SAÍDA"
 
-    });
+    };
 
+
+    console.log(
+        "MOVIMENTAÇÃO:",
+        movimentacao
+    );
 
 }
 
 
-// ==============================
+// ======================================================
 // REINICIAR LEITOR
-// ==============================
-
+// ======================================================
 
 function reiniciarLeitor() {
 
@@ -475,6 +585,7 @@ function reiniciarLeitor() {
 
         processando = false;
 
+
         iniciarLeitor();
 
 
@@ -483,22 +594,21 @@ function reiniciarLeitor() {
 }
 
 
-// ==============================
+// ======================================================
 // PARAR LEITOR
-// ==============================
-
+// ======================================================
 
 function pararLeitor() {
 
 
     if (!leitor) {
-
         return;
-
     }
 
 
-    leitor.stop().then(function() {
+    leitor.stop()
+
+    .then(function() {
 
 
         leitor.clear();
@@ -506,7 +616,9 @@ function pararLeitor() {
         leitor = null;
 
 
-    }).catch(function(error) {
+    })
+
+    .catch(function(error) {
 
 
         leitor = null;
@@ -519,17 +631,18 @@ function pararLeitor() {
 }
 
 
-// ==============================
+// ======================================================
 // RESETAR SISTEMA
-// ==============================
-
+// ======================================================
 
 function resetarSistema() {
 
 
     etapa = "funcionario";
 
+
     funcionarioAtual = null;
+
 
     processando = false;
 
@@ -537,17 +650,18 @@ function resetarSistema() {
     document.getElementById(
         "funcionario"
     ).innerText =
-    "Aguardando...";
+        "Aguardando...";
 
 
     document.getElementById(
-        "item"
+        "produto"
     ).innerText =
-    "Aguardando...";
+        "Aguardando...";
 
 
     mostrarMensagem(
-        "Aponte o crachá para a câmera"
+        "Aguardando crachá...",
+        "aguardando"
     );
 
 
@@ -556,26 +670,35 @@ function resetarSistema() {
 }
 
 
-// ==============================
+// ======================================================
 // MENSAGEM
-// ==============================
+// ======================================================
+
+function mostrarMensagem(
+    texto,
+    tipo
+) {
 
 
-function mostrarMensagem(texto) {
+    const elemento =
+        document.getElementById(
+            "mensagem"
+        );
 
 
-    document.getElementById(
-        "mensagem"
-    ).innerText =
-    texto;
+    elemento.innerText =
+        texto;
+
+
+    elemento.className =
+        "mensagem " + tipo;
 
 }
 
 
-// ==============================
-// COMEÇAR
-// ==============================
-
+// ======================================================
+// INICIAR SISTEMA
+// ======================================================
 
 iniciarLeitor();
 
@@ -586,3 +709,4 @@ iniciarLeitor();
 </body>
 
 </html>
+```

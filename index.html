@@ -1,85 +1,180 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0b0b0d">
 
-<title>Arasigns — Controle de Almoxarifado</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
-<!-- LEITOR DE CÓDIGO DE BARRAS -->
+<meta
+  name="theme-color"
+  content="#08090b"
+>
+
+<title>
+  Arasigns — Controle de Almoxarifado
+</title>
+
+
+<!-- ==========================================
+     LEITOR DE CÓDIGO DE BARRAS
+========================================== -->
+
 <script src="https://unpkg.com/@ericblade/quagga2@1.2.6/dist/quagga.min.js"></script>
+
 
 <style>
 
+/* ==========================================
+   CORES
+========================================== */
+
 :root{
+
   --bg:#08090b;
+
   --card:#111214;
+
   --line:#303136;
+
   --white:#f7f7f7;
+
   --muted:#a9aaae;
 
   --red:#ff1726;
+
   --orange:#ff6a00;
+
   --yellow:#ffd000;
 
   --green:#16d46b;
+
 }
+
+
+/* ==========================================
+   RESET
+========================================== */
 
 *{
   box-sizing:border-box;
 }
 
+
 html,
 body{
+
   margin:0;
+
   padding:0;
+
   background:var(--bg);
+
   color:var(--white);
-  font-family:Arial,Helvetica,sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
 }
+
 
 body{
+
   min-height:100vh;
+
 }
+
+
+/* ==========================================
+   APLICAÇÃO
+========================================== */
 
 .app{
+
   width:min(980px,100%);
+
   margin:0 auto;
-  padding:18px 18px 35px;
+
+  padding:
+    18px
+    18px
+    35px;
+
 }
 
 
-/* =========================
+/* ==========================================
    LOGO
-========================= */
+========================================== */
 
 .header{
+
   text-align:center;
-  padding:4px 0 14px;
+
+  padding:
+    4px
+    0
+    14px;
+
 }
+
 
 .logo{
+
   width:min(620px,92%);
+
   max-height:145px;
+
   object-fit:contain;
+
   display:block;
+
   margin:0 auto;
-  filter:drop-shadow(0 4px 18px rgba(0,0,0,.45));
+
+  filter:
+    drop-shadow(
+      0 4px 18px rgba(0,0,0,.45)
+    );
+
 }
+
 
 .subtitle{
+
   margin-top:2px;
-  font-size:clamp(15px,2.5vw,24px);
+
+  font-size:
+    clamp(
+      15px,
+      2.5vw,
+      24px
+    );
+
   letter-spacing:5px;
+
   font-weight:700;
+
   color:#ddd;
+
 }
 
+
 .brand-line{
+
   height:3px;
+
   width:88%;
-  margin:14px auto 20px;
+
+  margin:
+    14px
+    auto
+    20px;
 
   background:
     linear-gradient(
@@ -90,20 +185,29 @@ body{
     );
 
   border-radius:10px;
+
 }
 
 
-/* =========================
-   SCANNER
-========================= */
+/* ==========================================
+   LEITOR
+========================================== */
 
 .scanner-card{
-  border:2px solid transparent;
+
+  border:
+    2px
+    solid
+    transparent;
 
   border-radius:28px;
 
   background:
-    linear-gradient(var(--card),var(--card)) padding-box,
+    linear-gradient(
+      var(--card),
+      var(--card)
+    ) padding-box,
+
     linear-gradient(
       90deg,
       var(--red),
@@ -114,41 +218,71 @@ body{
   overflow:hidden;
 
   box-shadow:
-    0 15px 40px rgba(0,0,0,.28);
+    0 15px 40px
+    rgba(0,0,0,.28);
+
 }
 
+
 .scanner-top{
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
 
   gap:15px;
 
-  padding:17px 22px;
+  padding:
+    17px
+    22px;
 
-  border-bottom:1px solid var(--line);
+  border-bottom:
+    1px
+    solid
+    var(--line);
 
   font-weight:800;
 
-  font-size:clamp(16px,2.8vw,22px);
+  font-size:
+    clamp(
+      16px,
+      2.8vw,
+      22px
+    );
+
 }
+
 
 .reader-title{
+
   display:flex;
+
   align-items:center;
+
   gap:10px;
+
 }
 
+
 .camera-status{
+
   display:flex;
+
   align-items:center;
+
   gap:9px;
 
   white-space:nowrap;
+
 }
 
+
 .dot{
+
   width:15px;
+
   height:15px;
 
   border-radius:50%;
@@ -156,72 +290,102 @@ body{
   background:#777;
 
   box-shadow:
-    0 0 12px rgba(255,255,255,.15);
+    0 0 12px
+    rgba(255,255,255,.15);
+
 }
 
+
 .dot.on{
+
   background:var(--green);
 
   box-shadow:
-    0 0 16px rgba(22,212,107,.8);
+    0 0 16px
+    rgba(22,212,107,.8);
+
 }
 
 
-/* CAMERA */
+/* ==========================================
+   CÂMERA
+========================================== */
 
 #scanner{
+
   position:relative;
 
   width:100%;
+
   height:260px;
 
   background:#000;
 
   overflow:hidden;
+
 }
+
 
 #scanner video,
 #scanner canvas.drawingBuffer{
+
   position:absolute !important;
 
   inset:0;
 
   width:100% !important;
+
   height:100% !important;
 
   object-fit:cover;
+
 }
 
 
-/* ÁREA HORIZONTAL DE LEITURA */
+/* ==========================================
+   ÁREA DE LEITURA HORIZONTAL
+========================================== */
 
 .scan-target{
+
   position:absolute;
 
   z-index:10;
 
   left:13%;
+
   right:13%;
 
   top:50%;
 
   height:105px;
 
-  transform:translateY(-50%);
+  transform:
+    translateY(-50%);
 
-  border-left:5px solid white;
-  border-right:5px solid white;
+  border-left:
+    5px
+    solid
+    white;
+
+  border-right:
+    5px
+    solid
+    white;
 
   pointer-events:none;
+
 }
 
-.scan-target:before,
-.scan-target:after{
+
+.scan-target::before{
+
   content:"";
 
   position:absolute;
 
   left:0;
+
   right:0;
 
   height:5px;
@@ -236,37 +400,60 @@ body{
 
   top:50%;
 
-  transform:translateY(-50%);
+  transform:
+    translateY(-50%);
 
   box-shadow:
-    0 0 12px rgba(255,105,0,.7);
+    0 0 12px
+    rgba(255,105,0,.7);
+
 }
 
+
 .scan-target .corner{
+
   position:absolute;
 
   inset:0;
 
-  border-top:5px solid white;
-  border-bottom:5px solid white;
+  border-top:
+    5px
+    solid
+    white;
+
+  border-bottom:
+    5px
+    solid
+    white;
 
   border-radius:4px;
+
 }
 
+
 .scan-help{
+
   background:#0d0e10;
 
   text-align:center;
 
-  padding:13px 15px 16px;
+  padding:
+    13px
+    15px
+    16px;
 
   color:#d7d7d7;
 
   font-size:16px;
+
 }
 
+
 .scan-message{
-  padding:11px 15px;
+
+  padding:
+    11px
+    15px;
 
   text-align:center;
 
@@ -275,14 +462,16 @@ body{
   font-weight:700;
 
   background:#0d0e10;
+
 }
 
 
-/* =========================
+/* ==========================================
    CARDS
-========================= */
+========================================== */
 
 .card{
+
   margin-top:16px;
 
   background:
@@ -292,34 +481,50 @@ body{
       #0d0e10
     );
 
-  border:1px solid #303136;
+  border:
+    1px
+    solid
+    #303136;
 
   border-radius:24px;
 
   padding:20px;
+
 }
 
 
-/* STATUS */
+/* ==========================================
+   STATUS
+========================================== */
 
 .status-grid{
+
   display:grid;
 
-  grid-template-columns:1.25fr .75fr;
+  grid-template-columns:
+    1.25fr
+    .75fr;
 
   gap:20px;
+
 }
 
+
 .status-main{
+
   display:flex;
 
   align-items:center;
 
   gap:18px;
+
 }
 
+
 .status-icon{
-  flex:0 0 78px;
+
+  flex:
+    0 0 78px;
 
   height:78px;
 
@@ -338,9 +543,12 @@ body{
     );
 
   font-size:37px;
+
 }
 
+
 .label{
+
   color:var(--orange);
 
   font-weight:900;
@@ -350,24 +558,41 @@ body{
   font-size:15px;
 
   margin-bottom:6px;
+
 }
+
 
 .big{
-  font-size:clamp(20px,4vw,31px);
+
+  font-size:
+    clamp(
+      20px,
+      4vw,
+      31px
+    );
 
   font-weight:900;
+
 }
 
+
 .small{
+
   color:var(--muted);
 
   margin-top:5px;
 
   font-size:16px;
+
 }
 
+
 .next{
-  border-left:1px solid #343539;
+
+  border-left:
+    1px
+    solid
+    #343539;
 
   padding-left:25px;
 
@@ -376,61 +601,84 @@ body{
   align-items:center;
 
   gap:15px;
+
 }
 
+
 .next-icon{
+
   font-size:42px;
 
   color:var(--yellow);
+
 }
 
 
-/* =========================
+/* ==========================================
    INFORMAÇÕES
-========================= */
+========================================== */
 
 .info-grid{
+
   display:grid;
 
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:
+    1fr
+    1fr;
 
   gap:16px;
+
 }
 
+
 .info{
+
   display:flex;
 
   align-items:center;
 
   gap:17px;
+
 }
 
+
 .info-icon{
+
   font-size:42px;
 
   color:var(--orange);
+
 }
 
+
 .value{
+
   font-size:28px;
 
   font-weight:900;
+
 }
 
 
-/* =========================
+/* ==========================================
    BOTÕES
-========================= */
+========================================== */
 
 .actions{
+
   display:grid;
 
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:
+    1fr
+    1fr;
 
   gap:16px;
+
 }
 
+
 button{
+
   border:0;
 
   cursor:pointer;
@@ -438,14 +686,19 @@ button{
   color:white;
 
   font:inherit;
+
 }
 
+
 .action{
+
   min-height:95px;
 
   border-radius:22px;
 
-  padding:18px 22px;
+  padding:
+    18px
+    22px;
 
   display:flex;
 
@@ -460,13 +713,19 @@ button{
   transition:
     .15s transform,
     .15s filter;
+
 }
+
 
 .action:active{
+
   transform:scale(.98);
+
 }
 
+
 .csv{
+
   background:
     linear-gradient(
       120deg,
@@ -474,36 +733,58 @@ button{
       var(--orange),
       var(--yellow)
     );
+
 }
+
 
 .clear{
+
   background:#151619;
 
-  border:1px solid #35363a;
+  border:
+    1px
+    solid
+    #35363a;
+
 }
+
 
 .action-icon{
+
   font-size:44px;
+
 }
+
 
 .action-title{
-  font-size:clamp(20px,3.2vw,28px);
+
+  font-size:
+    clamp(
+      20px,
+      3.2vw,
+      28px
+    );
+
 }
 
+
 .action-sub{
+
   color:#e0e0e0;
 
   font-size:14px;
 
   margin-top:5px;
+
 }
 
 
-/* =========================
+/* ==========================================
    MOVIMENTAÇÕES
-========================= */
+========================================== */
 
 .mov-header{
+
   display:flex;
 
   justify-content:space-between;
@@ -511,29 +792,41 @@ button{
   align-items:center;
 
   margin-bottom:14px;
+
 }
 
+
 .mov-title{
+
   font-size:22px;
 
   font-weight:900;
+
 }
 
+
 .count{
+
   color:var(--yellow);
 
   font-weight:900;
+
 }
 
+
 #movements{
+
   display:flex;
 
   flex-direction:column;
 
   gap:9px;
+
 }
 
+
 .empty{
+
   min-height:120px;
 
   display:grid;
@@ -542,7 +835,10 @@ button{
 
   text-align:center;
 
-  border:1px solid #292a2d;
+  border:
+    1px
+    solid
+    #292a2d;
 
   border-radius:18px;
 
@@ -551,9 +847,12 @@ button{
   color:var(--muted);
 
   padding:20px;
+
 }
 
+
 .movement{
+
   display:grid;
 
   grid-template-columns:
@@ -568,31 +867,51 @@ button{
 
   background:#151619;
 
-  border:1px solid #2d2e32;
+  border:
+    1px
+    solid
+    #2d2e32;
 
   border-radius:15px;
 
-  padding:13px 15px;
+  padding:
+    13px
+    15px;
+
 }
+
 
 .movement strong{
+
   display:block;
+
 }
+
 
 .movement small{
+
   color:#999;
+
 }
 
+
 .type{
+
   font-weight:900;
 
   color:var(--yellow);
+
 }
 
+
 .footer-total{
+
   margin-top:16px;
 
-  border:1px solid #303136;
+  border:
+    1px
+    solid
+    #303136;
 
   border-radius:18px;
 
@@ -603,32 +922,42 @@ button{
   font-weight:800;
 
   color:#ccc;
+
 }
 
+
 .footer-total b{
+
   color:var(--yellow);
 
   font-size:30px;
 
   margin-right:12px;
+
 }
 
 
-/* =========================
-   BOTÕES ENTRADA / SAÍDA
-========================= */
+/* ==========================================
+   ENTRADA / SAÍDA
+========================================== */
 
 .movement-buttons{
+
   display:none;
 
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:
+    1fr
+    1fr;
 
   gap:12px;
 
   margin-top:15px;
+
 }
 
+
 .movement-buttons button{
+
   padding:16px;
 
   border-radius:16px;
@@ -636,27 +965,36 @@ button{
   font-weight:900;
 
   font-size:18px;
+
 }
 
+
 .btn-out{
+
   background:
     linear-gradient(
       90deg,
       var(--red),
       var(--orange)
     );
+
 }
 
+
 .btn-in{
+
   background:
     linear-gradient(
       90deg,
       #0c9f50,
       var(--green)
     );
+
 }
 
+
 .reset-scan{
+
   display:none;
 
   width:100%;
@@ -672,14 +1010,16 @@ button{
   color:#ddd;
 
   font-weight:800;
+
 }
 
 
-/* =========================
+/* ==========================================
    TOAST
-========================= */
+========================================== */
 
 .toast{
+
   position:fixed;
 
   left:50%;
@@ -695,14 +1035,20 @@ button{
 
   background:#17181b;
 
-  border:1px solid #404146;
+  border:
+    1px
+    solid
+    #404146;
 
   border-radius:14px;
 
-  padding:13px 18px;
+  padding:
+    13px
+    18px;
 
   box-shadow:
-    0 15px 35px rgba(0,0,0,.5);
+    0 15px 35px
+    rgba(0,0,0,.5);
 
   transition:.25s;
 
@@ -711,193 +1057,288 @@ button{
   max-width:90%;
 
   text-align:center;
+
 }
 
+
 .toast.show{
+
   transform:
     translate(-50%,0);
 
   opacity:1;
+
 }
 
 
-/* =========================
+/* ==========================================
    CELULAR
-========================= */
+========================================== */
 
 @media(max-width:700px){
 
   .app{
+
     padding:
       10px
       10px
       25px;
+
   }
 
+
   .logo{
+
     width:94%;
 
     max-height:100px;
+
   }
 
+
   .subtitle{
+
     letter-spacing:3px;
 
     font-size:14px;
+
   }
+
 
   .brand-line{
+
     margin-bottom:13px;
+
   }
+
 
   .scanner-top{
-    padding:13px 14px;
+
+    padding:
+      13px
+      14px;
 
     font-size:15px;
+
   }
+
 
   #scanner{
+
     height:205px;
+
   }
 
+
   .scan-target{
+
     left:8%;
+
     right:8%;
 
     height:80px;
+
   }
 
+
   .scan-help{
+
     font-size:13px;
 
     padding:10px;
+
   }
 
+
   .card{
+
     border-radius:19px;
 
     padding:14px;
 
     margin-top:11px;
+
   }
+
 
   .status-grid,
   .info-grid,
   .actions{
+
     grid-template-columns:1fr;
+
   }
 
+
   .next{
+
     border-left:0;
 
-    border-top:1px solid #343539;
+    border-top:
+      1px
+      solid
+      #343539;
 
     padding:
       14px
       0
       0;
+
   }
 
+
   .status-icon{
+
     flex-basis:60px;
 
     height:60px;
 
     font-size:28px;
+
   }
+
 
   .big{
+
     font-size:21px;
+
   }
+
 
   .info-icon{
+
     font-size:32px;
+
   }
+
 
   .value{
+
     font-size:23px;
+
   }
+
 
   .action{
+
     min-height:75px;
 
-    padding:13px 17px;
+    padding:
+      13px
+      17px;
+
   }
+
 
   .action-icon{
+
     font-size:34px;
+
   }
+
 
   .action-title{
+
     font-size:21px;
+
   }
 
+
   .movement{
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+      1fr
+      1fr;
+
   }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
 
+
 <div class="app">
 
 
-<!-- =========================
+<!-- ==========================================
      CABEÇALHO
-========================= -->
+========================================== -->
 
 <header class="header">
 
+
   <img
-    src="logo.png"
+    src="Logo.png"
     class="logo"
     alt="Arasigns"
   >
 
+
   <div class="subtitle">
+
     CONTROLE DE ALMOXARIFADO
+
   </div>
 
+
   <div class="brand-line"></div>
+
 
 </header>
 
 
-<!-- =========================
+
+<!-- ==========================================
      LEITOR
-========================= -->
+========================================== -->
 
 <section class="scanner-card">
 
+
   <div class="scanner-top">
 
+
     <div class="reader-title">
+
       📷
-      <span>LEITOR ATIVO</span>
+
+      <span>
+        LEITOR ATIVO
+      </span>
+
     </div>
 
+
     <div class="camera-status">
+
 
       <span
         class="dot"
         id="cameraDot">
       </span>
 
+
       <span id="cameraText">
+
         INICIANDO CÂMERA...
+
       </span>
 
+
     </div>
+
 
   </div>
 
 
+
   <div id="scanner">
+
 
     <div class="scan-target">
 
@@ -905,7 +1346,9 @@ button{
 
     </div>
 
+
   </div>
+
 
 
   <div class="scan-help">
@@ -925,30 +1368,40 @@ button{
 
   </div>
 
+
 </section>
 
 
 
-<!-- =========================
+<!-- ==========================================
      STATUS
-========================= -->
+========================================== -->
 
 <section class="card">
+
 
   <div class="status-grid">
 
 
     <div class="status-main">
 
+
       <div class="status-icon">
+
         👤
+
       </div>
+
 
       <div>
 
+
         <div class="label">
+
           STATUS ATUAL
+
         </div>
+
 
         <div
           class="big"
@@ -958,6 +1411,7 @@ button{
 
         </div>
 
+
         <div
           class="small"
           id="statusSub">
@@ -966,22 +1420,33 @@ button{
 
         </div>
 
+
       </div>
+
 
     </div>
 
 
+
     <div class="next">
 
+
       <div class="next-icon">
+
         ⇄
+
       </div>
+
 
       <div>
 
+
         <div class="label">
+
           PRÓXIMO PASSO
+
         </div>
+
 
         <div
           class="small"
@@ -991,35 +1456,46 @@ button{
 
         </div>
 
+
       </div>
+
 
     </div>
 
 
   </div>
 
+
 </section>
 
 
 
-<!-- =========================
+<!-- ==========================================
      ÚLTIMA LEITURA
-========================= -->
+========================================== -->
 
 <section class="card info-grid">
 
 
   <div class="info">
 
+
     <div class="info-icon">
+
       ⌖
+
     </div>
+
 
     <div>
 
+
       <div class="label">
+
         ÚLTIMA LEITURA
+
       </div>
+
 
       <div
         class="value"
@@ -1029,22 +1505,33 @@ button{
 
       </div>
 
+
     </div>
+
 
   </div>
 
 
+
   <div class="info">
 
+
     <div class="info-icon">
+
       ◷
+
     </div>
+
 
     <div>
 
+
       <div class="label">
+
         DATA / HORA
+
       </div>
+
 
       <div
         class="value"
@@ -1054,7 +1541,9 @@ button{
 
       </div>
 
+
     </div>
+
 
   </div>
 
@@ -1063,9 +1552,9 @@ button{
 
 
 
-<!-- =========================
+<!-- ==========================================
      AÇÕES
-========================= -->
+========================================== -->
 
 <section class="card actions">
 
@@ -1074,21 +1563,33 @@ button{
     class="action csv"
     onclick="exportCSV()">
 
+
     <div class="action-icon">
+
       📄
+
     </div>
+
 
     <div>
 
+
       <div class="action-title">
+
         GERAR CSV
+
       </div>
+
 
       <div class="action-sub">
+
         Exportar movimentações
+
       </div>
 
+
     </div>
+
 
   </button>
 
@@ -1098,21 +1599,33 @@ button{
     class="action clear"
     onclick="clearRecords()">
 
+
     <div class="action-icon">
+
       🗑️
+
     </div>
+
 
     <div>
 
+
       <div class="action-title">
+
         LIMPAR REGISTROS
+
       </div>
+
 
       <div class="action-sub">
+
         Apagar todas as movimentações
+
       </div>
 
+
     </div>
+
 
   </button>
 
@@ -1121,18 +1634,22 @@ button{
 
 
 
-<!-- =========================
+<!-- ==========================================
      HISTÓRICO
-========================= -->
+========================================== -->
 
 <section class="card">
 
 
   <div class="mov-header">
 
+
     <div class="mov-title">
+
       ÚLTIMAS MOVIMENTAÇÕES
+
     </div>
+
 
     <div
       class="count"
@@ -1142,46 +1659,65 @@ button{
 
     </div>
 
+
   </div>
+
 
 
   <div id="movements">
 
+
     <div class="empty">
+
 
       <div>
 
+
         <div
           style="
-          font-size:38px;
-          margin-bottom:8px">
+            font-size:38px;
+            margin-bottom:8px">
 
           📋
 
         </div>
 
+
         Nenhuma movimentação registrada.
+
 
         <br>
 
+
         <small>
+
           As movimentações aparecerão aqui.
+
         </small>
+
 
       </div>
 
+
     </div>
+
 
   </div>
 
 
+
   <div class="footer-total">
 
+
     <b id="total">
+
       0
+
     </b>
 
+
     MOVIMENTAÇÕES REGISTRADAS
+
 
   </div>
 
@@ -1190,9 +1726,9 @@ button{
 
 
 
-<!-- =========================
-     ENTRADA / SAÍDA
-========================= -->
+<!-- ==========================================
+     BOTÕES ENTRADA / SAÍDA
+========================================== -->
 
 <div
   class="movement-buttons"
@@ -1220,6 +1756,7 @@ button{
 </div>
 
 
+
 <button
   class="reset-scan"
   id="resetScan"
@@ -1234,7 +1771,9 @@ button{
 
 
 
-<!-- TOAST -->
+<!-- ==========================================
+     TOAST
+========================================== -->
 
 <div
   class="toast"
@@ -1245,12 +1784,13 @@ button{
 
 <script>
 
-/* =========================
+
+/* ==========================================
    CONFIGURAÇÃO
-========================= */
+========================================== */
 
 const STORAGE_KEY =
-  "arasigns_movimentacoes_v3";
+  "arasigns_movimentacoes_v4";
 
 
 let records =
@@ -1259,6 +1799,35 @@ let records =
     || "[]"
   );
 
+
+/* ==========================================
+   BASE DE DADOS
+========================================== */
+
+
+/* FUNCIONÁRIOS */
+
+const FUNCIONARIOS = {
+
+  "84921":
+    "Guilherme Santos"
+
+};
+
+
+/* ITENS */
+
+const ITENS = {
+
+  "7898674412716":
+    "Ativador de Cola"
+
+};
+
+
+/* ==========================================
+   VARIÁVEIS DO SISTEMA
+========================================== */
 
 let employee = null;
 
@@ -1269,64 +1838,80 @@ let scanningLocked = false;
 let quaggaStarted = false;
 
 
-/* ELEMENTOS */
+/* ==========================================
+   ELEMENTOS
+========================================== */
 
 const statusEl =
   document.getElementById("status");
 
+
 const statusSubEl =
   document.getElementById("statusSub");
+
 
 const nextStepEl =
   document.getElementById("nextStep");
 
+
 const lastReadEl =
   document.getElementById("lastRead");
+
 
 const dateTimeEl =
   document.getElementById("dateTime");
 
+
 const scanMessageEl =
   document.getElementById("scanMessage");
 
+
 const cameraDot =
   document.getElementById("cameraDot");
+
 
 const cameraText =
   document.getElementById("cameraText");
 
 
-/* =========================
+/* ==========================================
    TOAST
-========================= */
+========================================== */
 
 function toast(message){
 
   const el =
     document.getElementById("toast");
 
+
   el.textContent =
     message;
 
+
   el.classList.add("show");
+
 
   clearTimeout(
     window.toastTimer
   );
 
+
   window.toastTimer =
     setTimeout(
-      ()=>{
+      () => {
+
         el.classList.remove("show");
+
       },
       2600
     );
+
 }
 
 
-/* =========================
+/* ==========================================
    SALVAR
-========================= */
+========================================== */
 
 function save(){
 
@@ -1335,23 +1920,26 @@ function save(){
     JSON.stringify(records)
   );
 
+
   renderRecords();
 
 }
 
 
-/* =========================
+/* ==========================================
    MOSTRAR REGISTROS
-========================= */
+========================================== */
 
 function renderRecords(){
 
   document.getElementById("count").textContent =
+
     records.length +
+
     (
       records.length === 1
-      ? " REGISTRO"
-      : " REGISTROS"
+        ? " REGISTRO"
+        : " REGISTROS"
     );
 
 
@@ -1373,8 +1961,8 @@ function renderRecords(){
 
           <div
             style="
-            font-size:38px;
-            margin-bottom:8px">
+              font-size:38px;
+              margin-bottom:8px">
 
             📋
 
@@ -1385,7 +1973,9 @@ function renderRecords(){
           <br>
 
           <small>
+
             As movimentações aparecerão aqui.
+
           </small>
 
         </div>
@@ -1395,6 +1985,7 @@ function renderRecords(){
     `;
 
     return;
+
   }
 
 
@@ -1407,54 +1998,65 @@ function renderRecords(){
       .map(
         r => `
 
-        <div class="movement">
+          <div class="movement">
 
-          <div>
 
-            <small>
-              FUNCIONÁRIO
-            </small>
+            <div>
 
-            <strong>
-              ${escapeHtml(r.funcionario)}
-            </strong>
+              <small>
+                FUNCIONÁRIO
+              </small>
+
+              <strong>
+
+                ${escapeHtml(r.funcionario)}
+
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <small>
+                ITEM
+              </small>
+
+              <strong>
+
+                ${escapeHtml(r.item)}
+
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <small>
+                DATA/HORA
+              </small>
+
+              <strong>
+
+                ${escapeHtml(r.dataHora)}
+
+              </strong>
+
+            </div>
+
+
+
+            <div class="type">
+
+              ${escapeHtml(r.movimento)}
+
+            </div>
+
 
           </div>
-
-
-          <div>
-
-            <small>
-              ITEM
-            </small>
-
-            <strong>
-              ${escapeHtml(r.item)}
-            </strong>
-
-          </div>
-
-
-          <div>
-
-            <small>
-              DATA/HORA
-            </small>
-
-            <strong>
-              ${escapeHtml(r.dataHora)}
-            </strong>
-
-          </div>
-
-
-          <div class="type">
-
-            ${escapeHtml(r.movimento)}
-
-          </div>
-
-        </div>
 
         `
       )
@@ -1463,9 +2065,9 @@ function renderRecords(){
 }
 
 
-/* =========================
+/* ==========================================
    SEGURANÇA HTML
-========================= */
+========================================== */
 
 function escapeHtml(value){
 
@@ -1499,9 +2101,9 @@ function escapeHtml(value){
 }
 
 
-/* =========================
+/* ==========================================
    DATA
-========================= */
+========================================== */
 
 function nowBR(){
 
@@ -1528,12 +2130,13 @@ setInterval(
 
 updateClock();
 
+
 renderRecords();
 
 
-/* =========================
+/* ==========================================
    LEITOR DE CÓDIGO DE BARRAS
-========================= */
+========================================== */
 
 function startScanner(){
 
@@ -1554,28 +2157,31 @@ function startScanner(){
       type:"LiveStream",
 
       target:
-        document.querySelector(
-          "#scanner"
-        ),
+        document.querySelector("#scanner"),
+
 
       constraints:{
 
         facingMode:
           "environment",
 
+
         width:{
           ideal:1280
         },
 
+
         height:{
           ideal:720
         },
+
 
         aspectRatio:{
           ideal:1.777
         }
 
       },
+
 
       area:{
 
@@ -1604,14 +2210,19 @@ function startScanner(){
 
 
     numOfWorkers:
+
       navigator.hardwareConcurrency
-      ?
-      Math.min(
-        4,
-        navigator.hardwareConcurrency
-      )
-      :
-      2,
+
+        ?
+
+        Math.min(
+          4,
+          navigator.hardwareConcurrency
+        )
+
+        :
+
+        2,
 
 
     frequency:10,
@@ -1639,6 +2250,7 @@ function startScanner(){
 
       ],
 
+
       multiple:false
 
     },
@@ -1655,35 +2267,36 @@ function startScanner(){
 
       console.error(err);
 
+
       cameraText.textContent =
         "CÂMERA BLOQUEADA";
 
-      cameraDot.classList.remove(
-        "on"
-      );
+
+      cameraDot.classList.remove("on");
+
 
       scanMessageEl.textContent =
         "Permita a câmera no navegador e recarregue a página.";
+
 
       toast(
         "Não consegui abrir a câmera."
       );
 
+
       return;
+
     }
 
 
-    quaggaStarted =
-      true;
+    quaggaStarted = true;
 
 
     cameraText.textContent =
       "CÂMERA FUNCIONANDO";
 
 
-    cameraDot.classList.add(
-      "on"
-    );
+    cameraDot.classList.add("on");
 
 
     scanMessageEl.textContent =
@@ -1702,9 +2315,9 @@ function startScanner(){
 }
 
 
-/* =========================
+/* ==========================================
    QUANDO LER O CÓDIGO
-========================= */
+========================================== */
 
 function onBarcodeDetected(result){
 
@@ -1720,8 +2333,7 @@ function onBarcodeDetected(result){
     return;
 
 
-  scanningLocked =
-    true;
+  scanningLocked = true;
 
 
   if(navigator.vibrate)
@@ -1736,15 +2348,43 @@ function onBarcodeDetected(result){
     nowBR();
 
 
-  /* PRIMEIRO CÓDIGO = FUNCIONÁRIO */
+  /* ========================================
+     PRIMEIRO CÓDIGO = FUNCIONÁRIO
+  ======================================== */
 
   if(!employee){
+
+    const nomeFuncionario =
+      FUNCIONARIOS[code];
+
+
+    /* CÓDIGO NÃO CADASTRADO */
+
+    if(!nomeFuncionario){
+
+      toast(
+        "Funcionário não cadastrado: " +
+        code
+      );
+
+
+      scanMessageEl.textContent =
+        "Código de funcionário não cadastrado.";
+
+
+      scanningLocked = false;
+
+
+      return;
+
+    }
+
 
     employee = {
 
       codigo:code,
 
-      nome:code
+      nome:nomeFuncionario
 
     };
 
@@ -1754,7 +2394,9 @@ function onBarcodeDetected(result){
 
 
     statusSubEl.textContent =
-      "Código: " + code;
+      nomeFuncionario +
+      " — Código: " +
+      code;
 
 
     nextStepEl.textContent =
@@ -1766,22 +2408,50 @@ function onBarcodeDetected(result){
 
 
     toast(
-      "Funcionário identificado: " +
-      code
+      "Funcionário: " +
+      nomeFuncionario
     );
 
   }
 
 
-  /* SEGUNDO CÓDIGO = ITEM */
+  /* ========================================
+     SEGUNDO CÓDIGO = ITEM
+  ======================================== */
 
   else if(!item){
+
+    const nomeItem =
+      ITENS[code];
+
+
+    /* CÓDIGO NÃO CADASTRADO */
+
+    if(!nomeItem){
+
+      toast(
+        "Item não cadastrado: " +
+        code
+      );
+
+
+      scanMessageEl.textContent =
+        "Código de item não cadastrado.";
+
+
+      scanningLocked = false;
+
+
+      return;
+
+    }
+
 
     item = {
 
       codigo:code,
 
-      nome:code
+      nome:nomeItem
 
     };
 
@@ -1791,7 +2461,9 @@ function onBarcodeDetected(result){
 
 
     statusSubEl.textContent =
-      "Código: " + code;
+      nomeItem +
+      " — Código: " +
+      code;
 
 
     nextStepEl.textContent =
@@ -1803,42 +2475,43 @@ function onBarcodeDetected(result){
 
 
     document
-      .getElementById(
-        "movementButtons"
-      )
+      .getElementById("movementButtons")
       .style.display =
       "grid";
 
 
     document
-      .getElementById(
-        "resetScan"
-      )
+      .getElementById("resetScan")
       .style.display =
       "block";
 
 
     toast(
-      "Item identificado: " +
-      code
+      "Item: " +
+      nomeItem
     );
 
   }
 
 
   setTimeout(
-    ()=>{
+
+    () => {
+
       scanningLocked = false;
+
     },
+
     1800
+
   );
 
 }
 
 
-/* =========================
+/* ==========================================
    FINALIZAR MOVIMENTAÇÃO
-========================= */
+========================================== */
 
 function finishMovement(tipo){
 
@@ -1894,9 +2567,9 @@ function finishMovement(tipo){
 }
 
 
-/* =========================
+/* ==========================================
    RESET
-========================= */
+========================================== */
 
 function resetWorkflow(){
 
@@ -1908,17 +2581,13 @@ function resetWorkflow(){
 
 
   document
-    .getElementById(
-      "movementButtons"
-    )
+    .getElementById("movementButtons")
     .style.display =
     "none";
 
 
   document
-    .getElementById(
-      "resetScan"
-    )
+    .getElementById("resetScan")
     .style.display =
     "none";
 
@@ -1941,9 +2610,9 @@ function resetWorkflow(){
 }
 
 
-/* =========================
+/* ==========================================
    LIMPAR REGISTROS
-========================= */
+========================================== */
 
 function clearRecords(){
 
@@ -1954,6 +2623,7 @@ function clearRecords(){
     );
 
     return;
+
   }
 
 
@@ -1990,9 +2660,9 @@ function clearRecords(){
 }
 
 
-/* =========================
+/* ==========================================
    GERAR CSV
-========================= */
+========================================== */
 
 function exportCSV(){
 
@@ -2045,6 +2715,7 @@ function exportCSV(){
 
 
   const csv =
+
     "\uFEFF" +
 
     [
@@ -2079,11 +2750,14 @@ function exportCSV(){
 
   const blob =
     new Blob(
+
       [csv],
+
       {
         type:
           "text/csv;charset=utf-8;"
       }
+
     );
 
 
@@ -2130,13 +2804,15 @@ function exportCSV(){
 }
 
 
-/* =========================
+/* ==========================================
    VOLTAR PARA A PÁGINA
-========================= */
+========================================== */
 
 document.addEventListener(
+
   "visibilitychange",
-  ()=>{
+
+  () => {
 
     if(
       !document.hidden &&
@@ -2147,21 +2823,26 @@ document.addEventListener(
 
         Quagga.start();
 
-      }catch(e){}
+      }
+
+      catch(e){}
 
     }
 
   }
+
 );
 
 
-/* =========================
+/* ==========================================
    ABRIR CÂMERA AUTOMATICAMENTE
-========================= */
+========================================== */
 
 window.addEventListener(
+
   "load",
-  ()=>{
+
+  () => {
 
     setTimeout(
       startScanner,
@@ -2169,9 +2850,13 @@ window.addEventListener(
     );
 
   }
+
 );
+
 
 </script>
 
+
 </body>
+
 </html>

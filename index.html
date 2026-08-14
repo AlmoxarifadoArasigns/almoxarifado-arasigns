@@ -2,12 +2,16 @@
 <html lang="pt-BR">
 
 <head>
+
 <meta charset="UTF-8">
 
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0">
 
 <title>ARASIGNS - Controle de Almoxarifado</title>
+
+<!-- Leitor de código de barras -->
+<script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
 
@@ -16,397 +20,955 @@
 }
 
 body {
+
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     background: #f3f3f3;
+
     color: #111;
 }
+
 
 .container {
+
     max-width: 700px;
-    margin: 30px auto;
+
+    margin: auto;
+
     padding: 20px;
+
 }
+
 
 .card {
-    background: #fff;
+
+    background: white;
+
     border-radius: 25px;
+
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,0.12);
+
 }
+
 
 .logo {
+
     text-align: center;
+
     font-size: 42px;
+
     font-weight: 900;
-    margin-bottom: 5px;
+
 }
+
 
 .subtitle {
+
     text-align: center;
+
     color: #777;
+
     font-size: 21px;
-    margin-bottom: 30px;
+
+    margin-bottom: 25px;
+
 }
+
+
+/* STATUS */
 
 .status {
-    background: #eeeeee;
+
+    background: #eee;
+
     border-radius: 18px;
-    padding: 25px;
+
+    padding: 20px;
+
     text-align: center;
-    margin-bottom: 20px;
+
+    margin-bottom: 15px;
+
 }
+
 
 .status-title {
-    font-size: 18px;
+
+    font-size: 17px;
+
     font-weight: bold;
+
 }
+
 
 .codigo {
-    font-size: 45px;
+
+    font-size: 42px;
+
     font-weight: 900;
-    margin-top: 10px;
+
+    margin-top: 8px;
+
 }
 
-button {
-    width: 100%;
-    border: none;
-    border-radius: 18px;
-    padding: 20px;
-    font-size: 21px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 12px;
-}
 
-button:active {
-    transform: scale(0.98);
-}
-
-.btn-scan {
-    background: #111;
-    color: white;
-}
-
-.btn-export {
-    background: #168a3a;
-    color: white;
-}
-
-.btn-clear {
-    background: #dddddd;
-    color: #111;
-}
-
-.movimentacoes {
-    margin-top: 28px;
-    background: #eeeeee;
-    border-radius: 18px;
-    padding: 20px;
-}
-
-.movimentacoes h2 {
-    margin-top: 0;
-}
-
-.movimento {
-    background: white;
-    border-radius: 14px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.movimento strong {
-    display: block;
-    margin-bottom: 6px;
-}
-
-.info {
-    color: #777;
-    font-size: 14px;
-}
-
-.contador {
-    text-align: center;
-    margin-top: 15px;
-    color: #666;
-    font-size: 15px;
-}
+/* ESTADO */
 
 .estado {
-    margin-top: 15px;
+
     text-align: center;
+
+    font-size: 19px;
+
     font-weight: bold;
+
+    margin: 15px 0;
+
 }
+
+
+/* CAMERA */
+
+.camera-box {
+
+    display: none;
+
+    background: #111;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    margin-bottom: 15px;
+
+}
+
+
+#reader {
+
+    width: 100%;
+
+}
+
+
+#reader video {
+
+    width: 100% !important;
+
+    border-radius: 18px;
+
+}
+
+
+.camera-ativa {
+
+    display: block;
+
+}
+
+
+/* BOTÕES */
+
+button {
+
+    width: 100%;
+
+    border: none;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+
+}
+
+
+button:active {
+
+    transform: scale(0.98);
+
+}
+
+
+.btn-camera {
+
+    background: #111;
+
+    color: white;
+
+}
+
+
+.btn-camera.parar {
+
+    background: #b00020;
+
+}
+
+
+.btn-export {
+
+    background: #168a3a;
+
+    color: white;
+
+}
+
+
+.btn-clear {
+
+    background: #ddd;
+
+    color: #111;
+
+}
+
+
+/* MOVIMENTAÇÕES */
+
+.movimentacoes {
+
+    margin-top: 25px;
+
+    background: #eee;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+}
+
+
+.movimentacoes h2 {
+
+    margin-top: 0;
+
+}
+
+
+.movimento {
+
+    background: white;
+
+    border-radius: 13px;
+
+    padding: 15px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.movimento strong {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+}
+
+
+.info {
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+.contador {
+
+    text-align: center;
+
+    color: #666;
+
+    margin-top: 15px;
+
+}
+
+
+/* AVISO */
+
+.aviso {
+
+    background: #fff3cd;
+
+    color: #856404;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    margin-top: 15px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+}
+
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
+
 <div class="card">
 
-    <div class="logo">
-        ARASIGNS
-    </div>
 
-    <div class="subtitle">
-        Controle de Almoxarifado
-    </div>
+<div class="logo">
 
+ARASIGNS
 
-    <!-- ÚLTIMO CÓDIGO -->
-
-    <div class="status">
-
-        <div class="status-title">
-            Último código lido:
-        </div>
-
-        <div
-            class="codigo"
-            id="ultimoCodigo">
-            —
-        </div>
-
-    </div>
+</div>
 
 
-    <!-- BOTÃO DE LEITURA -->
+<div class="subtitle">
 
-    <button
-        class="btn-scan"
-        onclick="lerCodigo()">
+Controle de Almoxarifado
 
-        📷 LER CÓDIGO
-
-    </button>
+</div>
 
 
-    <!-- ESTADO DO SISTEMA -->
 
-    <div
-        class="estado"
-        id="estadoSistema">
+<!-- ÚLTIMO CÓDIGO -->
 
-        👤 Aguardando funcionário...
+<div class="status">
 
-    </div>
+<div class="status-title">
 
+Último código lido:
 
-    <!-- BOTÃO CSV -->
-
-    <button
-        class="btn-export"
-        onclick="exportarCSV()">
-
-        📊 GERAR CSV
-
-    </button>
+</div>
 
 
-    <!-- LIMPAR -->
+<div
+id="ultimoCodigo"
+class="codigo">
 
-    <button
-        class="btn-clear"
-        onclick="limparRegistros()">
-
-        🗑️ LIMPAR REGISTROS
-
-    </button>
-
-
-    <!-- MOVIMENTAÇÕES -->
-
-    <div class="movimentacoes">
-
-        <h2>
-            Movimentações
-        </h2>
-
-        <div id="listaMovimentacoes">
-
-            Nenhuma movimentação registrada.
-
-        </div>
-
-        <div
-            class="contador"
-            id="contador">
-
-            0 movimentações
-
-        </div>
-
-    </div>
+—
 
 </div>
 
 </div>
+
+
+
+<!-- CAMERA -->
+
+<div
+id="cameraBox"
+class="camera-box">
+
+<div id="reader"></div>
+
+</div>
+
+
+
+<!-- ESTADO -->
+
+<div
+id="estado"
+class="estado">
+
+👤 Aguardando funcionário
+
+</div>
+
+
+
+<!-- BOTÃO CAMERA -->
+
+<button
+id="btnCamera"
+class="btn-camera"
+onclick="alternarCamera()">
+
+📷 ABRIR CÂMERA
+
+</button>
+
+
+
+<!-- EXPORTAR -->
+
+<button
+class="btn-export"
+onclick="exportarCSV()">
+
+📊 GERAR CSV
+
+</button>
+
+
+
+<!-- LIMPAR -->
+
+<button
+class="btn-clear"
+onclick="limparRegistros()">
+
+🗑️ LIMPAR REGISTROS
+
+</button>
+
+
+
+<div
+class="aviso">
+
+A câmera permanece aberta para registrar várias movimentações.
+
+</div>
+
+
+
+<!-- MOVIMENTAÇÕES -->
+
+<div class="movimentacoes">
+
+
+<h2>
+
+Movimentações
+
+</h2>
+
+
+<div id="lista">
+
+Nenhuma movimentação registrada.
+
+</div>
+
+
+<div
+id="contador"
+class="contador">
+
+0 movimentações
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
 
 
 <script>
 
-/*
-====================================================
- BANCO LOCAL
-====================================================
-*/
 
-let movimentacoes =
-    JSON.parse(
-        localStorage.getItem(
-            "arasigns_movimentacoes"
-        )
-    ) || [];
+/* ==================================================
+   CONFIGURAÇÕES
+================================================== */
+
+
+let scanner = null;
+
+let cameraLigada = false;
 
 
 /*
-====================================================
- CONTROLE DA LEITURA
-====================================================
+   ETAPA DO PROCESSO
+
+   funcionario
+   ↓
+   item
+   ↓
+   funcionario
 */
+
 
 let etapa = "funcionario";
+
 
 let funcionarioAtual = null;
 
 
 /*
-====================================================
- LER CÓDIGO
-====================================================
+   Evita o mesmo código ser lido
+   várias vezes seguidas
 */
 
-function lerCodigo() {
 
-    let codigo =
-        prompt(
-            etapa === "funcionario"
-                ? "🔊 BIP FUNCIONÁRIO\n\nDigite ou escaneie o código:"
-                : "🔊 BIP PRODUTO / FERRAMENTA\n\nDigite ou escaneie o código:"
-        );
+let ultimoScan = "";
+
+let momentoUltimoScan = 0;
 
 
-    if (!codigo) {
+/*
+   BANCO LOCAL
+*/
+
+
+let movimentacoes =
+
+JSON.parse(
+
+localStorage.getItem(
+"arasigns_movimentacoes"
+)
+
+) || [];
+
+
+
+/* ==================================================
+   ABRIR / FECHAR CAMERA
+================================================== */
+
+
+async function alternarCamera() {
+
+
+    if (cameraLigada) {
+
+        pararCamera();
+
         return;
+
     }
 
 
-    codigo = codigo.trim();
+    await iniciarCamera();
+
+}
 
 
-    /*
-    MOSTRA O ÚLTIMO CÓDIGO
-    */
 
-    document.getElementById(
-        "ultimoCodigo"
-    ).innerText = codigo;
+/* ==================================================
+   INICIAR CAMERA
+================================================== */
 
 
-    /*
-    ================================================
-    PRIMEIRO BIP
-    FUNCIONÁRIO
-    ================================================
-    */
-
-    if (etapa === "funcionario") {
-
-        funcionarioAtual = codigo;
-
-        etapa = "item";
+async function iniciarCamera() {
 
 
-        document.getElementById(
-            "estadoSistema"
-        ).innerText =
-            "🔧 Agora leia o produto ou ferramenta";
+    try {
 
 
-        return;
-    }
+        document
+        .getElementById("cameraBox")
+        .classList.add("camera-ativa");
 
 
-    /*
-    ================================================
-    SEGUNDO BIP
-    ITEM
-    ================================================
-    */
-
-    if (etapa === "item") {
-
-        let item = codigo;
+        document
+        .getElementById("btnCamera")
+        .innerText =
+        "⛔ FECHAR CÂMERA";
 
 
-        registrarMovimentacao(
-            funcionarioAtual,
-            item
+        document
+        .getElementById("btnCamera")
+        .classList.add("parar");
+
+
+        /*
+           Cria o leitor
+        */
+
+
+        scanner =
+        new Html5Qrcode("reader");
+
+
+        /*
+           Procura câmera traseira
+        */
+
+
+        const cameras =
+        await Html5Qrcode.getCameras();
+
+
+        if (!cameras ||
+            cameras.length === 0) {
+
+            throw new Error(
+                "Nenhuma câmera encontrada."
+            );
+
+        }
+
+
+        let cameraId =
+        cameras[0].id;
+
+
+        /*
+           Tenta encontrar
+           câmera traseira
+        */
+
+
+        const traseira =
+        cameras.find(
+            camera =>
+                camera.label
+                .toLowerCase()
+                .includes("back")
+                ||
+                camera.label
+                .toLowerCase()
+                .includes("rear")
+                ||
+                camera.label
+                .toLowerCase()
+                .includes("traseira")
         );
 
 
-        funcionarioAtual = null;
+        if (traseira) {
 
-        etapa = "funcionario";
+            cameraId =
+            traseira.id;
+
+        }
 
 
-        document.getElementById(
-            "estadoSistema"
-        ).innerText =
-            "👤 Aguardando funcionário...";
+        /*
+           Inicia scanner
+        */
+
+
+        await scanner.start(
+
+            cameraId,
+
+            {
+
+                fps: 10,
+
+                qrbox: {
+
+                    width: 280,
+
+                    height: 180
+
+                },
+
+                aspectRatio: 1.777
+
+            },
+
+            codigoLido,
+
+            erroLeitura => {
+
+                /*
+                   Ignora erros normais
+                   de procura do código.
+                */
+
+            }
+
+        );
+
+
+        cameraLigada = true;
+
+
+        atualizarEstado();
+
+
+    }
+
+    catch (erro) {
+
+
+        console.error(erro);
+
+
+        document
+        .getElementById("cameraBox")
+        .classList.remove("camera-ativa");
+
+
+        document
+        .getElementById("btnCamera")
+        .innerText =
+        "📷 ABRIR CÂMERA";
+
+
+        document
+        .getElementById("btnCamera")
+        .classList.remove("parar");
+
+
+        alert(
+
+            "❌ Não consegui abrir a câmera.\n\n" +
+
+            "Verifique se o navegador permitiu o acesso à câmera."
+
+        );
 
     }
 
 }
 
 
-/*
-====================================================
- REGISTRAR MOVIMENTAÇÃO
-====================================================
-*/
+
+/* ==================================================
+   PARAR CAMERA
+================================================== */
+
+
+async function pararCamera() {
+
+
+    try {
+
+
+        if (scanner) {
+
+            await scanner.stop();
+
+            scanner.clear();
+
+            scanner = null;
+
+        }
+
+
+    }
+
+    catch (erro) {
+
+        console.log(erro);
+
+    }
+
+
+    cameraLigada = false;
+
+
+    document
+    .getElementById("cameraBox")
+    .classList.remove("camera-ativa");
+
+
+    document
+    .getElementById("btnCamera")
+    .innerText =
+    "📷 ABRIR CÂMERA";
+
+
+    document
+    .getElementById("btnCamera")
+    .classList.remove("parar");
+
+}
+
+
+
+/* ==================================================
+   CÓDIGO FOI LIDO
+================================================== */
+
+
+function codigoLido(codigo) {
+
+
+    codigo =
+    String(codigo)
+    .trim();
+
+
+    /*
+       Proteção contra
+       múltiplas leituras
+    */
+
+
+    const agora =
+    Date.now();
+
+
+    if (
+
+        codigo === ultimoScan &&
+
+        agora - momentoUltimoScan < 1500
+
+    ) {
+
+        return;
+
+    }
+
+
+    ultimoScan =
+    codigo;
+
+
+    momentoUltimoScan =
+    agora;
+
+
+
+    /*
+       MOSTRA CÓDIGO
+    */
+
+
+    document
+    .getElementById("ultimoCodigo")
+    .innerText =
+    codigo;
+
+
+
+    /*
+       SOM
+    */
+
+
+    bip();
+
+
+
+    /*
+       PRIMEIRO BIP
+       FUNCIONÁRIO
+    */
+
+
+    if (etapa === "funcionario") {
+
+
+        funcionarioAtual =
+        codigo;
+
+
+        etapa =
+        "item";
+
+
+        atualizarEstado();
+
+
+        return;
+
+    }
+
+
+
+    /*
+       SEGUNDO BIP
+       ITEM
+    */
+
+
+    if (etapa === "item") {
+
+
+        registrarMovimentacao(
+
+            funcionarioAtual,
+
+            codigo
+
+        );
+
+
+        funcionarioAtual =
+        null;
+
+
+        etapa =
+        "funcionario";
+
+
+        atualizarEstado();
+
+    }
+
+}
+
+
+
+/* ==================================================
+   REGISTRAR
+================================================== */
+
 
 function registrarMovimentacao(
+
     funcionario,
+
     item
+
 ) {
 
-    let agora = new Date();
+
+    const agora =
+    new Date();
 
 
-    let movimentacao = {
+    const registro = {
+
 
         dataHora:
-            agora.toLocaleString(
-                "pt-BR"
-            ),
+        agora.toLocaleString(
+            "pt-BR"
+        ),
+
 
         funcionario:
-            funcionario,
+        funcionario,
+
 
         item:
-            item
+        item
 
     };
 
 
     /*
-    COLOCA NO INÍCIO DA LISTA
+       Coloca o mais recente
+       no topo
     */
 
+
     movimentacoes.unshift(
-        movimentacao
+        registro
     );
 
 
     /*
-    SALVA NO CELULAR
+       SALVA NO CELULAR
     */
+
 
     localStorage.setItem(
 
@@ -419,114 +981,209 @@ function registrarMovimentacao(
     );
 
 
-    /*
-    ATUALIZA TELA
-    */
-
     atualizarLista();
-
-
-    /*
-    MENSAGEM
-    */
-
-    alert(
-
-        "✅ MOVIMENTAÇÃO REGISTRADA!\n\n" +
-
-        "Funcionário: " +
-        funcionario +
-
-        "\n\nItem: " +
-        item
-
-    );
 
 }
 
 
-/*
-====================================================
- MOSTRAR MOVIMENTAÇÕES
-====================================================
-*/
+
+/* ==================================================
+   ATUALIZAR ESTADO
+================================================== */
+
+
+function atualizarEstado() {
+
+
+    const estado =
+    document.getElementById(
+        "estado"
+    );
+
+
+    if (etapa === "funcionario") {
+
+
+        estado.innerText =
+        "👤 Aguardando funcionário";
+
+
+        estado.style.color =
+        "#111";
+
+
+    }
+
+
+    else {
+
+
+        estado.innerText =
+        "🔧 Agora leia o produto ou ferramenta";
+
+
+        estado.style.color =
+        "#168a3a";
+
+    }
+
+}
+
+
+
+/* ==================================================
+   BIP
+================================================== */
+
+
+function bip() {
+
+
+    try {
+
+
+        const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+        const audio =
+        new AudioContext();
+
+
+        const oscillator =
+        audio.createOscillator();
+
+
+        const gain =
+        audio.createGain();
+
+
+        oscillator.connect(
+            gain
+        );
+
+
+        gain.connect(
+            audio.destination
+        );
+
+
+        oscillator.frequency.value =
+        900;
+
+
+        gain.gain.value =
+        0.15;
+
+
+        oscillator.start();
+
+
+        oscillator.stop(
+            audio.currentTime + 0.12
+        );
+
+
+    }
+
+    catch (erro) {
+
+        console.log(erro);
+
+    }
+
+}
+
+
+
+/* ==================================================
+   LISTA
+================================================== */
+
 
 function atualizarLista() {
 
-    let lista =
-        document.getElementById(
-            "listaMovimentacoes"
-        );
+
+    const lista =
+    document.getElementById(
+        "lista"
+    );
 
 
-    let contador =
-        document.getElementById(
-            "contador"
-        );
+    const contador =
+    document.getElementById(
+        "contador"
+    );
 
-
-    /*
-    SEM REGISTROS
-    */
 
     if (
         movimentacoes.length === 0
     ) {
 
+
         lista.innerHTML =
-            "Nenhuma movimentação registrada.";
+        "Nenhuma movimentação registrada.";
+
 
         contador.innerText =
-            "0 movimentações";
+        "0 movimentações";
+
 
         return;
 
     }
 
 
-    /*
-    LIMPA LISTA
-    */
 
     lista.innerHTML = "";
 
 
-    /*
-    CRIA CADA MOVIMENTAÇÃO
-    */
 
     movimentacoes.forEach(
-        function(mov) {
 
-            let div =
-                document.createElement(
-                    "div"
-                );
+        mov => {
+
+
+            const div =
+            document.createElement(
+                "div"
+            );
 
 
             div.className =
-                "movimento";
+            "movimento";
 
 
             div.innerHTML =
 
+
                 "<strong>👤 Funcionário: " +
-                escaparHTML(
+
+                escapar(
                     mov.funcionario
                 ) +
+
                 "</strong>" +
+
 
                 "<strong>🔧 Item: " +
-                escaparHTML(
+
+                escapar(
                     mov.item
                 ) +
+
                 "</strong>" +
 
+
                 "<div class='info'>" +
+
                 "🕒 " +
-                escaparHTML(
+
+                escapar(
                     mov.dataHora
                 ) +
+
                 "</div>";
 
 
@@ -534,166 +1191,166 @@ function atualizarLista() {
                 div
             );
 
+
         }
+
     );
 
 
-    /*
-    CONTADOR
-    */
 
     contador.innerText =
 
         movimentacoes.length +
 
         (
+
             movimentacoes.length === 1
-                ? " movimentação"
-                : " movimentações"
+
+            ? " movimentação"
+
+            : " movimentações"
+
         );
 
 }
 
 
-/*
-====================================================
- ESCAPAR TEXTO
-====================================================
-*/
 
-function escaparHTML(texto) {
+/* ==================================================
+   SEGURANÇA
+================================================== */
 
-    let div =
-        document.createElement(
-            "div"
-        );
+
+function escapar(valor) {
+
+
+    const div =
+    document.createElement(
+        "div"
+    );
+
 
     div.textContent =
-        texto;
+    valor;
+
 
     return div.innerHTML;
 
 }
 
 
-/*
-====================================================
- GERAR CSV
-====================================================
-*/
+
+/* ==================================================
+   EXPORTAR CSV
+================================================== */
+
 
 function exportarCSV() {
 
-    /*
-    VERIFICA SE EXISTE REGISTRO
-    */
 
     if (
         movimentacoes.length === 0
     ) {
 
+
         alert(
             "⚠️ Não existem movimentações para exportar."
         );
+
 
         return;
 
     }
 
 
-    /*
-    CABEÇALHO DO CSV
-    */
 
     let csv =
 
         "DATA/HORA;" +
+
         "FUNCIONÁRIO;" +
+
         "CÓDIGO ITEM\n";
 
 
-    /*
-    ADICIONA OS REGISTROS
-    */
 
     movimentacoes.forEach(
-        function(mov) {
+
+        mov => {
+
 
             csv +=
 
                 '"' +
+
                 limparCSV(
                     mov.dataHora
                 ) +
-                '";' +
 
-                '"' +
+                '";"' +
+
                 limparCSV(
                     mov.funcionario
                 ) +
-                '";' +
 
-                '"' +
+                '";"' +
+
                 limparCSV(
                     mov.item
                 ) +
+
                 '"\n';
 
         }
+
     );
 
 
-    /*
-    CRIA ARQUIVO
-    */
 
-    let blob =
-        new Blob(
+    const blob =
+    new Blob(
 
-            [
-                "\ufeff" +
-                csv
-            ],
+        [
+            "\ufeff" +
+            csv
+        ],
 
-            {
-                type:
-                    "text/csv;charset=utf-8;"
-            }
+        {
 
-        );
+            type:
+            "text/csv;charset=utf-8;"
 
+        }
 
-    /*
-    CRIA LINK TEMPORÁRIO
-    */
-
-    let url =
-        URL.createObjectURL(
-            blob
-        );
+    );
 
 
-    let link =
-        document.createElement(
-            "a"
-        );
+
+    const url =
+    URL.createObjectURL(
+        blob
+    );
+
+
+    const link =
+    document.createElement(
+        "a"
+    );
 
 
     link.href =
-        url;
+    url;
 
 
-    /*
-    NOME DO ARQUIVO
-    */
 
-    let hoje =
-        new Date();
+    const hoje =
+    new Date();
 
 
-    let data =
+    const data =
 
         hoje.getFullYear() +
+
         "-" +
 
         String(
@@ -707,22 +1364,24 @@ function exportarCSV() {
         ).padStart(2, "0");
 
 
+
     link.download =
 
         "ARASIGNS_MOVIMENTACOES_" +
+
         data +
+
         ".csv";
 
 
-    /*
-    FAZ DOWNLOAD
-    */
 
     document.body.appendChild(
         link
     );
 
+
     link.click();
+
 
     document.body.removeChild(
         link
@@ -734,70 +1393,87 @@ function exportarCSV() {
     );
 
 
-    /*
-    AVISO
-    */
 
     alert(
-        "📊 CSV GERADO COM SUCESSO!\n\n" +
+
+        "📊 CSV GERADO!\n\n" +
 
         movimentacoes.length +
 
         " movimentações exportadas."
+
     );
 
 }
 
 
-/*
-====================================================
- LIMPAR CARACTERES QUE PODEM QUEBRAR O CSV
-====================================================
-*/
+
+/* ==================================================
+   LIMPAR CSV
+================================================== */
+
 
 function limparCSV(valor) {
 
+
     return String(valor)
-        .replace(/"/g, '""')
-        .replace(/\n/g, " ")
-        .replace(/\r/g, " ");
+
+        .replace(
+            /"/g,
+            '""'
+        )
+
+        .replace(
+            /\n/g,
+            " "
+        )
+
+        .replace(
+            /\r/g,
+            " "
+        );
 
 }
 
 
-/*
-====================================================
- LIMPAR TODOS OS REGISTROS
-====================================================
-*/
+
+/* ==================================================
+   LIMPAR REGISTROS
+================================================== */
+
 
 function limparRegistros() {
+
 
     if (
         movimentacoes.length === 0
     ) {
 
+
         alert(
-            "Não existem registros para apagar."
+            "Não existem registros."
         );
+
 
         return;
 
     }
 
 
-    let confirmar =
-        confirm(
 
-            "⚠️ ATENÇÃO!\n\n" +
+    const confirmar =
+    confirm(
 
-            "Você vai apagar TODAS as movimentações deste aparelho.\n\n" +
+        "⚠️ ATENÇÃO!\n\n" +
 
-            "Recomendo gerar o CSV antes.\n\n" +
+        "Isso vai apagar todas as movimentações deste aparelho.\n\n" +
 
-            "Deseja continuar?"
+        "Gere o CSV antes de continuar.\n\n" +
 
-        );
+        "Deseja realmente apagar?"
+
+    );
+
 
 
     if (!confirmar) {
@@ -807,9 +1483,6 @@ function limparRegistros() {
     }
 
 
-    /*
-    APAGA
-    */
 
     movimentacoes = [];
 
@@ -819,43 +1492,41 @@ function limparRegistros() {
     );
 
 
-    /*
-    RESET
-    */
-
-    funcionarioAtual = null;
-
-    etapa = "funcionario";
+    funcionarioAtual =
+    null;
 
 
-    document.getElementById(
+    etapa =
+    "funcionario";
+
+
+    document
+    .getElementById(
         "ultimoCodigo"
-    ).innerText = "—";
+    )
+    .innerText =
+    "—";
 
 
-    document.getElementById(
-        "estadoSistema"
-    ).innerText =
-        "👤 Aguardando funcionário...";
+    atualizarEstado();
 
 
     atualizarLista();
 
 
-    alert(
-        "🗑️ Todas as movimentações foram apagadas."
-    );
-
 }
 
 
-/*
-====================================================
- INICIALIZAÇÃO
-====================================================
-*/
+
+/* ==================================================
+   INICIALIZA
+================================================== */
+
 
 atualizarLista();
+
+atualizarEstado();
+
 
 </script>
 

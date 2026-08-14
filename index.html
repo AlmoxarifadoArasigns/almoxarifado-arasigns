@@ -1,6 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>ARASIGNS - Controle de Almoxarifado</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+
 /* =====================================================
-   LAYOUT MAIS COMPACTO
+   CONFIGURAÇÃO GERAL
 ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #111111;
+}
 
 .container {
     width: 100%;
@@ -10,7 +39,9 @@
 }
 
 
-/* LOGO */
+/* =====================================================
+   CABEÇALHO
+===================================================== */
 
 .logo {
     text-align: center;
@@ -20,7 +51,6 @@
     margin-top: 3px;
 }
 
-
 .subtitulo {
     text-align: center;
     font-size: 19px;
@@ -29,7 +59,9 @@
 }
 
 
-/* STATUS */
+/* =====================================================
+   STATUS
+===================================================== */
 
 .status-card {
     background: #eeeeee;
@@ -39,12 +71,10 @@
     margin-bottom: 14px;
 }
 
-
 .status-titulo {
     font-size: 20px;
     font-weight: bold;
 }
-
 
 .codigo {
     font-size: 38px;
@@ -52,15 +82,24 @@
     margin-top: 12px;
 }
 
-
 .etapa {
     margin-top: 10px;
     font-size: 18px;
     font-weight: bold;
 }
 
+.verde {
+    color: #16963b;
+}
 
-/* CÂMERA */
+.vermelho {
+    color: #d71919;
+}
+
+
+/* =====================================================
+   CÂMERA
+===================================================== */
 
 .camera-area {
     width: 100%;
@@ -73,12 +112,10 @@
     position: relative;
 }
 
-
 #reader {
     width: 100% !important;
     height: 145px !important;
 }
-
 
 #reader video {
     width: 100% !important;
@@ -86,8 +123,18 @@
     object-fit: cover !important;
 }
 
+#reader__scan_region {
+    width: 100% !important;
+}
 
-/* BOTÕES */
+#reader__dashboard {
+    display: none !important;
+}
+
+
+/* =====================================================
+   BOTÕES
+===================================================== */
 
 .btn {
     width: 100%;
@@ -100,8 +147,25 @@
     cursor: pointer;
 }
 
+.btn-camera {
+    background: #111111;
+    color: white;
+}
 
-/* STATUS CÂMERA */
+.btn-csv {
+    background: #16963b;
+    color: white;
+}
+
+.btn-limpar {
+    background: #dddddd;
+    color: #111111;
+}
+
+
+/* =====================================================
+   STATUS DA CÂMERA
+===================================================== */
 
 .aviso {
     text-align: center;
@@ -111,7 +175,9 @@
 }
 
 
-/* MOVIMENTAÇÕES */
+/* =====================================================
+   MOVIMENTAÇÕES
+===================================================== */
 
 .movimentacoes {
     background: #eeeeee;
@@ -120,12 +186,10 @@
     margin-top: 10px;
 }
 
-
 .movimentacoes h2 {
     font-size: 23px;
     margin-top: 0;
 }
-
 
 .movimento {
     background: white;
@@ -134,11 +198,13 @@
     margin-bottom: 8px;
 }
 
-
 .movimento strong {
     font-size: 16px;
 }
 
+.movimento small {
+    color: #777;
+}
 
 .contador {
     text-align: center;
@@ -146,3 +212,1024 @@
     color: #666;
     margin-top: 10px;
 }
+
+
+/* =====================================================
+   CELULARES MENORES
+===================================================== */
+
+@media (max-width: 500px) {
+
+    .container {
+        padding: 12px 12px 25px;
+    }
+
+    .logo {
+        font-size: 34px;
+    }
+
+    .subtitulo {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+
+    .status-card {
+        padding: 17px 12px;
+        margin-bottom: 12px;
+    }
+
+    .status-titulo {
+        font-size: 18px;
+    }
+
+    .codigo {
+        font-size: 34px;
+        margin-top: 8px;
+    }
+
+    .etapa {
+        font-size: 17px;
+        margin-top: 7px;
+    }
+
+    .camera-area {
+        height: 135px;
+    }
+
+    #reader {
+        height: 135px !important;
+    }
+
+    #reader video {
+        height: 135px !important;
+    }
+
+    .btn {
+        padding: 15px;
+        font-size: 20px;
+        border-radius: 18px;
+        margin-bottom: 9px;
+    }
+
+    .aviso {
+        font-size: 15px;
+        margin: 5px 0 9px;
+    }
+
+    .movimentacoes {
+        padding: 15px;
+    }
+
+    .movimentacoes h2 {
+        font-size: 21px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =================================================
+         CABEÇALHO
+    ================================================== -->
+
+    <div class="logo">
+        ARASIGNS
+    </div>
+
+    <div class="subtitulo">
+        Controle de Almoxarifado
+    </div>
+
+
+    <!-- =================================================
+         STATUS DO ÚLTIMO CÓDIGO
+    ================================================== -->
+
+    <div class="status-card">
+
+        <div class="status-titulo">
+            Último código lido:
+        </div>
+
+        <div
+            id="ultimoCodigo"
+            class="codigo"
+        >
+            —
+        </div>
+
+        <div
+            id="etapa"
+            class="etapa"
+        >
+            👤 Aguardando funcionário...
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         CÂMERA
+    ================================================== -->
+
+    <div class="camera-area">
+
+        <div id="reader"></div>
+
+    </div>
+
+
+    <!-- =================================================
+         BOTÃO DA CÂMERA
+    ================================================== -->
+
+    <button
+        id="btnCamera"
+        class="btn btn-camera"
+        onclick="alternarCamera()"
+    >
+        🟢 CÂMERA ATIVA
+    </button>
+
+
+    <div
+        id="statusCamera"
+        class="aviso verde"
+    >
+        📷 Câmera funcionando
+    </div>
+
+
+    <!-- =================================================
+         GERAR CSV
+    ================================================== -->
+
+    <button
+        class="btn btn-csv"
+        onclick="gerarCSV()"
+    >
+        📊 GERAR CSV
+    </button>
+
+
+    <!-- =================================================
+         LIMPAR REGISTROS
+    ================================================== -->
+
+    <button
+        class="btn btn-limpar"
+        onclick="limparRegistros()"
+    >
+        🗑️ LIMPAR REGISTROS
+    </button>
+
+
+    <!-- =================================================
+         MOVIMENTAÇÕES
+    ================================================== -->
+
+    <div class="movimentacoes">
+
+        <h2>
+            Movimentações
+        </h2>
+
+        <div id="listaMovimentacoes">
+            Nenhuma movimentação registrada.
+        </div>
+
+        <div
+            id="contador"
+            class="contador"
+        >
+            0 movimentações
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+
+let scanner = null;
+
+let cameraAtiva = false;
+
+let processando = false;
+
+let esperandoFuncionario = true;
+
+let funcionarioAtual = null;
+
+
+/*
+   Recupera os registros salvos
+   no navegador.
+*/
+
+let movimentacoes =
+    JSON.parse(
+        localStorage.getItem(
+            "arasigns_movimentacoes"
+        )
+    ) || [];
+
+
+/* =====================================================
+   BIP
+===================================================== */
+
+function bip(
+    frequencia = 900,
+    duracao = 120
+) {
+
+    try {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        const audio =
+            new AudioContext();
+
+        const oscillator =
+            audio.createOscillator();
+
+        const gain =
+            audio.createGain();
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audio.destination
+        );
+
+        oscillator.frequency.value =
+            frequencia;
+
+        oscillator.type =
+            "sine";
+
+        gain.gain.value =
+            0.2;
+
+        oscillator.start();
+
+        setTimeout(
+            function() {
+
+                oscillator.stop();
+
+                audio.close();
+
+            },
+            duracao
+        );
+
+    } catch (erro) {
+
+        console.log(
+            "Erro no bip:",
+            erro
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   INICIAR CÂMERA
+===================================================== */
+
+async function iniciarCamera() {
+
+    if (cameraAtiva) {
+        return;
+    }
+
+    document.getElementById(
+        "statusCamera"
+    ).innerText =
+        "📷 Iniciando câmera...";
+
+    document.getElementById(
+        "statusCamera"
+    ).className =
+        "aviso";
+
+
+    try {
+
+        scanner =
+            new Html5Qrcode(
+                "reader"
+            );
+
+
+        /*
+           FORMATAÇÃO DE CÓDIGOS DE BARRAS
+        */
+
+        const formatos = [
+
+            Html5QrcodeSupportedFormats.CODE_128,
+
+            Html5QrcodeSupportedFormats.CODE_39,
+
+            Html5QrcodeSupportedFormats.CODE_93,
+
+            Html5QrcodeSupportedFormats.EAN_13,
+
+            Html5QrcodeSupportedFormats.EAN_8,
+
+            Html5QrcodeSupportedFormats.UPC_A,
+
+            Html5QrcodeSupportedFormats.UPC_E
+
+        ];
+
+
+        await scanner.start(
+
+            {
+                facingMode:
+                    "environment"
+            },
+
+            {
+
+                fps: 15,
+
+                /*
+                   ÁREA HORIZONTAL
+                   IDEAL PARA CÓDIGO DE BARRAS
+                */
+
+                qrbox: {
+
+                    width: 320,
+
+                    height: 100
+
+                },
+
+                aspectRatio:
+                    1.7777778,
+
+                formatsToSupport:
+                    formatos
+
+            },
+
+            codigoLido,
+
+            function(error) {
+
+                /*
+                   Erros normais de leitura
+                   são ignorados.
+                */
+
+            }
+
+        );
+
+
+        cameraAtiva = true;
+
+
+        document.getElementById(
+            "btnCamera"
+        ).innerText =
+            "🟢 CÂMERA ATIVA";
+
+
+        document.getElementById(
+            "statusCamera"
+        ).innerText =
+            "📷 Câmera funcionando";
+
+
+        document.getElementById(
+            "statusCamera"
+        ).className =
+            "aviso verde";
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro câmera:",
+            erro
+        );
+
+
+        document.getElementById(
+            "btnCamera"
+        ).innerText =
+            "📷 ATIVAR CÂMERA";
+
+
+        document.getElementById(
+            "statusCamera"
+        ).innerText =
+            "⚠️ Permita o acesso à câmera";
+
+
+        document.getElementById(
+            "statusCamera"
+        ).className =
+            "aviso vermelho";
+
+    }
+
+}
+
+
+/* =====================================================
+   PARAR CÂMERA
+===================================================== */
+
+async function pararCamera() {
+
+    if (!scanner) {
+        return;
+    }
+
+
+    try {
+
+        await scanner.stop();
+
+        await scanner.clear();
+
+    } catch (erro) {
+
+        console.log(
+            "Erro ao parar câmera:",
+            erro
+        );
+
+    }
+
+
+    scanner = null;
+
+    cameraAtiva = false;
+
+
+    document.getElementById(
+        "btnCamera"
+    ).innerText =
+        "📷 ATIVAR CÂMERA";
+
+
+    document.getElementById(
+        "statusCamera"
+    ).innerText =
+        "Câmera pausada";
+
+
+    document.getElementById(
+        "statusCamera"
+    ).className =
+        "aviso";
+
+}
+
+
+/* =====================================================
+   ALTERNAR CÂMERA
+===================================================== */
+
+function alternarCamera() {
+
+    if (cameraAtiva) {
+
+        pararCamera();
+
+    } else {
+
+        iniciarCamera();
+
+    }
+
+}
+
+
+/* =====================================================
+   CÓDIGO LIDO
+===================================================== */
+
+function codigoLido(codigo) {
+
+    /*
+       Impede várias leituras
+       do mesmo código em sequência.
+    */
+
+    if (processando) {
+        return;
+    }
+
+
+    processando = true;
+
+
+    setTimeout(
+        function() {
+
+            processando = false;
+
+        },
+        1200
+    );
+
+
+    codigo =
+        String(codigo)
+        .trim();
+
+
+    if (!codigo) {
+        return;
+    }
+
+
+    /*
+       MOSTRA O CÓDIGO
+    */
+
+    document.getElementById(
+        "ultimoCodigo"
+    ).innerText =
+        codigo;
+
+
+    /*
+       BIP
+    */
+
+    bip();
+
+
+    /*
+       PRIMEIRO SCAN
+       FUNCIONÁRIO
+    */
+
+    if (esperandoFuncionario) {
+
+        funcionarioAtual =
+            codigo;
+
+        esperandoFuncionario =
+            false;
+
+
+        document.getElementById(
+            "etapa"
+        ).innerText =
+            "🔧 Aguardando ferramenta...";
+
+
+        document.getElementById(
+            "etapa"
+        ).className =
+            "etapa verde";
+
+
+        return;
+    }
+
+
+    /*
+       SEGUNDO SCAN
+       FERRAMENTA
+    */
+
+    const ferramenta =
+        codigo;
+
+
+    const agora =
+        new Date();
+
+
+    const registro = {
+
+        data:
+            agora.toLocaleDateString(
+                "pt-BR"
+            ),
+
+        hora:
+            agora.toLocaleTimeString(
+                "pt-BR"
+            ),
+
+        funcionario:
+            funcionarioAtual,
+
+        ferramenta:
+            ferramenta
+
+    };
+
+
+    /*
+       ADICIONA REGISTRO
+    */
+
+    movimentacoes.push(
+        registro
+    );
+
+
+    /*
+       SALVA NO CELULAR
+    */
+
+    localStorage.setItem(
+
+        "arasigns_movimentacoes",
+
+        JSON.stringify(
+            movimentacoes
+        )
+
+    );
+
+
+    /*
+       VOLTA PARA FUNCIONÁRIO
+    */
+
+    funcionarioAtual =
+        null;
+
+    esperandoFuncionario =
+        true;
+
+
+    document.getElementById(
+        "etapa"
+    ).innerText =
+        "👤 Aguardando funcionário...";
+
+
+    document.getElementById(
+        "etapa"
+    ).className =
+        "etapa";
+
+
+    atualizarLista();
+
+}
+
+
+/* =====================================================
+   ATUALIZAR LISTA
+===================================================== */
+
+function atualizarLista() {
+
+    const lista =
+        document.getElementById(
+            "listaMovimentacoes"
+        );
+
+
+    const contador =
+        document.getElementById(
+            "contador"
+        );
+
+
+    contador.innerText =
+        movimentacoes.length +
+        (
+            movimentacoes.length === 1
+                ? " movimentação"
+                : " movimentações"
+        );
+
+
+    if (
+        movimentacoes.length === 0
+    ) {
+
+        lista.innerHTML =
+            "Nenhuma movimentação registrada.";
+
+        return;
+
+    }
+
+
+    /*
+       Mais recente primeiro
+    */
+
+    const registros =
+        [
+            ...movimentacoes
+        ].reverse();
+
+
+    lista.innerHTML =
+        registros
+        .map(
+            function(registro) {
+
+                return `
+
+                    <div class="movimento">
+
+                        <strong>
+                            👤 ${escaparHTML(
+                                registro.funcionario
+                            )}
+                        </strong>
+
+                        <br>
+
+                        🔧 ${escaparHTML(
+                            registro.ferramenta
+                        )}
+
+                        <br>
+
+                        <small>
+                            ${registro.data}
+                            às
+                            ${registro.hora}
+                        </small>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   PROTEÇÃO HTML
+===================================================== */
+
+function escaparHTML(texto) {
+
+    return String(texto)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   GERAR CSV
+===================================================== */
+
+function gerarCSV() {
+
+    if (
+        movimentacoes.length === 0
+    ) {
+
+        alert(
+            "Não existem movimentações para exportar."
+        );
+
+        return;
+
+    }
+
+
+    let csv =
+        "DATA,HORA,FUNCIONARIO,FERRAMENTA\n";
+
+
+    movimentacoes.forEach(
+        function(registro) {
+
+            csv +=
+                `"${registro.data}",` +
+                `"${registro.hora}",` +
+                `"${registro.funcionario}",` +
+                `"${registro.ferramenta}"\n`;
+
+        }
+    );
+
+
+    /*
+       BOM para o Excel
+       reconhecer acentos.
+    */
+
+    const BOM =
+        "\uFEFF";
+
+
+    const blob =
+        new Blob(
+            [
+                BOM + csv
+            ],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    const agora =
+        new Date();
+
+
+    const nomeArquivo =
+        "ARASIGNS_MOVIMENTACOES_" +
+        agora
+        .toISOString()
+        .slice(0, 10) +
+        ".csv";
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        nomeArquivo;
+
+
+    document.body.appendChild(
+        link
+    );
+
+
+    link.click();
+
+
+    document.body.removeChild(
+        link
+    );
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* =====================================================
+   LIMPAR REGISTROS
+===================================================== */
+
+function limparRegistros() {
+
+    if (
+        movimentacoes.length === 0
+    ) {
+        return;
+    }
+
+
+    const confirmar =
+        confirm(
+            "Tem certeza que deseja apagar TODAS as movimentações?"
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    movimentacoes = [];
+
+
+    localStorage.removeItem(
+        "arasigns_movimentacoes"
+    );
+
+
+    funcionarioAtual =
+        null;
+
+
+    esperandoFuncionario =
+        true;
+
+
+    document.getElementById(
+        "ultimoCodigo"
+    ).innerText =
+        "—";
+
+
+    document.getElementById(
+        "etapa"
+    ).innerText =
+        "👤 Aguardando funcionário...";
+
+
+    document.getElementById(
+        "etapa"
+    ).className =
+        "etapa";
+
+
+    atualizarLista();
+
+}
+
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
+atualizarLista();
+
+
+/*
+   Abre a câmera automaticamente
+   quando a página carregar.
+*/
+
+window.addEventListener(
+    "load",
+    function() {
+
+        setTimeout(
+            function() {
+
+                iniciarCamera();
+
+            },
+            500
+        );
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

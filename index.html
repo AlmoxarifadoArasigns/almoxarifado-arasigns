@@ -15,9 +15,7 @@
   content="#08090b"
 >
 
-<title>
-  Arasigns — Controle de Almoxarifado
-</title>
+<title>Arasigns — Controle de Almoxarifado</title>
 
 
 <!-- ==========================================
@@ -36,19 +34,13 @@
 :root{
 
   --bg:#08090b;
-
   --card:#111214;
-
   --line:#303136;
-
   --white:#f7f7f7;
-
   --muted:#a9aaae;
 
   --red:#ff1726;
-
   --orange:#ff6a00;
-
   --yellow:#ffd000;
 
   --green:#16d46b;
@@ -69,7 +61,6 @@ html,
 body{
 
   margin:0;
-
   padding:0;
 
   background:var(--bg);
@@ -85,9 +76,7 @@ body{
 
 
 body{
-
   min-height:100vh;
-
 }
 
 
@@ -343,7 +332,7 @@ body{
 
 
 /* ==========================================
-   ÁREA DE LEITURA HORIZONTAL
+   ÁREA DE LEITURA
 ========================================== */
 
 .scan-target{
@@ -615,6 +604,111 @@ body{
 
 
 /* ==========================================
+   BOTÕES ENTRADA / SAÍDA
+   AGORA FICAM ACIMA DA ÚLTIMA LEITURA
+========================================== */
+
+.movement-buttons{
+
+  display:none;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:12px;
+
+  margin-top:16px;
+
+}
+
+
+.movement-buttons button{
+
+  padding:18px;
+
+  border-radius:18px;
+
+  font-weight:900;
+
+  font-size:19px;
+
+  color:white;
+
+  border:0;
+
+  cursor:pointer;
+
+  transition:
+    transform .15s,
+    filter .15s;
+
+}
+
+
+.movement-buttons button:active{
+
+  transform:scale(.97);
+
+}
+
+
+.btn-out{
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--red),
+      var(--orange)
+    );
+
+  box-shadow:
+    0 8px 25px
+    rgba(255,23,38,.18);
+
+}
+
+
+.btn-in{
+
+  background:
+    linear-gradient(
+      90deg,
+      #0c9f50,
+      var(--green)
+    );
+
+  box-shadow:
+    0 8px 25px
+    rgba(22,212,107,.15);
+
+}
+
+
+.reset-scan{
+
+  display:none;
+
+  width:100%;
+
+  margin-top:10px;
+
+  padding:13px;
+
+  border-radius:14px;
+
+  background:#242529;
+
+  color:#ddd;
+
+  font-weight:800;
+
+  border:1px solid #35363a;
+
+}
+
+
+/* ==========================================
    INFORMAÇÕES
 ========================================== */
 
@@ -661,7 +755,7 @@ body{
 
 
 /* ==========================================
-   BOTÕES
+   BOTÕES PRINCIPAIS
 ========================================== */
 
 .actions{
@@ -938,83 +1032,6 @@ button{
 
 
 /* ==========================================
-   ENTRADA / SAÍDA
-========================================== */
-
-.movement-buttons{
-
-  display:none;
-
-  grid-template-columns:
-    1fr
-    1fr;
-
-  gap:12px;
-
-  margin-top:15px;
-
-}
-
-
-.movement-buttons button{
-
-  padding:16px;
-
-  border-radius:16px;
-
-  font-weight:900;
-
-  font-size:18px;
-
-}
-
-
-.btn-out{
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--red),
-      var(--orange)
-    );
-
-}
-
-
-.btn-in{
-
-  background:
-    linear-gradient(
-      90deg,
-      #0c9f50,
-      var(--green)
-    );
-
-}
-
-
-.reset-scan{
-
-  display:none;
-
-  width:100%;
-
-  margin-top:12px;
-
-  padding:13px;
-
-  border-radius:14px;
-
-  background:#242529;
-
-  color:#ddd;
-
-  font-weight:800;
-
-}
-
-
-/* ==========================================
    TOAST
 ========================================== */
 
@@ -1161,8 +1178,20 @@ button{
   }
 
 
-  .status-grid,
-  .info-grid,
+  .status-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .info-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
   .actions{
 
     grid-template-columns:1fr;
@@ -1215,6 +1244,26 @@ button{
   .value{
 
     font-size:23px;
+
+  }
+
+
+  .movement-buttons{
+
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap:9px;
+
+  }
+
+
+  .movement-buttons button{
+
+    padding:17px 8px;
+
+    font-size:16px;
 
   }
 
@@ -1467,6 +1516,50 @@ button{
 
 
 </section>
+
+
+
+<!-- ==========================================
+     ENTRADA / SAÍDA
+     
+     AGORA FICA AQUI:
+     LOGO ACIMA DA ÚLTIMA LEITURA
+========================================== -->
+
+<div
+  class="movement-buttons"
+  id="movementButtons">
+
+
+  <button
+    class="btn-out"
+    onclick="finishMovement('SAÍDA')">
+
+    ⬆️ SAÍDA
+
+  </button>
+
+
+  <button
+    class="btn-in"
+    onclick="finishMovement('ENTRADA')">
+
+    ⬇️ ENTRADA
+
+  </button>
+
+
+</div>
+
+
+<button
+  class="reset-scan"
+  id="resetScan"
+  onclick="resetWorkflow()">
+
+  🔄 NOVA LEITURA
+
+</button>
 
 
 
@@ -1727,51 +1820,6 @@ button{
 
 
 <!-- ==========================================
-     BOTÕES ENTRADA / SAÍDA
-========================================== -->
-
-<div
-  class="movement-buttons"
-  id="movementButtons">
-
-
-  <button
-    class="btn-out"
-    onclick="finishMovement('SAÍDA')">
-
-    ⬆️ SAÍDA
-
-  </button>
-
-
-  <button
-    class="btn-in"
-    onclick="finishMovement('ENTRADA')">
-
-    ⬇️ ENTRADA
-
-  </button>
-
-
-</div>
-
-
-
-<button
-  class="reset-scan"
-  id="resetScan"
-  onclick="resetWorkflow()">
-
-  🔄 NOVA LEITURA
-
-</button>
-
-
-</div>
-
-
-
-<!-- ==========================================
      TOAST
 ========================================== -->
 
@@ -1790,7 +1838,7 @@ button{
 ========================================== */
 
 const STORAGE_KEY =
-  "arasigns_movimentacoes_v4";
+  "arasigns_movimentacoes_v5";
 
 
 let records =
@@ -1826,7 +1874,7 @@ const ITENS = {
 
 
 /* ==========================================
-   VARIÁVEIS DO SISTEMA
+   VARIÁVEIS
 ========================================== */
 
 let employee = null;
@@ -2130,7 +2178,6 @@ setInterval(
 
 updateClock();
 
-
 renderRecords();
 
 
@@ -2349,7 +2396,7 @@ function onBarcodeDetected(result){
 
 
   /* ========================================
-     PRIMEIRO CÓDIGO = FUNCIONÁRIO
+     FUNCIONÁRIO
   ======================================== */
 
   if(!employee){
@@ -2357,8 +2404,6 @@ function onBarcodeDetected(result){
     const nomeFuncionario =
       FUNCIONARIOS[code];
 
-
-    /* CÓDIGO NÃO CADASTRADO */
 
     if(!nomeFuncionario){
 
@@ -2416,7 +2461,7 @@ function onBarcodeDetected(result){
 
 
   /* ========================================
-     SEGUNDO CÓDIGO = ITEM
+     ITEM
   ======================================== */
 
   else if(!item){
@@ -2424,8 +2469,6 @@ function onBarcodeDetected(result){
     const nomeItem =
       ITENS[code];
 
-
-    /* CÓDIGO NÃO CADASTRADO */
 
     if(!nomeItem){
 
@@ -2473,6 +2516,8 @@ function onBarcodeDetected(result){
     scanMessageEl.textContent =
       "Item OK. Escolha o tipo de movimentação.";
 
+
+    /* MOSTRAR BOTÕES */
 
     document
       .getElementById("movementButtons")
@@ -2731,7 +2776,6 @@ function exportCSV(){
       row =>
 
         row
-
           .map(
 
             value =>

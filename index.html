@@ -17,7 +17,7 @@
 <style>
 
 /* =====================================================
-   CONFIGURAÇÃO GERAL
+   GERAL
 ===================================================== */
 
 * {
@@ -35,7 +35,7 @@ body {
     width: 100%;
     max-width: 600px;
     margin: auto;
-    padding: 15px 14px 30px;
+    padding: 12px 12px 25px;
 }
 
 
@@ -45,7 +45,7 @@ body {
 
 .logo {
     text-align: center;
-    font-size: 38px;
+    font-size: 34px;
     font-weight: 900;
     letter-spacing: 1px;
     margin-top: 3px;
@@ -53,9 +53,9 @@ body {
 
 .subtitulo {
     text-align: center;
-    font-size: 19px;
-    color: #777;
-    margin-bottom: 18px;
+    font-size: 18px;
+    color: #777777;
+    margin-bottom: 14px;
 }
 
 
@@ -66,25 +66,26 @@ body {
 .status-card {
     background: #eeeeee;
     border-radius: 20px;
-    padding: 20px 15px;
+    padding: 17px 12px;
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .status-titulo {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
 }
 
 .codigo {
-    font-size: 38px;
+    font-size: 34px;
     font-weight: bold;
-    margin-top: 12px;
+    margin-top: 8px;
+    min-height: 40px;
 }
 
 .etapa {
-    margin-top: 10px;
-    font-size: 18px;
+    margin-top: 7px;
+    font-size: 17px;
     font-weight: bold;
 }
 
@@ -104,28 +105,29 @@ body {
 .camera-area {
     width: 100%;
     max-width: 600px;
-    height: 145px;
+    height: 150px;
     margin: 0 auto 12px;
     overflow: hidden;
     border-radius: 18px;
-    background: #111;
+    background: #111111;
     position: relative;
 }
 
 #reader {
     width: 100% !important;
-    height: 145px !important;
+    height: 150px !important;
 }
 
 #reader video {
     width: 100% !important;
-    height: 145px !important;
+    height: 150px !important;
     object-fit: cover !important;
 }
 
-#reader__scan_region {
-    width: 100% !important;
-}
+
+/* =====================================================
+   ESCONDER PAINEL EXTRA DO LEITOR
+===================================================== */
 
 #reader__dashboard {
     display: none !important;
@@ -139,22 +141,22 @@ body {
 .btn {
     width: 100%;
     border: none;
-    border-radius: 20px;
-    padding: 17px;
-    font-size: 21px;
+    border-radius: 18px;
+    padding: 15px;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 11px;
+    margin-bottom: 9px;
     cursor: pointer;
 }
 
 .btn-camera {
     background: #111111;
-    color: white;
+    color: #ffffff;
 }
 
 .btn-csv {
     background: #16963b;
-    color: white;
+    color: #ffffff;
 }
 
 .btn-limpar {
@@ -169,9 +171,9 @@ body {
 
 .aviso {
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
-    margin: 7px 0 12px;
+    margin: 5px 0 9px;
 }
 
 
@@ -182,17 +184,17 @@ body {
 .movimentacoes {
     background: #eeeeee;
     border-radius: 20px;
-    padding: 18px;
+    padding: 15px;
     margin-top: 10px;
 }
 
 .movimentacoes h2 {
-    font-size: 23px;
+    font-size: 21px;
     margin-top: 0;
 }
 
 .movimento {
-    background: white;
+    background: #ffffff;
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 8px;
@@ -203,86 +205,81 @@ body {
 }
 
 .movimento small {
-    color: #777;
+    color: #777777;
 }
 
 .contador {
     text-align: center;
     font-size: 16px;
-    color: #666;
+    color: #666666;
     margin-top: 10px;
 }
 
 
 /* =====================================================
-   CELULARES MENORES
+   CELULARES MAIORES
 ===================================================== */
 
-@media (max-width: 500px) {
+@media (min-width: 501px) {
 
     .container {
-        padding: 12px 12px 25px;
+        padding-top: 20px;
     }
 
     .logo {
-        font-size: 34px;
+        font-size: 40px;
     }
 
     .subtitulo {
-        font-size: 18px;
-        margin-bottom: 14px;
+        font-size: 20px;
     }
 
-    .status-card {
-        padding: 17px 12px;
-        margin-bottom: 12px;
+}
+
+
+/* =====================================================
+   CELULARES PEQUENOS
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .logo {
+        font-size: 30px;
+    }
+
+    .subtitulo {
+        font-size: 16px;
     }
 
     .status-titulo {
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .codigo {
-        font-size: 34px;
-        margin-top: 8px;
+        font-size: 30px;
     }
 
     .etapa {
-        font-size: 17px;
-        margin-top: 7px;
+        font-size: 16px;
     }
 
     .camera-area {
-        height: 135px;
+        height: 140px;
     }
 
     #reader {
-        height: 135px !important;
+        height: 140px !important;
     }
 
     #reader video {
-        height: 135px !important;
+        height: 140px !important;
     }
 
     .btn {
-        padding: 15px;
-        font-size: 20px;
-        border-radius: 18px;
-        margin-bottom: 9px;
+        font-size: 18px;
+        padding: 14px;
     }
 
-    .aviso {
-        font-size: 15px;
-        margin: 5px 0 9px;
-    }
-
-    .movimentacoes {
-        padding: 15px;
-    }
-
-    .movimentacoes h2 {
-        font-size: 21px;
-    }
 }
 
 </style>
@@ -291,6 +288,7 @@ body {
 
 
 <body>
+
 
 <div class="container">
 
@@ -309,7 +307,7 @@ body {
 
 
     <!-- =================================================
-         STATUS DO ÚLTIMO CÓDIGO
+         STATUS
     ================================================== -->
 
     <div class="status-card">
@@ -347,7 +345,7 @@ body {
 
 
     <!-- =================================================
-         BOTÃO DA CÂMERA
+         CONTROLE DA CÂMERA
     ================================================== -->
 
     <button
@@ -368,7 +366,7 @@ body {
 
 
     <!-- =================================================
-         GERAR CSV
+         CSV
     ================================================== -->
 
     <button
@@ -380,7 +378,7 @@ body {
 
 
     <!-- =================================================
-         LIMPAR REGISTROS
+         LIMPAR
     ================================================== -->
 
     <button
@@ -414,6 +412,7 @@ body {
 
     </div>
 
+
 </div>
 
 
@@ -435,26 +434,26 @@ let funcionarioAtual = null;
 
 
 /*
-   Recupera os registros salvos
-   no navegador.
+   Recupera os registros do aparelho
 */
 
 let movimentacoes =
+
     JSON.parse(
+
         localStorage.getItem(
             "arasigns_movimentacoes"
         )
+
     ) || [];
+
 
 
 /* =====================================================
    BIP
 ===================================================== */
 
-function bip(
-    frequencia = 900,
-    duracao = 120
-) {
+function bip() {
 
     try {
 
@@ -478,7 +477,7 @@ function bip(
         );
 
         oscillator.frequency.value =
-            frequencia;
+            900;
 
         oscillator.type =
             "sine";
@@ -496,7 +495,7 @@ function bip(
                 audio.close();
 
             },
-            duracao
+            120
         );
 
     } catch (erro) {
@@ -511,6 +510,7 @@ function bip(
 }
 
 
+
 /* =====================================================
    INICIAR CÂMERA
 ===================================================== */
@@ -521,10 +521,12 @@ async function iniciarCamera() {
         return;
     }
 
+
     document.getElementById(
         "statusCamera"
     ).innerText =
         "📷 Iniciando câmera...";
+
 
     document.getElementById(
         "statusCamera"
@@ -541,26 +543,14 @@ async function iniciarCamera() {
 
 
         /*
-           FORMATAÇÃO DE CÓDIGOS DE BARRAS
+           IMPORTANTE:
+
+           Não estamos limitando os formatos.
+
+           O leitor poderá detectar
+           automaticamente os códigos
+           de barras suportados.
         */
-
-        const formatos = [
-
-            Html5QrcodeSupportedFormats.CODE_128,
-
-            Html5QrcodeSupportedFormats.CODE_39,
-
-            Html5QrcodeSupportedFormats.CODE_93,
-
-            Html5QrcodeSupportedFormats.EAN_13,
-
-            Html5QrcodeSupportedFormats.EAN_8,
-
-            Html5QrcodeSupportedFormats.UPC_A,
-
-            Html5QrcodeSupportedFormats.UPC_E
-
-        ];
 
 
         await scanner.start(
@@ -572,36 +562,42 @@ async function iniciarCamera() {
 
             {
 
-                fps: 15,
+                fps: 10,
+
 
                 /*
-                   ÁREA HORIZONTAL
-                   IDEAL PARA CÓDIGO DE BARRAS
+                   ÁREA DE LEITURA:
+
+                   LARGA
+                   +
+                   BAIXA
+
+                   Ideal para código de barras.
                 */
 
                 qrbox: {
 
-                    width: 320,
+                    width: 350,
 
-                    height: 100
+                    height: 70
 
                 },
 
-                aspectRatio:
-                    1.7777778,
 
-                formatsToSupport:
-                    formatos
+                aspectRatio:
+                    1.7777778
 
             },
 
+
             codigoLido,
+
 
             function(error) {
 
                 /*
-                   Erros normais de leitura
-                   são ignorados.
+                   Erros normais enquanto
+                   procura o código.
                 */
 
             }
@@ -633,7 +629,7 @@ async function iniciarCamera() {
     } catch (erro) {
 
         console.error(
-            "Erro câmera:",
+            "Erro ao iniciar câmera:",
             erro
         );
 
@@ -658,6 +654,7 @@ async function iniciarCamera() {
     }
 
 }
+
 
 
 /* =====================================================
@@ -712,6 +709,7 @@ async function pararCamera() {
 }
 
 
+
 /* =====================================================
    ALTERNAR CÂMERA
 ===================================================== */
@@ -731,15 +729,18 @@ function alternarCamera() {
 }
 
 
+
 /* =====================================================
    CÓDIGO LIDO
 ===================================================== */
 
 function codigoLido(codigo) {
 
+
     /*
-       Impede várias leituras
-       do mesmo código em sequência.
+       Evita o mesmo código ser lido
+       repetidamente enquanto está
+       parado na frente da câmera.
     */
 
     if (processando) {
@@ -788,14 +789,16 @@ function codigoLido(codigo) {
 
 
     /*
-       PRIMEIRO SCAN
+       PRIMEIRO CÓDIGO:
        FUNCIONÁRIO
     */
 
     if (esperandoFuncionario) {
 
+
         funcionarioAtual =
             codigo;
+
 
         esperandoFuncionario =
             false;
@@ -814,11 +817,12 @@ function codigoLido(codigo) {
 
 
         return;
+
     }
 
 
     /*
-       SEGUNDO SCAN
+       SEGUNDO CÓDIGO:
        FERRAMENTA
     */
 
@@ -852,17 +856,13 @@ function codigoLido(codigo) {
 
 
     /*
-       ADICIONA REGISTRO
+       SALVA
     */
 
     movimentacoes.push(
         registro
     );
 
-
-    /*
-       SALVA NO CELULAR
-    */
 
     localStorage.setItem(
 
@@ -876,11 +876,14 @@ function codigoLido(codigo) {
 
 
     /*
-       VOLTA PARA FUNCIONÁRIO
+       RESET
+
+       Próximo será funcionário.
     */
 
     funcionarioAtual =
         null;
+
 
     esperandoFuncionario =
         true;
@@ -903,11 +906,13 @@ function codigoLido(codigo) {
 }
 
 
+
 /* =====================================================
    ATUALIZAR LISTA
 ===================================================== */
 
 function atualizarLista() {
+
 
     const lista =
         document.getElementById(
@@ -922,7 +927,9 @@ function atualizarLista() {
 
 
     contador.innerText =
+
         movimentacoes.length +
+
         (
             movimentacoes.length === 1
                 ? " movimentação"
@@ -953,7 +960,9 @@ function atualizarLista() {
 
 
     lista.innerHTML =
+
         registros
+
         .map(
             function(registro) {
 
@@ -987,13 +996,15 @@ function atualizarLista() {
 
             }
         )
+
         .join("");
 
 }
 
 
+
 /* =====================================================
-   PROTEÇÃO HTML
+   SEGURANÇA
 ===================================================== */
 
 function escaparHTML(texto) {
@@ -1028,11 +1039,13 @@ function escaparHTML(texto) {
 }
 
 
+
 /* =====================================================
    GERAR CSV
 ===================================================== */
 
 function gerarCSV() {
+
 
     if (
         movimentacoes.length === 0
@@ -1048,25 +1061,31 @@ function gerarCSV() {
 
 
     let csv =
+
         "DATA,HORA,FUNCIONARIO,FERRAMENTA\n";
 
 
     movimentacoes.forEach(
+
         function(registro) {
 
             csv +=
+
                 `"${registro.data}",` +
+
                 `"${registro.hora}",` +
+
                 `"${registro.funcionario}",` +
+
                 `"${registro.ferramenta}"\n`;
 
         }
+
     );
 
 
     /*
        BOM para o Excel
-       reconhecer acentos.
     */
 
     const BOM =
@@ -1074,14 +1093,20 @@ function gerarCSV() {
 
 
     const blob =
+
         new Blob(
+
             [
                 BOM + csv
             ],
+
             {
+
                 type:
                     "text/csv;charset=utf-8;"
+
             }
+
         );
 
 
@@ -1102,10 +1127,16 @@ function gerarCSV() {
 
 
     const nomeArquivo =
+
         "ARASIGNS_MOVIMENTACOES_" +
+
         agora
-        .toISOString()
-        .slice(0, 10) +
+            .toISOString()
+            .slice(
+                0,
+                10
+            ) +
+
         ".csv";
 
 
@@ -1134,7 +1165,9 @@ function gerarCSV() {
         url
     );
 
+
 }
+
 
 
 /* =====================================================
@@ -1143,16 +1176,30 @@ function gerarCSV() {
 
 function limparRegistros() {
 
+
     if (
         movimentacoes.length === 0
     ) {
+
         return;
+
     }
 
 
     const confirmar =
+
         confirm(
-            "Tem certeza que deseja apagar TODAS as movimentações?"
+
+            "⚠️ ATENÇÃO!\n\n" +
+
+            "Isso vai apagar TODAS as movimentações " +
+
+            "salvas neste aparelho.\n\n" +
+
+            "Gere o CSV antes de continuar.\n\n" +
+
+            "Deseja realmente apagar?"
+
         );
 
 
@@ -1200,6 +1247,7 @@ function limparRegistros() {
 }
 
 
+
 /* =====================================================
    INICIALIZAÇÃO
 ===================================================== */
@@ -1209,23 +1257,29 @@ atualizarLista();
 
 /*
    Abre a câmera automaticamente
-   quando a página carregar.
+   ao carregar a página.
 */
 
 window.addEventListener(
+
     "load",
+
     function() {
 
         setTimeout(
+
             function() {
 
                 iniciarCamera();
 
             },
+
             500
+
         );
 
     }
+
 );
 
 </script>

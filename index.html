@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Almoxarifado Arasigns</title>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .subtitulo {
+            text-align: center;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        #reader {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            padding: 15px;
+            background: #eeeeee;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .codigo {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #111;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: #aaa;
+        }
+
+        .item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>ARASIGNS</h1>
+
+    <div class="subtitulo">
+        Controle de Almoxarifado
+    </div>
+
+    <div class="status">
+
+        <strong>Último código lido:</strong>
+
+        <div id="resultado" class="codigo">
+            Nenhum
+        </div>
+
+    </div>
+
+    <div id="reader"></div>
+
+    <button onclick="iniciarLeitor()">
+        📷 LER CÓDIGO
+    </button>
+
+    <br><br>
+
+    <div class="status">
+
+        <strong>Movimentação</strong>
+
+        <div id="lista">
+            Nenhum item registrado.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let leitor;
+let itens = [];
+
+function iniciarLeitor() {
+
+    if (leitor) {
+        return;
+    }
+
+    leitor = new Html5Qrcode("reader");
+
+    const configuracao = {
+        fps: 10,
+        qrbox: {
+            width: 280,
+            height: 150
+        }
+    };
+
+    leitor.start(
+        { facingMode: "environment" },
+        configuracao,
+
+        function(codigo) {
+
+            document.getElementById("resultado").innerText = codigo;
+
+            adicionarItem(codigo);
+
+            leitor.stop().then(() => {
+                leitor = null;
+            });
+
+        },
+
+        function(error) {
+            // Erros de leitura são normais enquanto a câmera procura o código.
+        }
+
+    ).catch(function(error) {
+
+        alert("Não foi possível abrir a câmera: " + error);
+
+    });
+
+}
+
+function adicionarItem(codigo) {
+
+    itens.push(codigo);
+
+    atualizarLista();
+
+}
+
+function atualizarLista() {
+
+    const lista = document.getElementById("lista");
+
+    lista.innerHTML = "";
+
+    itens.forEach(function(item, index) {
+
+        const div = document.createElement("div");
+
+        div.className = "item";
+
+        div.innerHTML =
+            "<strong>" +
+            (index + 1) +
+            ".</strong> " +
+            item;
+
+        lista.appendChild(div);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

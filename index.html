@@ -56,6 +56,7 @@
   box-sizing:border-box;
 }
 
+
 html,
 body{
 
@@ -72,6 +73,7 @@ body{
     sans-serif;
 
 }
+
 
 body{
   min-height:100vh;
@@ -111,6 +113,7 @@ body{
 
 }
 
+
 .logo{
 
   width:min(620px,92%);
@@ -130,6 +133,7 @@ body{
 
 }
 
+
 .subtitle{
 
   margin-top:2px;
@@ -148,6 +152,7 @@ body{
   color:#ddd;
 
 }
+
 
 .brand-line{
 
@@ -187,7 +192,6 @@ body{
   border-radius:28px;
 
   background:
-
     linear-gradient(
       var(--card),
       var(--card)
@@ -600,7 +604,7 @@ body{
 
 
 /* ==========================================
-   ENTRADA / SAÍDA
+   BOTÕES ENTRADA / SAÍDA
 ========================================== */
 
 .movement-buttons{
@@ -680,6 +684,10 @@ body{
 }
 
 
+/* ==========================================
+   BOTÃO CANCELAR
+========================================== */
+
 .reset-scan{
 
   display:none;
@@ -688,20 +696,42 @@ body{
 
   margin-top:10px;
 
-  padding:13px;
+  padding:15px;
 
-  border-radius:14px;
+  border-radius:16px;
 
   background:#242529;
 
-  color:#ddd;
+  color:#fff;
 
-  font-weight:800;
+  font-weight:900;
+
+  font-size:16px;
 
   border:
     1px
     solid
-    #35363a;
+    #45464b;
+
+  cursor:pointer;
+
+  transition:
+    transform .15s,
+    background .15s;
+
+}
+
+
+.reset-scan:active{
+
+  transform:scale(.98);
+
+}
+
+
+.reset-scan:hover{
+
+  background:#303136;
 
 }
 
@@ -1341,6 +1371,7 @@ button{
 
 <section class="scanner-card">
 
+
   <div class="scanner-top">
 
     <div class="reader-title">
@@ -1398,6 +1429,7 @@ button{
 
   </div>
 
+
 </section>
 
 
@@ -1407,10 +1439,12 @@ button{
 
 <section class="card">
 
+
   <div class="status-grid">
 
 
     <div class="status-main">
+
 
       <div class="status-icon">
         👤
@@ -1418,6 +1452,7 @@ button{
 
 
       <div>
+
 
         <div class="label">
           STATUS ATUAL
@@ -1441,12 +1476,15 @@ button{
 
         </div>
 
+
       </div>
+
 
     </div>
 
 
     <div class="next">
+
 
       <div class="next-icon">
         ⇄
@@ -1454,6 +1492,7 @@ button{
 
 
       <div>
+
 
         <div class="label">
           PRÓXIMO PASSO
@@ -1468,19 +1507,21 @@ button{
 
         </div>
 
+
       </div>
+
 
     </div>
 
 
   </div>
 
+
 </section>
 
 
 <!-- ==========================================
      ENTRADA / SAÍDA
-     FICA ACIMA DA ÚLTIMA LEITURA
 ========================================== -->
 
 <div
@@ -1509,12 +1550,16 @@ button{
 </div>
 
 
+<!-- ==========================================
+     CANCELAR LEITURA
+========================================== -->
+
 <button
   class="reset-scan"
   id="resetScan"
-  onclick="resetWorkflow()">
+  onclick="cancelarLeitura()">
 
-  🔄 NOVA LEITURA
+  ❌ CANCELAR LEITURA
 
 </button>
 
@@ -1528,12 +1573,14 @@ button{
 
   <div class="info">
 
+
     <div class="info-icon">
       ⌖
     </div>
 
 
     <div>
+
 
       <div class="label">
         ÚLTIMA LEITURA
@@ -1548,12 +1595,15 @@ button{
 
       </div>
 
+
     </div>
+
 
   </div>
 
 
   <div class="info">
+
 
     <div class="info-icon">
       ◷
@@ -1561,6 +1611,7 @@ button{
 
 
     <div>
+
 
       <div class="label">
         DATA / HORA
@@ -1575,7 +1626,9 @@ button{
 
       </div>
 
+
     </div>
+
 
   </div>
 
@@ -1594,12 +1647,14 @@ button{
     class="action csv"
     onclick="exportCSV()">
 
+
     <div class="action-icon">
       📄
     </div>
 
 
     <div>
+
 
       <div class="action-title">
         GERAR CSV
@@ -1610,7 +1665,9 @@ button{
         Exportar movimentações
       </div>
 
+
     </div>
+
 
   </button>
 
@@ -1619,12 +1676,14 @@ button{
     class="action clear"
     onclick="clearRecords()">
 
+
     <div class="action-icon">
       🗑️
     </div>
 
 
     <div>
+
 
       <div class="action-title">
         LIMPAR REGISTROS
@@ -1635,7 +1694,9 @@ button{
         Apagar todas as movimentações
       </div>
 
+
     </div>
+
 
   </button>
 
@@ -1652,6 +1713,7 @@ button{
 
   <div class="mov-header">
 
+
     <div class="mov-title">
       ÚLTIMAS MOVIMENTAÇÕES
     </div>
@@ -1665,14 +1727,18 @@ button{
 
     </div>
 
+
   </div>
 
 
   <div id="movements">
 
+
     <div class="empty">
 
+
       <div>
+
 
         <div
           style="
@@ -1683,28 +1749,37 @@ button{
 
         </div>
 
+
         Nenhuma movimentação registrada.
 
+
         <br>
+
 
         <small>
           As movimentações aparecerão aqui.
         </small>
 
+
       </div>
 
+
     </div>
+
 
   </div>
 
 
   <div class="footer-total">
 
+
     <b id="total">
       0
     </b>
 
+
     MOVIMENTAÇÕES REGISTRADAS
+
 
   </div>
 
@@ -1727,6 +1802,7 @@ button{
 
 <script>
 
+
 /* ==========================================
    CONFIGURAÇÃO
 ========================================== */
@@ -1747,41 +1823,66 @@ let records =
 ========================================== */
 
 
-/* ==========================================
+/*
    FUNCIONÁRIOS
-========================================== */
+
+   IMPORTANTE:
+   Você ainda precisa colocar aqui
+   os códigos reais de cada funcionário.
+
+   Por enquanto:
+   84921 = Guilherme Santos
+
+   Os demais estão como 001, 002 etc.
+*/
+
 
 const FUNCIONARIOS = {
 
-  "001": "TOCO",
+  "001":
+    "TOCO",
 
-  "002": "RAMALHO",
+  "002":
+    "RAMALHO",
 
-  "003": "LUAN",
+  "003":
+    "LUAN",
 
-  "004": "TAMY",
+  "004":
+    "TAMY",
 
-  "005": "DIEGO",
+  "005":
+    "DIEGO",
 
-  "006": "WELTON",
+  "006":
+    "WELTON",
 
-  "007": "GILDO",
+  "007":
+    "GILDO",
 
-  "008": "WESLEY",
+  "008":
+    "WESLEY",
 
-  "009": "DENIS",
+  "009":
+    "DENIS",
 
-  "010": "ISA",
+  "010":
+    "ISA",
 
-  "011": "JULIA",
+  "011":
+    "JULIA",
 
-  "012": "MARI",
+  "012":
+    "MARI",
 
-  "013": "CAMINHÃO",
+  "013":
+    "CAMINHÃO",
 
-  "014": "SAVEIRO",
+  "014":
+    "SAVEIRO",
 
-  "84921": "Guilherme Santos"
+  "84921":
+    "Guilherme Santos"
 
 };
 
@@ -1889,11 +1990,8 @@ function toast(message){
 function save(){
 
   localStorage.setItem(
-
     STORAGE_KEY,
-
     JSON.stringify(records)
-
   );
 
 
@@ -1913,13 +2011,9 @@ function renderRecords(){
     records.length +
 
     (
-
       records.length === 1
-
         ? " REGISTRO"
-
         : " REGISTROS"
-
     );
 
 
@@ -2092,7 +2186,6 @@ function nowBR(){
 function updateClock(){
 
   dateTimeEl.textContent =
-
     new Date()
       .toLocaleString("pt-BR");
 
@@ -2133,8 +2226,9 @@ function startScanner(){
       type:"LiveStream",
 
       target:
-        document.querySelector("#scanner"),
-
+        document.querySelector(
+          "#scanner"
+        ),
 
       constraints:{
 
@@ -2293,18 +2387,6 @@ function startScanner(){
 
 
 /* ==========================================
-   NORMALIZAR CÓDIGO
-========================================== */
-
-function normalizarCodigo(code){
-
-  return String(code ?? "")
-    .trim();
-
-}
-
-
-/* ==========================================
    QUANDO LER O CÓDIGO
 ========================================== */
 
@@ -2315,9 +2397,7 @@ function onBarcodeDetected(result){
 
 
   const code =
-    normalizarCodigo(
-      result?.codeResult?.code
-    );
+    result?.codeResult?.code;
 
 
   if(!code)
@@ -2341,10 +2421,11 @@ function onBarcodeDetected(result){
 
 
   /* ========================================
-     PRIMEIRO CÓDIGO = FUNCIONÁRIO
+     FUNCIONÁRIO
   ======================================== */
 
   if(!employee){
+
 
     const nomeFuncionario =
       FUNCIONARIOS[code];
@@ -2359,8 +2440,7 @@ function onBarcodeDetected(result){
 
 
       scanMessageEl.textContent =
-        "Código de funcionário não cadastrado. Código lido: " +
-        code;
+        "Código de funcionário não cadastrado.";
 
 
       scanningLocked =
@@ -2381,12 +2461,21 @@ function onBarcodeDetected(result){
     };
 
 
+    /* MOSTRAR CANCELAR */
+
+    document
+      .getElementById(
+        "resetScan"
+      )
+      .style.display =
+      "block";
+
+
     statusEl.textContent =
       "FUNCIONÁRIO IDENTIFICADO";
 
 
     statusSubEl.textContent =
-
       nomeFuncionario +
       " — Código: " +
       code;
@@ -2409,10 +2498,11 @@ function onBarcodeDetected(result){
 
 
   /* ========================================
-     SEGUNDO CÓDIGO = ITEM
+     ITEM
   ======================================== */
 
   else if(!item){
+
 
     const nomeItem =
       ITENS[code];
@@ -2427,8 +2517,7 @@ function onBarcodeDetected(result){
 
 
       scanMessageEl.textContent =
-        "Código de item não cadastrado. Código lido: " +
-        code;
+        "Código de item não cadastrado.";
 
 
       scanningLocked =
@@ -2454,7 +2543,6 @@ function onBarcodeDetected(result){
 
 
     statusSubEl.textContent =
-
       nomeItem +
       " — Código: " +
       code;
@@ -2468,14 +2556,22 @@ function onBarcodeDetected(result){
       "Item OK. Escolha o tipo de movimentação.";
 
 
+    /* MOSTRAR BOTÕES */
+
     document
-      .getElementById("movementButtons")
+      .getElementById(
+        "movementButtons"
+      )
       .style.display =
       "grid";
 
 
+    /* GARANTIR CANCELAR */
+
     document
-      .getElementById("resetScan")
+      .getElementById(
+        "resetScan"
+      )
       .style.display =
       "block";
 
@@ -2488,6 +2584,13 @@ function onBarcodeDetected(result){
   }
 
 
+  /*
+     TEMPO DE SEGURANÇA
+
+     Evita que o mesmo código seja
+     lido várias vezes seguidas.
+  */
+
   setTimeout(
 
     () => {
@@ -2497,8 +2600,77 @@ function onBarcodeDetected(result){
 
     },
 
-    1800
+    2500
 
+  );
+
+}
+
+
+/* ==========================================
+   CANCELAR LEITURA
+========================================== */
+
+function cancelarLeitura(){
+
+  employee =
+    null;
+
+
+  item =
+    null;
+
+
+  scanningLocked =
+    false;
+
+
+  /* ESCONDER ENTRADA / SAÍDA */
+
+  document
+    .getElementById(
+      "movementButtons"
+    )
+    .style.display =
+    "none";
+
+
+  /* ESCONDER CANCELAR */
+
+  document
+    .getElementById(
+      "resetScan"
+    )
+    .style.display =
+    "none";
+
+
+  /* LIMPAR ÚLTIMA LEITURA */
+
+  lastReadEl.textContent =
+    "—";
+
+
+  /* VOLTAR STATUS */
+
+  statusEl.textContent =
+    "AGUARDANDO FUNCIONÁRIO";
+
+
+  statusSubEl.textContent =
+    "Aponte o código de barras do funcionário";
+
+
+  nextStepEl.textContent =
+    "Escaneie o funcionário";
+
+
+  scanMessageEl.textContent =
+    "Leitura cancelada. Pronto para escanear novamente.";
+
+
+  toast(
+    "Leitura cancelada."
   );
 
 }
@@ -2520,7 +2692,8 @@ function finishMovement(tipo){
 
   records.push({
 
-    dataHora:dataHora,
+    dataHora:
+      dataHora,
 
     funcionario:
       employee.nome,
@@ -2581,13 +2754,17 @@ function resetWorkflow(){
 
 
   document
-    .getElementById("movementButtons")
+    .getElementById(
+      "movementButtons"
+    )
     .style.display =
     "none";
 
 
   document
-    .getElementById("resetScan")
+    .getElementById(
+      "resetScan"
+    )
     .style.display =
     "none";
 
@@ -2635,7 +2812,8 @@ function clearRecords(){
 
   ){
 
-    records = [];
+    records =
+      [];
 
 
     localStorage.removeItem(
@@ -2742,7 +2920,10 @@ function exportCSV(){
             value =>
 
               `"${String(value ?? "")
-                .replaceAll('"','""')}"`
+                .replaceAll(
+                  '"',
+                  '""'
+                )}"`
 
           )
 
@@ -2778,7 +2959,6 @@ function exportCSV(){
 
 
   const date =
-
     new Date()
       .toISOString()
       .slice(0,10);
@@ -2789,7 +2969,6 @@ function exportCSV(){
 
 
   a.download =
-
     "arasigns_movimentacoes_" +
     date +
     ".csv";

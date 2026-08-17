@@ -56,7 +56,6 @@
   box-sizing:border-box;
 }
 
-
 html,
 body{
 
@@ -73,7 +72,6 @@ body{
     sans-serif;
 
 }
-
 
 body{
   min-height:100vh;
@@ -113,7 +111,6 @@ body{
 
 }
 
-
 .logo{
 
   width:min(620px,92%);
@@ -133,7 +130,6 @@ body{
 
 }
 
-
 .subtitle{
 
   margin-top:2px;
@@ -152,7 +148,6 @@ body{
   color:#ddd;
 
 }
-
 
 .brand-line{
 
@@ -192,6 +187,7 @@ body{
   border-radius:28px;
 
   background:
+
     linear-gradient(
       var(--card),
       var(--card)
@@ -604,8 +600,7 @@ body{
 
 
 /* ==========================================
-   BOTÕES ENTRADA / SAÍDA
-   AGORA FICAM ACIMA DA ÚLTIMA LEITURA
+   ENTRADA / SAÍDA
 ========================================== */
 
 .movement-buttons{
@@ -703,7 +698,10 @@ body{
 
   font-weight:800;
 
-  border:1px solid #35363a;
+  border:
+    1px
+    solid
+    #35363a;
 
 }
 
@@ -1261,7 +1259,9 @@ button{
 
   .movement-buttons button{
 
-    padding:17px 8px;
+    padding:
+      17px
+      8px;
 
     font-size:16px;
 
@@ -1320,26 +1320,19 @@ button{
 
 <header class="header">
 
-
   <img
     src="Logo.png"
     class="logo"
     alt="Arasigns"
   >
 
-
   <div class="subtitle">
-
     CONTROLE DE ALMOXARIFADO
-
   </div>
-
 
   <div class="brand-line"></div>
 
-
 </header>
-
 
 
 <!-- ==========================================
@@ -1348,9 +1341,7 @@ button{
 
 <section class="scanner-card">
 
-
   <div class="scanner-top">
-
 
     <div class="reader-title">
 
@@ -1365,29 +1356,21 @@ button{
 
     <div class="camera-status">
 
-
       <span
         class="dot"
         id="cameraDot">
       </span>
 
-
       <span id="cameraText">
-
         INICIANDO CÂMERA...
-
       </span>
 
-
     </div>
-
 
   </div>
 
 
-
   <div id="scanner">
-
 
     <div class="scan-target">
 
@@ -1395,9 +1378,7 @@ button{
 
     </div>
 
-
   </div>
-
 
 
   <div class="scan-help">
@@ -1417,9 +1398,7 @@ button{
 
   </div>
 
-
 </section>
-
 
 
 <!-- ==========================================
@@ -1428,27 +1407,20 @@ button{
 
 <section class="card">
 
-
   <div class="status-grid">
 
 
     <div class="status-main">
 
-
       <div class="status-icon">
-
         👤
-
       </div>
 
 
       <div>
 
-
         <div class="label">
-
           STATUS ATUAL
-
         </div>
 
 
@@ -1469,31 +1441,22 @@ button{
 
         </div>
 
-
       </div>
-
 
     </div>
 
 
-
     <div class="next">
 
-
       <div class="next-icon">
-
         ⇄
-
       </div>
 
 
       <div>
 
-
         <div class="label">
-
           PRÓXIMO PASSO
-
         </div>
 
 
@@ -1505,25 +1468,19 @@ button{
 
         </div>
 
-
       </div>
-
 
     </div>
 
 
   </div>
 
-
 </section>
-
 
 
 <!-- ==========================================
      ENTRADA / SAÍDA
-     
-     AGORA FICA AQUI:
-     LOGO ACIMA DA ÚLTIMA LEITURA
+     FICA ACIMA DA ÚLTIMA LEITURA
 ========================================== -->
 
 <div
@@ -1562,7 +1519,6 @@ button{
 </button>
 
 
-
 <!-- ==========================================
      ÚLTIMA LEITURA
 ========================================== -->
@@ -1572,21 +1528,15 @@ button{
 
   <div class="info">
 
-
     <div class="info-icon">
-
       ⌖
-
     </div>
 
 
     <div>
 
-
       <div class="label">
-
         ÚLTIMA LEITURA
-
       </div>
 
 
@@ -1598,31 +1548,22 @@ button{
 
       </div>
 
-
     </div>
-
 
   </div>
 
 
-
   <div class="info">
 
-
     <div class="info-icon">
-
       ◷
-
     </div>
 
 
     <div>
 
-
       <div class="label">
-
         DATA / HORA
-
       </div>
 
 
@@ -1634,15 +1575,12 @@ button{
 
       </div>
 
-
     </div>
-
 
   </div>
 
 
 </section>
-
 
 
 <!-- ==========================================
@@ -1656,75 +1594,53 @@ button{
     class="action csv"
     onclick="exportCSV()">
 
-
     <div class="action-icon">
-
       📄
-
     </div>
 
 
     <div>
 
-
       <div class="action-title">
-
         GERAR CSV
-
       </div>
 
 
       <div class="action-sub">
-
         Exportar movimentações
-
       </div>
-
 
     </div>
 
-
   </button>
-
 
 
   <button
     class="action clear"
     onclick="clearRecords()">
 
-
     <div class="action-icon">
-
       🗑️
-
     </div>
 
 
     <div>
 
-
       <div class="action-title">
-
         LIMPAR REGISTROS
-
       </div>
 
 
       <div class="action-sub">
-
         Apagar todas as movimentações
-
       </div>
 
-
     </div>
-
 
   </button>
 
 
 </section>
-
 
 
 <!-- ==========================================
@@ -1736,11 +1652,8 @@ button{
 
   <div class="mov-header">
 
-
     <div class="mov-title">
-
       ÚLTIMAS MOVIMENTAÇÕES
-
     </div>
 
 
@@ -1752,19 +1665,14 @@ button{
 
     </div>
 
-
   </div>
-
 
 
   <div id="movements">
 
-
     <div class="empty">
 
-
       <div>
-
 
         <div
           style="
@@ -1775,48 +1683,33 @@ button{
 
         </div>
 
-
         Nenhuma movimentação registrada.
-
 
         <br>
 
-
         <small>
-
           As movimentações aparecerão aqui.
-
         </small>
-
 
       </div>
 
-
     </div>
-
 
   </div>
 
 
-
   <div class="footer-total">
 
-
     <b id="total">
-
       0
-
     </b>
 
-
     MOVIMENTAÇÕES REGISTRADAS
-
 
   </div>
 
 
 </section>
-
 
 
 <!-- ==========================================
@@ -1829,16 +1722,17 @@ button{
 </div>
 
 
+</div>
+
 
 <script>
-
 
 /* ==========================================
    CONFIGURAÇÃO
 ========================================== */
 
 const STORAGE_KEY =
-  "arasigns_movimentacoes_v5";
+  "arasigns_movimentacoes_v6";
 
 
 let records =
@@ -1853,17 +1747,48 @@ let records =
 ========================================== */
 
 
-/* FUNCIONÁRIOS */
+/* ==========================================
+   FUNCIONÁRIOS
+========================================== */
 
 const FUNCIONARIOS = {
 
-  "84921":
-    "Guilherme Santos"
+  "001": "TOCO",
+
+  "002": "RAMALHO",
+
+  "003": "LUAN",
+
+  "004": "TAMY",
+
+  "005": "DIEGO",
+
+  "006": "WELTON",
+
+  "007": "GILDO",
+
+  "008": "WESLEY",
+
+  "009": "DENIS",
+
+  "010": "ISA",
+
+  "011": "JULIA",
+
+  "012": "MARI",
+
+  "013": "CAMINHÃO",
+
+  "014": "SAVEIRO",
+
+  "84921": "Guilherme Santos"
 
 };
 
 
-/* ITENS */
+/* ==========================================
+   ITENS
+========================================== */
 
 const ITENS = {
 
@@ -1964,8 +1889,11 @@ function toast(message){
 function save(){
 
   localStorage.setItem(
+
     STORAGE_KEY,
+
     JSON.stringify(records)
+
   );
 
 
@@ -1985,9 +1913,13 @@ function renderRecords(){
     records.length +
 
     (
+
       records.length === 1
+
         ? " REGISTRO"
+
         : " REGISTROS"
+
     );
 
 
@@ -2021,9 +1953,7 @@ function renderRecords(){
           <br>
 
           <small>
-
             As movimentações aparecerão aqui.
-
           </small>
 
         </div>
@@ -2040,10 +1970,15 @@ function renderRecords(){
   box.innerHTML =
 
     records
+
       .slice()
+
       .reverse()
+
       .slice(0,30)
+
       .map(
+
         r => `
 
           <div class="movement">
@@ -2056,13 +1991,10 @@ function renderRecords(){
               </small>
 
               <strong>
-
                 ${escapeHtml(r.funcionario)}
-
               </strong>
 
             </div>
-
 
 
             <div>
@@ -2072,13 +2004,10 @@ function renderRecords(){
               </small>
 
               <strong>
-
                 ${escapeHtml(r.item)}
-
               </strong>
 
             </div>
-
 
 
             <div>
@@ -2088,13 +2017,10 @@ function renderRecords(){
               </small>
 
               <strong>
-
                 ${escapeHtml(r.dataHora)}
-
               </strong>
 
             </div>
-
 
 
             <div class="type">
@@ -2107,7 +2033,9 @@ function renderRecords(){
           </div>
 
         `
+
       )
+
       .join("");
 
 }
@@ -2164,6 +2092,7 @@ function nowBR(){
 function updateClock(){
 
   dateTimeEl.textContent =
+
     new Date()
       .toLocaleString("pt-BR");
 
@@ -2212,16 +2141,13 @@ function startScanner(){
         facingMode:
           "environment",
 
-
         width:{
           ideal:1280
         },
 
-
         height:{
           ideal:720
         },
-
 
         aspectRatio:{
           ideal:1.777
@@ -2297,7 +2223,6 @@ function startScanner(){
 
       ],
 
-
       multiple:false
 
     },
@@ -2319,7 +2244,9 @@ function startScanner(){
         "CÂMERA BLOQUEADA";
 
 
-      cameraDot.classList.remove("on");
+      cameraDot.classList.remove(
+        "on"
+      );
 
 
       scanMessageEl.textContent =
@@ -2336,14 +2263,17 @@ function startScanner(){
     }
 
 
-    quaggaStarted = true;
+    quaggaStarted =
+      true;
 
 
     cameraText.textContent =
       "CÂMERA FUNCIONANDO";
 
 
-    cameraDot.classList.add("on");
+    cameraDot.classList.add(
+      "on"
+    );
 
 
     scanMessageEl.textContent =
@@ -2363,6 +2293,18 @@ function startScanner(){
 
 
 /* ==========================================
+   NORMALIZAR CÓDIGO
+========================================== */
+
+function normalizarCodigo(code){
+
+  return String(code ?? "")
+    .trim();
+
+}
+
+
+/* ==========================================
    QUANDO LER O CÓDIGO
 ========================================== */
 
@@ -2373,14 +2315,17 @@ function onBarcodeDetected(result){
 
 
   const code =
-    result?.codeResult?.code;
+    normalizarCodigo(
+      result?.codeResult?.code
+    );
 
 
   if(!code)
     return;
 
 
-  scanningLocked = true;
+  scanningLocked =
+    true;
 
 
   if(navigator.vibrate)
@@ -2396,7 +2341,7 @@ function onBarcodeDetected(result){
 
 
   /* ========================================
-     FUNCIONÁRIO
+     PRIMEIRO CÓDIGO = FUNCIONÁRIO
   ======================================== */
 
   if(!employee){
@@ -2414,10 +2359,12 @@ function onBarcodeDetected(result){
 
 
       scanMessageEl.textContent =
-        "Código de funcionário não cadastrado.";
+        "Código de funcionário não cadastrado. Código lido: " +
+        code;
 
 
-      scanningLocked = false;
+      scanningLocked =
+        false;
 
 
       return;
@@ -2439,6 +2386,7 @@ function onBarcodeDetected(result){
 
 
     statusSubEl.textContent =
+
       nomeFuncionario +
       " — Código: " +
       code;
@@ -2461,7 +2409,7 @@ function onBarcodeDetected(result){
 
 
   /* ========================================
-     ITEM
+     SEGUNDO CÓDIGO = ITEM
   ======================================== */
 
   else if(!item){
@@ -2479,10 +2427,12 @@ function onBarcodeDetected(result){
 
 
       scanMessageEl.textContent =
-        "Código de item não cadastrado.";
+        "Código de item não cadastrado. Código lido: " +
+        code;
 
 
-      scanningLocked = false;
+      scanningLocked =
+        false;
 
 
       return;
@@ -2504,6 +2454,7 @@ function onBarcodeDetected(result){
 
 
     statusSubEl.textContent =
+
       nomeItem +
       " — Código: " +
       code;
@@ -2516,8 +2467,6 @@ function onBarcodeDetected(result){
     scanMessageEl.textContent =
       "Item OK. Escolha o tipo de movimentação.";
 
-
-    /* MOSTRAR BOTÕES */
 
     document
       .getElementById("movementButtons")
@@ -2543,7 +2492,8 @@ function onBarcodeDetected(result){
 
     () => {
 
-      scanningLocked = false;
+      scanningLocked =
+        false;
 
     },
 
@@ -2618,11 +2568,16 @@ function finishMovement(tipo){
 
 function resetWorkflow(){
 
-  employee = null;
+  employee =
+    null;
 
-  item = null;
 
-  scanningLocked = false;
+  item =
+    null;
+
+
+  scanningLocked =
+    false;
 
 
   document
@@ -2673,9 +2628,11 @@ function clearRecords(){
 
 
   if(
+
     confirm(
       "Tem certeza que deseja apagar TODOS os registros deste aparelho?"
     )
+
   ){
 
     records = [];
@@ -2740,7 +2697,9 @@ function exportCSV(){
 
 
   const rows =
+
     records.map(
+
       r => [
 
         r.dataHora,
@@ -2756,6 +2715,7 @@ function exportCSV(){
         r.movimento
 
       ]
+
     );
 
 
@@ -2776,6 +2736,7 @@ function exportCSV(){
       row =>
 
         row
+
           .map(
 
             value =>
@@ -2793,13 +2754,16 @@ function exportCSV(){
 
 
   const blob =
+
     new Blob(
 
       [csv],
 
       {
+
         type:
           "text/csv;charset=utf-8;"
+
       }
 
     );
@@ -2814,6 +2778,7 @@ function exportCSV(){
 
 
   const date =
+
     new Date()
       .toISOString()
       .slice(0,10);
@@ -2824,6 +2789,7 @@ function exportCSV(){
 
 
   a.download =
+
     "arasigns_movimentacoes_" +
     date +
     ".csv";
@@ -2859,8 +2825,10 @@ document.addEventListener(
   () => {
 
     if(
+
       !document.hidden &&
       quaggaStarted
+
     ){
 
       try{
@@ -2889,14 +2857,16 @@ window.addEventListener(
   () => {
 
     setTimeout(
+
       startScanner,
+
       500
+
     );
 
   }
 
 );
-
 
 </script>
 

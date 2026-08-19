@@ -797,4 +797,803 @@ setInterval(()=>{
   if(executionEl)executionEl.textContent=executionTime(selectedOS);
 },1000);
 console.log("Arasigns pronto");
+</script></body></html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#08090b">
+<title>Arasigns — Almoxarifado e OS</title>
+<style>
+:root{--bg:#08090b;--card:#111214;--card2:#17181b;--line:#303136;--white:#f7f7f7;--muted:#a9aaae;--red:#ff1726;--orange:#ff6a00;--yellow:#ffd000;--green:#16d46b;--blue:#3498ff}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}body{min-height:100vh}.app{width:min(1200px,100%);margin:auto;padding:14px 16px 40px}
+.header{text-align:center;padding:5px 0 12px}.logo{max-width:520px;width:90%;max-height:110px;object-fit:contain}.brand{font-size:clamp(15px,2.5vw,22px);letter-spacing:4px;font-weight:900;color:#ddd}.brand-line{height:3px;width:90%;margin:12px auto 15px;background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow));border-radius:10px}
+.screen{display:none}.screen.active{display:block}.page-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.page-title{font-size:clamp(21px,4vw,30px);font-weight:900;text-align:center}.back-button,.small-button{border:1px solid #3b3c40;background:#17181b;color:white;padding:12px 18px;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer}.card{margin-top:14px;background:linear-gradient(145deg,#111214,#0d0e10);border:1px solid var(--line);border-radius:22px;padding:18px}.question{text-align:center;margin-bottom:20px}.question-label{color:var(--orange);font-size:14px;font-weight:900;letter-spacing:1px;margin-bottom:7px}.question-title{font-size:clamp(24px,5vw,34px);font-weight:900}
+.home-grid,.movement-choice,.options-grid,.category-grid,.dashboard-grid,.actions,.os-form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.home-button,.movement-choice button{min-height:120px;border:0;border-radius:20px;color:white;font-size:clamp(19px,4vw,26px);font-weight:900;cursor:pointer}.home-button.almox{background:linear-gradient(120deg,var(--red),var(--orange))}.home-button.os{background:linear-gradient(120deg,#075fb9,var(--blue))}.btn-retirada{background:linear-gradient(120deg,var(--red),var(--orange))}.btn-devolucao{background:linear-gradient(120deg,#079447,var(--green))}
+.option{min-height:78px;display:flex;align-items:center;gap:13px;border:1px solid var(--line);border-radius:17px;background:#151619;color:white;padding:13px 15px;cursor:pointer;text-align:left}.option-icon{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,var(--red),var(--orange),var(--yellow));font-size:26px}.option-name{font-size:clamp(17px,3vw,22px);font-weight:900}.category{min-height:105px;border:1px solid var(--line);border-radius:20px;background:#151619;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-weight:900;font-size:18px}.category-icon{font-size:38px}
+.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.summary-box,.dash-card{background:#151619;border:1px solid var(--line);border-radius:17px;padding:14px}.summary-label,.dash-label{color:var(--orange);font-size:13px;font-weight:900;margin-bottom:5px}.summary-value{font-size:20px;font-weight:900}.confirm-button{width:100%;margin-top:16px;padding:22px;border:0;border-radius:18px;background:linear-gradient(90deg,#079447,#16d46b);color:white;font-size:22px;font-weight:900;cursor:pointer}.primary{width:100%;margin-top:16px;padding:18px;border:0;border-radius:18px;background:linear-gradient(90deg,var(--red),var(--orange),var(--yellow));color:white;font-size:20px;font-weight:900;cursor:pointer}.quantity-input{width:100%;min-height:95px;border:2px solid #303136;border-radius:20px;background:#151619;color:white;text-align:center;font-size:42px;font-weight:900;padding:10px;margin-top:12px}.quantity-unit{color:var(--muted);text-align:center;font-size:16px;font-weight:800;margin-top:10px}.cancel-button{width:100%;margin-top:10px;padding:14px;border:1px solid #38393d;border-radius:15px;background:#18191c;color:#ddd;font-size:17px;font-weight:800;cursor:pointer}
+.history-header,.os-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.history-title{font-size:22px;font-weight:900}.history-count{color:var(--yellow);font-weight:900}#history,#osList{display:flex;flex-direction:column;gap:9px}.empty{min-height:120px;display:grid;place-items:center;text-align:center;border:1px solid #292a2d;border-radius:17px;color:var(--muted);padding:20px}.record,.os-card{background:#151619;border:1px solid #2d2e32;border-radius:15px;padding:13px}.record-top{display:flex;justify-content:space-between;gap:10px}.record-type,.os-number{font-weight:900;color:var(--yellow)}.record-date,.os-meta{color:#aaa;font-size:13px}.record-line{margin-top:7px;color:#ddd}.actions{margin-top:14px}.action{min-height:80px;border:0;border-radius:18px;color:white;cursor:pointer;font-weight:900;font-size:18px}.csv{background:linear-gradient(120deg,var(--red),var(--orange),var(--yellow))}.clear{background:#17181b;border:1px solid #35363a}
+input,select,textarea{width:100%;background:#17181b;border:1px solid #35363a;border-radius:13px;color:white;padding:14px;font-size:16px;font-family:inherit}textarea{min-height:105px;resize:vertical}.field label{display:block;font-weight:900;margin:0 0 7px}.full{grid-column:1/-1}.os-nav{display:grid;grid-template-columns:1fr 1fr;gap:12px}.os-nav button{min-height:95px;border:1px solid var(--line);border-radius:18px;color:white;font-size:18px;font-weight:900;cursor:pointer;background:#151619}.os-nav .register{background:linear-gradient(120deg,var(--red),var(--orange)}
+.dashboard-grid{grid-template-columns:repeat(5,1fr)}.dash-card{text-align:center}.dash-number{font-size:32px;font-weight:900}.dash-red{border-color:#7a2028}.dash-orange{border-color:#7a4a20}.dash-green{border-color:#1f6b42}.next-delivery{border:2px solid var(--yellow);background:linear-gradient(145deg,#1a1911,#111214)}.priority{font-size:14px;font-weight:900;border-radius:999px;padding:7px 11px;display:inline-block}.overdue{background:#55151b;color:#ff9aa1}.today{background:#6a3510;color:#ffd27a}.urgent{background:#604b08;color:#ffe584}.safe{background:#123b25;color:#8ff0b6}.finished{background:#333;color:#ddd}.os-status{font-size:12px;font-weight:900;padding:6px 9px;border-radius:999px;background:#333}.os-card{cursor:pointer}.os-card:hover{border-color:#666}.queue-rank{font-size:22px;font-weight:900;min-width:45px}.queue-head{display:flex;align-items:center;gap:10px}.queue-main{flex:1}.queue-title{font-size:18px;font-weight:900}.os-days{margin-top:10px;padding:9px;border-radius:10px;background:#0d0e10;font-weight:900}.sector-table{display:flex;flex-direction:column;gap:10px}.sector-row{display:grid;grid-template-columns:150px 1fr 40px;gap:10px;align-items:center;font-weight:900}.bar{height:16px;background:#222;border-radius:20px;overflow:hidden}.bar>div{height:100%;background:linear-gradient(90deg,var(--orange),var(--yellow));border-radius:20px}.sector-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+}
+
+.sector-button{
+  min-width:150px;
+  min-height:54px;
+  padding:10px 22px;
+  border-radius:999px;
+  border:1px solid #3b3c42;
+  background:linear-gradient(145deg,#202126,#121316);
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  text-align:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.28);
+  transition:.18s transform,.18s border-color,.18s box-shadow;
+}
+
+.sector-button:hover{
+  border-color:var(--orange);
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(255,106,0,.16);
+}
+
+.sector-button:active{
+  transform:scale(.96);
+}
+
+.sector-button.current-sector{
+  background:linear-gradient(135deg,#087c3e,#16d46b);
+  border-color:#32ed82;
+  color:#07150d;
+  cursor:default;
+  box-shadow:0 8px 22px rgba(22,212,107,.20);
+}
+
+.sector-button small{
+  display:none;
+}
+
+@media(max-width:600px){
+  .sector-buttons{
+    gap:9px;
+  }
+
+  .sector-button{
+    min-width:calc(50% - 5px);
+    min-height:52px;
+    padding:9px 12px;
+    font-size:13px;
+  }
+}.detail-line{margin-top:10px;padding:12px;background:#151619;border:1px solid var(--line);border-radius:12px}.timeline{margin-top:20px}.timeline-item{padding:12px;border-left:3px solid var(--orange);margin:9px 0;background:#151619}.timeline-item small{display:block;color:#999;margin:5px 0}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,120px);opacity:0;z-index:100;background:#17181b;border:1px solid #404146;border-radius:15px;padding:14px 20px;box-shadow:0 15px 35px rgba(0,0,0,.5);transition:.25s;font-weight:900;max-width:90%;text-align:center}.toast.show{transform:translate(-50%,0);opacity:1}
+@media(max-width:800px){.dashboard-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid .dash-card:last-child{grid-column:1/-1}.sector-row{grid-template-columns:100px 1fr 30px}}@media(max-width:600px){.app{padding:8px 10px 30px}.card{padding:14px;border-radius:18px}.home-grid,.movement-choice,.options-grid,.category-grid,.os-form-grid,.actions,.os-nav{gap:9px}.option{min-height:72px;padding:10px}.option-icon{width:42px;height:42px;flex-basis:42px;font-size:23px}.option-name{font-size:16px}.category{min-height:92px;font-size:15px}.dashboard-grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:1fr 1fr}.home-button{min-height:105px}.sector-row{grid-template-columns:90px 1fr 28px;font-size:13px}}@media(max-width:700px){.sector-buttons{grid-template-columns:1fr}.sector-button{min-height:82px;font-size:19px}}@media(max-width:390px){.options-grid,.category-grid,.home-grid{grid-template-columns:1fr}}
+#history{max-height:430px;overflow-y:auto;padding-right:3px}.history-title{font-size:clamp(17px,3vw,22px)}
+.record-top{align-items:flex-start}
+.record-delete{border:1px solid #4a2a2d;background:#211315;color:#ff6b72;border-radius:11px;width:42px;height:42px;font-size:20px;font-weight:900;cursor:pointer;flex:0 0 auto;margin-left:8px}
+.record-delete:active{transform:scale(.94)}
+
+.almox-history-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+
+.export-history-button{
+  width:100%;
+  min-height:58px;
+  border:0;
+  border-radius:16px;
+  background:linear-gradient(135deg,#079447,#16d46b);
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(22,212,107,.18);
+}
+
+.export-history-button:active{
+  transform:scale(.97);
+}
+
+@media(max-width:600px){
+  .almox-history-actions{
+    grid-template-columns:1fr;
+  }
+}
+
+.clear-history-button{width:100%;margin-top:14px;min-height:62px;border:1px solid #6a3034;border-radius:17px;background:#241416;color:#ffb2b7;font-size:18px;font-weight:900;cursor:pointer}
+.clear-history-button:active{transform:scale(.98)}
+
+/* STATUS DO SERVIDOR */
+.server-status{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  margin:12px auto 0;
+  width:max-content;
+  max-width:calc(100% - 30px);
+  padding:9px 16px;
+  border:1px solid #343941;
+  border-radius:999px;
+  background:#15171b;
+  color:#bfc4cc;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.5px;
+  box-shadow:0 8px 20px rgba(0,0,0,.18);
+}
+.server-dot{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:#f59e0b;
+  box-shadow:0 0 0 4px rgba(245,158,11,.12);
+  flex:0 0 auto;
+}
+.server-status.connected .server-dot{
+  background:#22c55e;
+  box-shadow:0 0 0 4px rgba(34,197,94,.12),0 0 14px rgba(34,197,94,.65);
+}
+.server-status.connecting .server-dot{
+  background:#f59e0b;
+  animation:serverPulse 1s infinite;
+}
+.server-status.offline .server-dot{
+  background:#ef4444;
+  box-shadow:0 0 0 4px rgba(239,68,68,.12);
+}
+@keyframes serverPulse{
+  50%{transform:scale(1.45);opacity:.55}
+}
+@media(max-width:600px){
+  .server-status{font-size:10px;padding:8px 12px}
+}
+
+
+/* NOTIFICAÇÕES */
+.notification-btn{
+  border:1px solid #3f4650;
+  background:#15171b;
+  color:#f5f7fa;
+  padding:9px 14px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s;
+  margin:10px auto 0;
+  display:block;
+}
+.notification-btn:hover{transform:translateY(-1px)}
+.notification-btn.active{
+  border-color:#22c55e;
+  background:#102719;
+  color:#74f0a0;
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+<img src="Logo.png" class="logo" alt="Arasigns" onerror="this.style.display='none'">
+<div class="brand">CONTROLE DE PRODUÇÃO E ALMOXARIFADO</div><div class="brand-line"></div>
+<div id="serverStatus" class="server-status connecting">
+  <span class="server-dot"></span>
+  <span id="serverStatusText">CONECTANDO AO SERVIDOR...</span>
+</div>
+<button id="notificationButton" class="notification-btn" onclick="requestSystemNotifications()">🔔 ATIVAR NOTIFICAÇÕES</button>
+</header>
+
+<section class="screen active" id="home">
+<div class="card"><div class="question"><div class="question-label">ARASIGNS</div><div class="question-title">O QUE VOCÊ DESEJA ACESSAR?</div></div>
+<div class="home-grid">
+<button class="home-button almox" onclick="startMovement()">📦<br>ALMOXARIFADO</button>
+<button class="home-button os" onclick="openOSDashboard()">🧾<br>ORDEM DE SERVIÇO</button>
+</div></div></section>
+
+<section class="screen" id="movement"><div class="page-top"><button class="back-button" onclick="showScreen('home')">← VOLTAR</button><div class="page-title">MOVIMENTAÇÃO</div><div></div></div><div class="card"><div class="question"><div class="question-label">PRIMEIRO PASSO</div><div class="question-title">RETIRADA OU DEVOLUÇÃO?</div></div><div class="movement-choice"><button class="btn-retirada" onclick="selectMovement('RETIRADA')">⬆️<br>RETIRADA</button><button class="btn-devolucao" onclick="selectMovement('DEVOLUÇÃO')">⬇️<br>DEVOLUÇÃO</button></div></div><div class="card"><div class="history-header"><div class="history-title">📋 HISTÓRICO DE MOVIMENTAÇÕES</div><div class="history-count" id="historyCount">0 REGISTROS</div></div><div id="history"><div class="empty">📋<br><br>Nenhuma movimentação registrada.</div></div>
+<div class="almox-history-actions">
+  <button class="export-history-button" onclick="exportAlmoxCSV()">📄 GERAR CSV</button>
+  <button class="clear-history-button" onclick="clearAlmox()">🗑️ LIMPAR HISTÓRICO</button>
+</div></div></section>
+<section class="screen" id="employee"><div class="page-top"><button class="back-button" onclick="showScreen('movement')">← VOLTAR</button><div class="page-title">COLABORADOR</div><div></div></div><div class="card"><div class="question"><div class="question-label">QUEM ESTÁ FAZENDO?</div><div class="question-title">SELECIONE</div></div><div class="options-grid" id="employeeOptions"></div></div></section>
+<section class="screen" id="category"><div class="page-top"><button class="back-button" onclick="showScreen('employee')">← VOLTAR</button><div class="page-title">CATEGORIA</div><div></div></div><div class="card"><div class="question"><div class="question-label">PRÓXIMO PASSO</div><div class="question-title">ESCOLHA A CATEGORIA</div></div><div class="category-grid" id="categoryOptions"></div></div></section>
+<section class="screen" id="item"><div class="page-top"><button class="back-button" onclick="showScreen('category')">← VOLTAR</button><div class="page-title">ITEM</div><div></div></div><div class="card"><div class="question"><div class="question-label">ESCOLHA O MATERIAL</div><div class="question-title" id="categoryTitle">ITEM</div></div><div class="options-grid" id="itemOptions"></div></div></section>
+<section class="screen" id="quantity"><div class="page-top"><button class="back-button" onclick="showScreen('item')">← VOLTAR</button><div class="page-title">QUANTIDADE</div><div></div></div><div class="card"><div class="question"><div class="question-label">QUANTO VAI MOVIMENTAR?</div><div class="question-title" id="quantityItemName">ITEM</div></div><input id="quantityInput" class="quantity-input" type="number" min="1" step="1" value="1" inputmode="numeric"><div class="quantity-unit">INFORME A QUANTIDADE E CONTINUE</div><button class="confirm-button" onclick="confirmQuantity()">➡️ PRÓXIMO</button><button class="cancel-button" onclick="resetMovement()">❌ CANCELAR</button></div></section>
+
+<section class="screen" id="confirm"><div class="page-top"><button class="back-button" onclick="showScreen('quantity')">← VOLTAR</button><div class="page-title">CONFIRMAR</div><div></div></div><div class="card"><div class="question"><div class="question-label">CONFIRME A MOVIMENTAÇÃO</div><div class="question-title">TUDO CERTO?</div></div><div class="summary"><div class="summary-box"><div class="summary-label">MOVIMENTO</div><div class="summary-value" id="summaryMovement">—</div></div><div class="summary-box"><div class="summary-label">COLABORADOR</div><div class="summary-value" id="summaryEmployee">—</div></div><div class="summary-box"><div class="summary-label">CATEGORIA</div><div class="summary-value" id="summaryCategory">—</div></div><div class="summary-box"><div class="summary-label">ITEM</div><div class="summary-value" id="summaryItem">—</div></div><div class="summary-box"><div class="summary-label">QUANTIDADE</div><div class="summary-value" id="summaryQuantity">—</div></div></div><button class="confirm-button" onclick="confirmMovement()">✅ CONFIRMAR MOVIMENTAÇÃO</button><button class="cancel-button" onclick="resetMovement()">❌ CANCELAR</button></div></section>
+
+
+
+<section class="screen" id="osDashboard">
+<div class="page-top"><button class="back-button" onclick="showScreen('home')">← INÍCIO</button><div class="page-title">ORDEM DE SERVIÇO</div><div></div></div>
+<div class="os-nav"><button class="register" onclick="openOSRegister()">➕<br>CADASTRAR OS</button><button onclick="openOSList()">📋<br>VISUALIZAR OS</button></div>
+<div class="card"><div class="question"><div class="question-label">VISÃO GERAL</div><div class="question-title">DASHBOARD DE PRODUÇÃO</div></div><div class="dashboard-grid" id="dashboardCards"></div></div>
+<div class="card next-delivery" id="nextDelivery"></div>
+<div class="card"><div class="history-title">🏁 FILA DE PRODUÇÃO — PRAZO MAIS PRÓXIMO PRIMEIRO</div><div id="queueList" style="margin-top:14px"></div></div>
+<div class="card"><div class="history-title">🏭 OS POR SETOR</div><div class="sector-table" id="sectorChart" style="margin-top:16px"></div></div>
+</section>
+
+<section class="screen" id="osRegister"><div class="page-top"><button class="back-button" onclick="openOSDashboard()">← VOLTAR</button><div class="page-title">CADASTRAR OS</div><div></div></div><div class="card"><div class="question"><div class="question-label">NOVA ORDEM</div><div class="question-title">DADOS DA OS</div></div><div class="os-form-grid">
+<div class="field"><label>NÚMERO DA OS *</label><input id="osNumero" placeholder="Ex: 1024"></div>
+<div class="field"><label>CLIENTE *</label><input id="osCliente" placeholder="Nome do cliente"></div>
+<div class="field full"><label>DESCRIÇÃO DO SERVIÇO *</label><textarea id="osDescricao" placeholder="Descreva o serviço"></textarea></div>
+<div class="field"><label>SETOR INICIAL</label><select id="osSetor"></select></div>
+<div class="field"><label>HORÁRIO DE ENTREGA / INSTALAÇÃO <span style="opacity:.55">(OPCIONAL)</span></label><input id="osPrazo" type="datetime-local"></div>
+<div class="field full"><label>OBSERVAÇÃO</label><textarea id="osObs" placeholder="Informações adicionais"></textarea></div>
+</div><button class="primary" onclick="registerOS()">💾 CADASTRAR ORDEM DE SERVIÇO</button></div></section>
+
+<section class="screen" id="osView">
+<div class="page-top"><button class="back-button" onclick="openOSDashboard()">← DASHBOARD</button><div class="page-title">TODAS AS OS</div><div></div></div>
+<div class="card">
+  <div class="field">
+    <label>🔎 PESQUISAR ORDEM DE SERVIÇO</label>
+    <input type="text" id="osSearch" placeholder="Digite o número da OS..." oninput="renderOSList()" autocomplete="off">
+  </div>
+  <div class="field" style="margin-top:14px">
+    <label>FILTRAR POR STATUS</label>
+    <select id="osFilter" onchange="renderOSList()">
+      <option value="TODAS">TODAS</option>
+      <option value="EM ANDAMENTO">EM ANDAMENTO</option>
+      <option value="AGUARDANDO">AGUARDANDO</option>
+      <option value="FINALIZADA">FINALIZADAS</option>
+    </select>
+  </div>
+  <div id="osList" style="margin-top:14px"></div>
+</div>
+<section class="actions"><button class="action csv" onclick="exportOSCSV()">📄 CSV DAS OS</button><button class="action clear" onclick="clearOS()">🗑️ LIMPAR OS</button></section>
+</section>
+
+<section class="screen" id="osDetail"><div class="page-top"><button class="back-button" onclick="openOSList()">← LISTA</button><div class="page-title">DETALHES DA OS</div><div></div></div><div class="card" id="osDetailContent"></div></section>
+</div><div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script>
+const COLABORADORES=["TOCO","RAMALHO","LUAN","THAMI","DIEGO","WELTON","GILDO","WESLEY","DENIS","BELLA","JU","MARI","CAMINHÃO","SAVEIRO"];
+const COLABORADOR_ICONS={THAMI:"👩",BELLA:"👩",JU:"👩",MARI:"👩",CAMINHÃO:"🚚",SAVEIRO:"🚗"};
+const CATEGORIAS={
+"FERRAMENTAS":{icon:"🛠️",itens:["ALICATE DECAPADOR","ALICATE DE CORTE","TUPIA","LIXADEIRA PLANA","SERRA TICO TICO","FERRO DE SOLDA PISTOLA","FERRO DE SOLDA","VENTOSA","SOPRADOR TÉRMICO"]},
+"FONTES":{icon:"⚡",itens:["FONTE 30A","FONTE 50A"]},
+"MÓDULOS DE LED":{icon:"💡",itens:["MÓDULO DE LED BRANCO QUENTE","MÓDULO DE LED BRANCO FRIO"]},
+"FITAS DE LED":{icon:"🔆",itens:["FITA DE LED BRANCO QUENTE","FITA DE LED BRANCO FRIO"]},
+"CONSUMÍVEIS":{icon:"⚙️",itens:["DISCO DE CORTE","DISCO FLAP","LIXA","LÂMINA PEQUENA","LÂMINA GRANDE","BANANINHA","BASTÃO DE MADEIRA","AGULHA P","AGULHA G"]},
+"COLAS/FITAS":{icon:"🧴",itens:["COLA","FITA ISOLANTE","FITA DUPLA FACE AMARELA","FITA CREPE VERDE","FITA SILICONE TRANSPARENTE","FITA SILICONE BRANCA","VEDA CALHA","PU"]},
+"HIGIENE":{icon:"🧼",itens:["SACO DE LIXO","LUVAS LATEX","BUFALO"]}};
+const ITEM_ICONS={"ALICATE DECAPADOR":"🗜️","ALICATE DE CORTE":"✂️","TUPIA":"🛠️","LIXADEIRA PLANA":"⚙️","SERRA TICO TICO":"🪚","FERRO DE SOLDA PISTOLA":"🔧","FERRO DE SOLDA":"🔧","VENTOSA":"🔵","SOPRADOR TÉRMICO":"🔥","FONTE 30A":"⚡","FONTE 50A":"⚡","MÓDULO DE LED BRANCO QUENTE":"💡","MÓDULO DE LED BRANCO FRIO":"💡","FITA DE LED BRANCO QUENTE":"🔆","FITA DE LED BRANCO FRIO":"🔆","DISCO DE CORTE":"⚙️","DISCO FLAP":"⚙️","LÂMINA PEQUENA":"🔪","LÂMINA GRANDE":"🔪","BANANINHA":"🔩","BASTÃO DE MADEIRA":"🪵","AGULHA P":"📍","AGULHA G":"📍","COLA":"🧴","FITA ISOLANTE":"🖤","FITA DUPLA FACE AMARELA":"🟨","FITA CREPE VERDE":"🟩","FITA SILICONE TRANSPARENTE":"🔘","FITA SILICONE BRANCA":"⚪","VEDA CALHA":"🧴","PU":"🧴","SACO DE LIXO":"🗑️","LUVAS LATEX":"🧤","BUFALO":"🧽"};
+const firebaseConfig={
+  apiKey:"AIzaSyC-TGj1tmHqZVGgsvQNYQcvs-WCqHhMoeQ",
+  authDomain:"erp-arasigns.firebaseapp.com",
+  databaseURL:"https://erp-arasigns-default-rtdb.firebaseio.com",
+  projectId:"erp-arasigns",
+  storageBucket:"erp-arasigns.firebasestorage.app",
+  messagingSenderId:"327360839805",
+  appId:"1:327360839805:web:575a6a4e9b62c792fef114"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+const ordensRef=db.ref("ordens");
+const movimentacoesRef=db.ref("movimentacoes");
+let almoxFirebaseReady=false;
+let firstMovFirebaseLoad=true;
+
+const SETORES=["COMERCIAL","ARTE FINAL","PRODUÇÃO","MONTAGEM","INSTALAÇÃO / BALCÃO"];
+const ALMOX_STORAGE="arasigns_movimentacoes_botoes_v2",ALMOX_STORAGE_OLD="arasigns_movimentacoes_botoes_v1",OS_STORAGE="arasigns_ordens_servico_v3";
+function loadMovements(){
+  try{
+    const atual=localStorage.getItem(ALMOX_STORAGE);
+    if(atual)return JSON.parse(atual)||[];
+    const antigo=localStorage.getItem(ALMOX_STORAGE_OLD);
+    if(antigo){const dados=JSON.parse(antigo)||[];localStorage.setItem(ALMOX_STORAGE,JSON.stringify(dados));return dados}
+  }catch(e){console.error(e)}
+  return [];
+}
+let movimentacoes=loadMovements(),ordens=JSON.parse(localStorage.getItem(OS_STORAGE)||"[]");
+let firebaseReady=false;
+let firstFirebaseLoad=true;
+
+// Escuta o histórico do almoxarifado em TEMPO REAL.
+movimentacoesRef.on("value",snapshot=>{
+  const dados=snapshot.val();
+
+  if(dados===null && firstMovFirebaseLoad && movimentacoes.length){
+    // Migra os registros antigos uma única vez.
+    movimentacoesRef.set(movimentacoes);
+  }else{
+    movimentacoes=Array.isArray(dados)
+      ? dados.filter(Boolean)
+      : Object.values(dados||{});
+
+    checkMovementNotifications(movimentacoes);
+    localStorage.setItem(ALMOX_STORAGE,JSON.stringify(movimentacoes));
+    almoxFirebaseReady=true;
+    renderHistory();
+  }
+
+  firstMovFirebaseLoad=false;
+},error=>{
+  console.error("Erro ao sincronizar movimentações:",error);
+  almoxFirebaseReady=false;
+  toast("Erro ao sincronizar o histórico do almoxarifado.");
+});
+
+// Escuta as OS em tempo real. Qualquer alteração no PC ou tablet atualiza os demais.
+ordensRef.on("value",snapshot=>{
+  const dados=snapshot.val();
+
+  if(dados===null && firstFirebaseLoad && ordens.length){
+    // Migra automaticamente as OS que já existiam no navegador.
+    ordensRef.set(ordens);
+  }else{
+    ordens=Array.isArray(dados)?dados.filter(Boolean):Object.values(dados||{});
+    checkOSNotifications(ordens);
+    localStorage.setItem(OS_STORAGE,JSON.stringify(ordens));
+    if(selectedOS){
+      const atualizada=ordens.find(o=>String(o.id)===String(selectedOS.id));
+      selectedOS=atualizada||null;
+      if(atualizada && $("osDetail").classList.contains("active"))renderOSDetail();
+    }
+    if($("osDashboard").classList.contains("active"))renderOSDashboard();
+  }
+
+  firebaseReady=true;
+  firstFirebaseLoad=false;
+},error=>{
+  console.error("Erro ao conectar no Firebase:",error);
+  setServerStatus("offline");
+  toast("Erro ao conectar no Firebase.");
+});
+let selectedMovement=null,selectedEmployee=null,selectedCategory=null,selectedItem=null,selectedQuantity=null,selectedOS=null;
+const $=id=>document.getElementById(id);
+
+function setServerStatus(status){
+  const box=$("serverStatus");
+  const text=$("serverStatusText");
+  if(!box||!text)return;
+
+  box.className="server-status "+status;
+
+  if(status==="connected"){
+    text.textContent="SERVIDOR CONECTADO • TEMPO REAL";
+  }else if(status==="offline"){
+    text.textContent="SEM CONEXÃO • RECONECTANDO...";
+  }else{
+    text.textContent="CONECTANDO AO SERVIDOR...";
+  }
+}
+
+// Status real da conexão com o Firebase.
+db.ref(".info/connected").on("value",snap=>{
+  setServerStatus(snap.val()===true ? "connected" : "offline");
+});
+
+window.addEventListener("online",()=>{
+  setServerStatus("connecting");
+});
+window.addEventListener("offline",()=>{
+  setServerStatus("offline");
+});
+updateNotificationButton();
+setTimeout(()=>{notificacoesProntas=true;},2500);
+
+// NOTIFICAÇÕES DO NAVEGADOR
+let notificacoesProntas=false;
+let movimentosConhecidos=new Set();
+let osConhecidas=new Set();
+
+function updateNotificationButton(){
+  const btn=$("notificationButton");
+  if(!btn)return;
+  if(!("Notification" in window)){
+    btn.textContent="🔕 NOTIFICAÇÕES NÃO SUPORTADAS";
+    return;
+  }
+  if(Notification.permission==="granted"){
+    btn.textContent="🔔 NOTIFICAÇÕES ATIVADAS";
+    btn.classList.add("active");
+  }else if(Notification.permission==="denied"){
+    btn.textContent="🔕 NOTIFICAÇÕES BLOQUEADAS";
+  }else{
+    btn.textContent="🔔 ATIVAR NOTIFICAÇÕES";
+  }
+}
+
+function requestSystemNotifications(){
+  if(!("Notification" in window)){
+    toast("Este navegador não suporta notificações.");
+    return;
+  }
+  Notification.requestPermission().then(permission=>{
+    updateNotificationButton();
+    if(permission==="granted"){
+      toast("Notificações ativadas!");
+      notifySystem("Sistema Arasigns","🔔 Notificações ativadas com sucesso.");
+    }else{
+      toast("Permissão de notificações não concedida.");
+    }
+  });
+}
+
+function notifySystem(title,body){
+  if(!("Notification" in window) || Notification.permission!=="granted")return;
+  try{
+    new Notification(title,{body,icon:""});
+  }catch(error){
+    console.error("Erro ao mostrar notificação:",error);
+  }
+}
+
+function checkMovementNotifications(lista){
+  const atuais=new Set(lista.map(m=>String(m._firebaseKey||m.id)));
+  if(!notificacoesProntas){
+    movimentosConhecidos=atuais;
+    return;
+  }
+  lista.forEach(m=>{
+    const id=String(m._firebaseKey||m.id);
+    if(!movimentosConhecidos.has(id)){
+      notifySystem("📦 Nova movimentação",`${m.colaborador||"Alguém"}: ${m.movimento||"MOVIMENTAÇÃO"} • ${m.item||""}`);
+    }
+  });
+  movimentosConhecidos=atuais;
+}
+
+function checkOSNotifications(lista){
+  const atuais=new Set(lista.map(o=>String(o.id)));
+  if(!notificacoesProntas){
+    osConhecidas=atuais;
+    return;
+  }
+  lista.forEach(o=>{
+    const id=String(o.id);
+    if(!osConhecidas.has(id)){
+      notifySystem("📋 Nova Ordem de Serviço",`OS #${o.numero||""} • ${o.cliente||""}`);
+    }
+  });
+  osConhecidas=atuais;
+}
+
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));const t=$(id);if(t)t.classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}
+function toast(m){const e=$("toast");e.textContent=m;e.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove("show"),2400)}
+function escapeHtml(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function startMovement(){selectedMovement=selectedEmployee=selectedCategory=selectedItem=selectedQuantity=null;showScreen("movement")}
+function selectMovement(t){selectedMovement=t;showScreen("employee")}
+function renderEmployees(){const b=$("employeeOptions");b.innerHTML="";COLABORADORES.forEach(n=>{const x=document.createElement("button");x.className="option";x.innerHTML=`<div class="option-icon">${COLABORADOR_ICONS[n]||"👤"}</div><div class="option-name">${escapeHtml(n)}</div>`;x.onclick=()=>{selectedEmployee=n;showScreen("category")};b.appendChild(x)})}
+function renderCategories(){const b=$("categoryOptions");b.innerHTML="";Object.entries(CATEGORIAS).forEach(([n,d])=>{const x=document.createElement("button");x.className="category";x.innerHTML=`<div class="category-icon">${d.icon}</div><div>${n}</div>`;x.onclick=()=>{selectedCategory=n;$("categoryTitle").textContent=n;renderItems(n);showScreen("item")};b.appendChild(x)})}
+function renderItems(c){const b=$("itemOptions");b.innerHTML="";CATEGORIAS[c].itens.forEach(n=>{const x=document.createElement("button");x.className="option";x.innerHTML=`<div class="option-icon">${ITEM_ICONS[n]||"📦"}</div><div class="option-name">${escapeHtml(n)}</div>`;x.onclick=()=>{selectedItem=n;selectedQuantity=1;$("quantityItemName").textContent=selectedItem;$("quantityInput").value=1;showScreen("quantity")};b.appendChild(x)})}
+function confirmQuantity(){const q=Number($("quantityInput").value);if(!Number.isFinite(q)||q<=0||!Number.isInteger(q))return toast("Informe uma quantidade válida.");selectedQuantity=q;$("summaryMovement").textContent=selectedMovement;$("summaryEmployee").textContent=selectedEmployee;$("summaryCategory").textContent=selectedCategory;$("summaryItem").textContent=selectedItem;$("summaryQuantity").textContent=selectedQuantity;showScreen("confirm")}
+function confirmMovement(){
+if(!selectedMovement||!selectedEmployee||!selectedCategory||!selectedItem||!selectedQuantity)return toast("Complete todas as etapas.");
+const registro={id:Date.now(),dataHora:new Date().toLocaleString("pt-BR"),movimento:selectedMovement,colaborador:selectedEmployee,categoria:selectedCategory,item:selectedItem,quantidade:Number(selectedQuantity)};
+movimentacoes.push(registro);
+saveMovements();
+toast(selectedMovement==="RETIRADA"?"Retirada registrada no histórico!":"Devolução registrada no histórico!");
+setTimeout(()=>{renderHistory();showScreen("movement")},700)
+}
+function resetMovement(){startMovement()}
+function saveMovements(){
+  localStorage.setItem(ALMOX_STORAGE,JSON.stringify(movimentacoes));
+
+  movimentacoesRef.set(movimentacoes)
+    .then(()=>{
+      almoxFirebaseReady=true;
+    })
+    .catch(error=>{
+      console.error("Erro ao salvar movimentações:",error);
+      almoxFirebaseReady=false;
+      toast("Erro ao salvar no servidor.");
+    });
+
+  renderHistory();
+}
+function renderHistory(){
+const b=$("history"),c=$("historyCount");
+if(!b||!c)return;
+const registros=Array.isArray(movimentacoes)?movimentacoes:[];
+c.textContent=registros.length+(registros.length===1?" REGISTRO":" REGISTROS");
+if(!registros.length){
+  b.innerHTML='<div class="empty">📋<br><br>Nenhuma movimentação registrada.<br><br>Retiradas e devoluções confirmadas aparecerão aqui.</div>';
+  return;
+}
+b.innerHTML="";
+registros.slice().reverse().slice(0,100).forEach(r=>{
+  const index=movimentacoes.indexOf(r);
+  const d=document.createElement("div");
+  d.className="record";
+  const retirada=r.movimento==="RETIRADA";
+  d.innerHTML=`
+    <div class="record-top">
+      <div>
+        <div class="record-type">${retirada?"⬆️ RETIRADA":"⬇️ DEVOLUÇÃO"}</div>
+        <div class="record-date">${escapeHtml(r.dataHora||"")}</div>
+      </div>
+      <button type="button" class="record-delete" title="Excluir esta movimentação" aria-label="Excluir movimentação">🗑️</button>
+    </div>
+    <div class="record-line">👤 <b>Colaborador:</b> ${escapeHtml(r.colaborador||"")}</div>
+    <div class="record-line">📂 <b>Categoria:</b> ${escapeHtml(r.categoria||"")}</div>
+    <div class="record-line">📦 <b>Item:</b> ${escapeHtml(r.item||"")}</div>
+    <div class="record-line">🔢 <b>Quantidade:</b> ${escapeHtml(r.quantidade??1)}</div>`;
+  d.querySelector(".record-delete").addEventListener("click",()=>deleteMovement(index));
+  b.appendChild(d);
+});
+}
+function deleteMovement(index){
+  if(!Number.isInteger(index)||index<0||index>=movimentacoes.length){
+    toast("Não foi possível localizar essa movimentação.");
+    return;
+  }
+  const registro=movimentacoes[index];
+
+  const senha=prompt("Digite a senha para excluir esta movimentação:");
+  if(senha===null)return;
+  if(senha!=="007"){
+    toast("Senha incorreta.");
+    return;
+  }
+
+  const ok=confirm("Excluir somente esta movimentação?\n\n"+registro.movimento+"\n"+registro.colaborador+" — "+registro.item+"\nQuantidade: "+(registro.quantidade??1));
+  if(!ok)return;
+  movimentacoes.splice(index,1);
+  saveMovements();
+  toast("Movimentação excluída com sucesso.");
+}
+function clearAlmox(){
+  if(!movimentacoes.length)return toast("Não existem registros.");
+
+  const senha=prompt("Digite a senha para LIMPAR TODO o histórico de movimentações:");
+  if(senha===null)return;
+
+  if(senha!=="007"){
+    toast("Senha incorreta.");
+    return;
+  }
+
+  if(!confirm("ATENÇÃO: Apagar TODAS as movimentações do histórico?"))return;
+
+  movimentacoes=[];
+  saveMovements();
+  toast("Histórico de movimentações apagado.");
+}
+function exportCSV(rows,name){const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(";")).join("\r\n");const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name+"_"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
+function exportAlmoxCSV(){if(!movimentacoes.length)return toast("Não existem movimentações.");exportCSV([["DATA/HORA","MOVIMENTO","COLABORADOR","CATEGORIA","ITEM","QUANTIDADE"],...movimentacoes.map(r=>[r.dataHora,r.movimento,r.colaborador,r.categoria,r.item,r.quantidade??1])],"arasigns_movimentacoes");toast("CSV gerado!")}
+function openOSDashboard(){renderDashboard();showScreen("osDashboard")}
+function openOSRegister(){const s=$("osSetor");s.innerHTML=SETORES.map(x=>`<option>${x}</option>`).join("");$("osPrazo").value="";showScreen("osRegister")}
+function registerOS(){const numero=$("osNumero").value.trim(),cliente=$("osCliente").value.trim(),descricao=$("osDescricao").value.trim(),setor=$("osSetor").value,prazo=$("osPrazo").value,dataAbertura=new Date().toISOString().slice(0,10),status="EM ANDAMENTO",obs=$("osObs").value.trim();if(!numero||!cliente||!descricao)return toast("Preencha OS, cliente e serviço.");if(ordens.some(o=>String(o.numero).toLowerCase()===numero.toLowerCase()))return toast("Esse número de OS já existe.");const agora=new Date().toISOString();ordens.push({id:Date.now(),numero,cliente,descricao,setor,prazo,dataAbertura,status,obs,atualizada:agora,historico:[{setor,dataHora:agora,obs:"OS cadastrada"}]});saveOS();["osNumero","osCliente","osDescricao","osPrazo","osObs"].forEach(id=>$(id).value="");toast("OS cadastrada com sucesso!");setTimeout(openOSDashboard,500)}
+function saveOS(){
+  localStorage.setItem(OS_STORAGE,JSON.stringify(ordens));
+  if(!firebaseReady){
+    toast("Conectando ao Firebase...");
+    return;
+  }
+  ordensRef.set(ordens).catch(error=>{
+    console.error("Erro ao salvar no Firebase:",error);
+    toast("Erro ao salvar no Firebase.");
+  });
+}
+function parseDate(s){return new Date(s+"T00:00:00")}
+function daysDiffFromToday(date){const d=parseDate(date);const today=new Date();today.setHours(0,0,0,0);return Math.round((d-today)/86400000)}
+function sectorElapsed(o){
+  const h=o.historico||[];
+  if(!h.length)return {days:0,hours:0,minutes:0,text:"0 Dias 0 Horas e 0 Minutos"};
+  const d=new Date(h[h.length-1].dataHora).getTime();
+  let diff=Math.max(0,Date.now()-d);
+  const days=Math.floor(diff/86400000); diff%=86400000;
+  const hours=Math.floor(diff/3600000); diff%=3600000;
+  const minutes=Math.floor(diff/60000);
+  return {days,hours,minutes,text:`${days} Dia${days!==1?"s":""} ${hours} Hora${hours!==1?"s":""} e ${minutes} Minuto${minutes!==1?"s":""}`};
+}
+function executionTime(o){
+  const h=o.historico||[];
+  if(!h.length)return "00:00:00";
+  const start=new Date(h[h.length-1].dataHora).getTime();
+  let diff=Math.max(0,Date.now()-start);
+  const hours=Math.floor(diff/3600000);
+  diff%=3600000;
+  const minutes=Math.floor(diff/60000);
+  diff%=60000;
+  const seconds=Math.floor(diff/1000);
+  return [hours,minutes,seconds].map(v=>String(v).padStart(2,"0")).join(":");
+}
+function historyExecutionTime(o,index){
+  const h=o.historico||[];
+  if(!h[index])return "00:00:00";
+  const start=new Date(h[index].dataHora).getTime();
+  const end=index<h.length-1
+    ? new Date(h[index+1].dataHora).getTime()
+    : (o.status==="FINALIZADA" && o.atualizada ? new Date(o.atualizada).getTime() : Date.now());
+  let diff=Math.max(0,end-start);
+  const hours=Math.floor(diff/3600000);
+  diff%=3600000;
+  const minutes=Math.floor(diff/60000);
+  diff%=60000;
+  const seconds=Math.floor(diff/1000);
+  return [hours,minutes,seconds].map(v=>String(v).padStart(2,"0")).join(":");
+}
+function sectorDays(o){return sectorElapsed(o).days}
+function totalDays(o){const d=parseDate(o.dataAbertura||o.prazo);return Math.max(0,Math.floor((Date.now()-d.getTime())/86400000))}
+function deadlineInfo(o){
+  if(o.status==="FINALIZADA")return {text:"FINALIZADA",cls:"finished",days:999999};
+  if(!o.prazo)return {text:"SEM HORÁRIO DEFINIDO",cls:"safe",days:999999};
+
+  const prazo=new Date(o.prazo);
+  if(Number.isNaN(prazo.getTime()))return {text:"SEM HORÁRIO DEFINIDO",cls:"safe",days:999999};
+
+  let diff=prazo.getTime()-Date.now();
+  const atrasada=diff<0;
+  diff=Math.abs(diff);
+
+  const dias=Math.floor(diff/86400000);
+  diff%=86400000;
+  const horas=Math.floor(diff/3600000);
+  diff%=3600000;
+  const minutos=Math.floor(diff/60000);
+
+  const partes=[];
+  if(dias)partes.push(`${dias} dia${dias!==1?"s":""}`);
+  if(horas || dias)partes.push(`${horas} hora${horas!==1?"s":""}`);
+  partes.push(`${minutos} minuto${minutos!==1?"s":""}`);
+
+  return {
+    text:atrasada ? `ATRASADA HÁ ${partes.join(", ")}` : `FALTAM ${partes.join(", ")}`,
+    cls:atrasada ? "overdue" : (dias<=3 ? "urgent" : "safe"),
+    days:atrasada ? -dias : dias
+  };
+}
+function activeOrders(){return ordens.filter(o=>o.status!=="FINALIZADA").sort((a,b)=>{
+  const da=a.prazo?new Date(a.prazo).getTime():Infinity;
+  const db=b.prazo?new Date(b.prazo).getTime():Infinity;
+  return da-db;
+})}
+function renderDashboard(){const total=ordens.length,atrasadas=ordens.filter(o=>o.status!=="FINALIZADA"&&daysDiffFromToday(o.prazo)<0).length,hoje=ordens.filter(o=>o.status!=="FINALIZADA"&&daysDiffFromToday(o.prazo)===0).length,andamento=ordens.filter(o=>o.status==="EM ANDAMENTO").length,finalizadas=ordens.filter(o=>o.status==="FINALIZADA").length;$("dashboardCards").innerHTML=`<div class="dash-card"><div class="dash-label">TOTAL DE OS</div><div class="dash-number">${total}</div></div><div class="dash-card dash-red"><div class="dash-label">ATRASADAS</div><div class="dash-number">${atrasadas}</div></div><div class="dash-card dash-orange"><div class="dash-label">VENCEM HOJE</div><div class="dash-number">${hoje}</div></div><div class="dash-card"><div class="dash-label">EM ANDAMENTO</div><div class="dash-number">${andamento}</div></div><div class="dash-card dash-green"><div class="dash-label">FINALIZADAS</div><div class="dash-number">${finalizadas}</div></div>`;renderNextDelivery();renderQueue();renderSectorChart()}
+function renderNextDelivery(){const o=activeOrders()[0],b=$("nextDelivery");if(!o){b.innerHTML='<div class="question-title">🎉 NÃO EXISTEM OS PENDENTES</div>';return}const d=deadlineInfo(o);b.innerHTML=`<div class="question-label">🚨 PRÓXIMA ENTREGA</div><div class="question-title">OS #${escapeHtml(o.numero)}</div><div class="detail-line">👤 <b>Cliente:</b> ${escapeHtml(o.cliente)}</div><div class="detail-line">📍 <b>Setor:</b> ${escapeHtml(o.setor)}</div><div class="detail-line">📅 <b>Prazo:</b> ${o.prazo?new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"Não definido"}</div><div class="os-days"><span class="priority ${d.cls}">${d.text}</span></div>`}
+function renderQueue(){const b=$("queueList"),lista=activeOrders();if(!lista.length){b.innerHTML='<div class="empty">🎉 Fila vazia. Todas as OS foram finalizadas.</div>';return}b.innerHTML="";lista.forEach((o,i)=>{const d=deadlineInfo(o),rank=i===0?"🥇":i===1?"🥈":i===2?"🥉":`#${i+1}`;const x=document.createElement("div");x.className="os-card";x.onclick=()=>openOSDetail(o.id);x.innerHTML=`<div class="queue-head"><div class="queue-rank">${rank}</div><div class="queue-main"><div class="queue-title">OS #${escapeHtml(o.numero)} — ${escapeHtml(o.cliente)}</div><div class="os-meta">📍 ${escapeHtml(o.setor)} • ⏱️ ${sectorDays(o)} dia${sectorDays(o)!==1?"s":""} no setor</div></div><span class="priority ${d.cls}">${d.text}</span></div><div class="record-line">📅 <b>Prazo:</b> ${o.prazo?new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"Não definido"} • 📝 ${escapeHtml(o.descricao)}</div>`;b.appendChild(x)})}
+function renderSectorChart(){const b=$("sectorChart"),counts={};SETORES.forEach(s=>counts[s]=0);ordens.filter(o=>o.status!=="FINALIZADA").forEach(o=>{counts[o.setor]=(counts[o.setor]||0)+1});const max=Math.max(1,...Object.values(counts));b.innerHTML=Object.entries(counts).map(([s,n])=>`<div class="sector-row"><div>${s}</div><div class="bar"><div style="width:${(n/max)*100}%"></div></div><div>${n}</div></div>`).join("")}
+function openOSList(){renderOSList();showScreen("osView")}
+function renderOSList(){
+  const filter=$("osFilter").value;
+  const search=($("osSearch")?.value||"").trim().toLowerCase();
+
+  let lista=filter==="TODAS"
+    ? [...ordens]
+    : ordens.filter(o=>o.status===filter);
+
+  if(search){
+    lista=lista.filter(o=>String(o.numero??"").toLowerCase().includes(search));
+  }
+
+  lista.sort((a,b)=>{
+    if(a.status==="FINALIZADA"&&b.status!=="FINALIZADA")return 1;
+    if(b.status==="FINALIZADA"&&a.status!=="FINALIZADA")return -1;
+
+    const da=a.prazo?new Date(a.prazo).getTime():Infinity;
+    const db=b.prazo?new Date(b.prazo).getTime():Infinity;
+    return da-db;
+  });
+
+  const b=$("osList");
+
+  if(!lista.length){
+    b.innerHTML=`<div class="empty">🔎<br><br>${
+      search
+        ? `Nenhuma OS encontrada para "${escapeHtml(search)}".`
+        : "Nenhuma OS encontrada."
+    }</div>`;
+    return;
+  }
+
+  b.innerHTML="";
+
+  lista.forEach(o=>{
+    const d=deadlineInfo(o);
+    const x=document.createElement("div");
+    x.className="os-card";
+    x.onclick=()=>openOSDetail(o.id);
+
+    x.innerHTML=`
+      <div class="os-top">
+        <div class="os-number">🧾 OS #${escapeHtml(o.numero)}</div>
+        <span class="priority ${d.cls}">${d.text}</span>
+      </div>
+      <div class="record-line">👤 <b>Cliente:</b> ${escapeHtml(o.cliente)}</div>
+      <div class="record-line">📍 <b>Setor:</b> ${escapeHtml(o.setor)} • ⏱️ ${sectorElapsed(o).text} no setor</div>
+      <div class="record-line">📅 <b>Prazo:</b> ${
+        o.prazo
+          ? new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"})
+          : "Não definido"
+      }</div>`;
+
+    b.appendChild(x);
+  });
+}
+function openOSDetail(id){selectedOS=ordens.find(o=>o.id===id);if(!selectedOS)return toast("OS não encontrada.");renderOSDetail();showScreen("osDetail")}
+function renderOSDetail(){const o=selectedOS,d=deadlineInfo(o),h=(o.historico||[]).slice().reverse();$("osDetailContent").innerHTML=`<div class="os-top"><div class="os-number">🧾 OS #${escapeHtml(o.numero)}</div><span class="priority ${d.cls}">${d.text}</span></div><div class="detail-line">👤 <b>Cliente:</b> ${escapeHtml(o.cliente)}</div><div class="detail-line">📝 <b>Serviço:</b> ${escapeHtml(o.descricao)}</div><div class="detail-line">📅 <b>Prazo:</b> ${o.prazo?new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"Não definido"}</div><div class="detail-line">🏭 <b>Setor atual:</b> ${escapeHtml(o.setor)}</div><div class="os-days">⏱️ Está há <span id="sectorElapsed">${sectorElapsed(o).text}</span> neste setor. &nbsp;•&nbsp; ⏳ <b>Tempo de Execução:</b> <span id="executionTime">${executionTime(o)}</span></div>${o.obs?`<div class="detail-line">💬 <b>Observação:</b> ${escapeHtml(o.obs)}</div>`:""}<div class="question" style="margin-top:22px;margin-bottom:10px">
+<div class="question-label">ATUALIZAR SETOR</div>
+<div class="question-title" style="font-size:22px">SELECIONE O SETOR</div>
+</div>
+<div class="sector-buttons">
+<button class="sector-button ${o.setor==="COMERCIAL"?"current-sector":""}" ${o.setor==="COMERCIAL"?"disabled":""} onclick="transferOS('COMERCIAL')">COMERCIAL</button>
+<button class="sector-button ${o.setor==="ARTE FINAL"?"current-sector":""}" ${o.setor==="ARTE FINAL"?"disabled":""} onclick="transferOS('ARTE FINAL')">ARTE FINAL</button>
+<button class="sector-button ${o.setor==="PRODUÇÃO"?"current-sector":""}" ${o.setor==="PRODUÇÃO"?"disabled":""} onclick="transferOS('PRODUÇÃO')">PRODUÇÃO</button>
+<button class="sector-button ${o.setor==="MONTAGEM"?"current-sector":""}" ${o.setor==="MONTAGEM"?"disabled":""} onclick="transferOS('MONTAGEM')">MONTAGEM</button>
+<button class="sector-button ${o.setor==="INSTALAÇÃO / BALCÃO"?"current-sector":""}" ${o.setor==="INSTALAÇÃO / BALCÃO"?"disabled":""} onclick="transferOS('INSTALAÇÃO / BALCÃO')">INSTALAÇÃO / BALCÃO</button>
+</div>${o.status!=="FINALIZADA"?'<button class="primary" onclick="finishOS()">✅ MARCAR COMO FINALIZADA</button>':'<div class="os-days">🎉 ESTA OS FOI FINALIZADA</div>'}<div class="timeline">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+  <div class="question-label" style="margin:0">HISTÓRICO DA OS</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+  <button onclick="clearOSHistory()" style="border:1px solid #ff4d4d;background:#2a1212;color:#ff7777;padding:8px 12px;border-radius:10px;font-weight:900;cursor:pointer">🗑 LIMPAR HISTÓRICO</button>
+  <button onclick="deleteCurrentOS()" style="border:1px solid #ff3030;background:#4a1010;color:#fff;padding:8px 12px;border-radius:10px;font-weight:900;cursor:pointer">⚠️ EXCLUIR OS</button>
+</div>
+</div>
+${(o.historico||[]).length
+  ? (o.historico||[]).map((x,i)=>`<div class="timeline-item"><b>🏭 ${escapeHtml(x.setor)}</b><small>${new Date(x.dataHora).toLocaleString("pt-BR")}</small><div>⏳ <b>Tempo de Execução:</b> ${historyExecutionTime(o,i)}</div><div>${escapeHtml(x.obs||"")}</div></div>`).reverse().join("")
+  : '<div class="timeline-item">Nenhum histórico registrado.</div>'}
+</div>`}
+function transferOS(s){if(!selectedOS)return;if(s===selectedOS.setor)return toast("A OS já está nesse setor.");const now=new Date().toISOString();selectedOS.setor=s;selectedOS.atualizada=now;if(selectedOS.status==="FINALIZADA")selectedOS.status="EM ANDAMENTO";selectedOS.historico.push({setor:s,dataHora:now,obs:"OS transferida para "+s});saveOS();renderOSDetail();toast("OS transferida para "+s)}
+function finishOS(){if(!selectedOS)return;if(!confirm("Marcar esta OS como FINALIZADA?"))return;const now=new Date().toISOString();selectedOS.status="FINALIZADA";selectedOS.atualizada=now;selectedOS.historico.push({setor:selectedOS.setor,dataHora:now,obs:"OS finalizada"});saveOS();renderOSDetail();toast("OS finalizada!")}
+function deleteCurrentOS(){
+  if(!selectedOS)return;
+
+  const senha=prompt("Digite a senha para EXCLUIR a OS #"+selectedOS.numero+":");
+  if(senha===null)return;
+
+  if(senha!=="007"){
+    toast("Senha incorreta.");
+    return;
+  }
+
+  if(!confirm("ATENÇÃO: excluir permanentemente a OS #"+selectedOS.numero+" e todo o histórico?"))return;
+
+  const idExcluida=selectedOS.id;
+  ordens=ordens.filter(o=>String(o.id)!==String(idExcluida));
+  selectedOS=null;
+
+  saveOS();
+  renderOSList();
+  showScreen("osView");
+  toast("OS excluída com sucesso. Voltando para a lista...");
+}
+
+function clearOSHistory(){
+  if(!selectedOS)return;
+
+  const senha=prompt("Digite a senha para limpar o histórico desta OS:");
+  if(senha===null)return;
+
+  if(senha!=="007"){
+    toast("Senha incorreta.");
+    return;
+  }
+
+  if(!confirm("Tem certeza que deseja apagar TODO o histórico da OS #"+selectedOS.numero+"?"))return;
+
+  selectedOS.historico=[];
+  selectedOS.atualizada=new Date().toISOString();
+
+  const index=ordens.findIndex(o=>String(o.id)===String(selectedOS.id));
+  if(index!==-1)ordens[index]=selectedOS;
+
+  saveOS();
+  renderOSDetail();
+  toast("Histórico da OS limpo com sucesso.");
+}
+function clearOS(){if(!ordens.length)return toast("Não existem OS.");if(!confirm("Apagar TODAS as OS?"))return;ordens=[];selectedOS=null;saveOS();renderOSList();toast("Todas as OS foram apagadas.")}
+function exportOSCSV(){if(!ordens.length)return toast("Não existem OS.");exportCSV([["OS","CLIENTE","SERVIÇO","SETOR","ABERTURA","PRAZO","STATUS","TEMPO NO SETOR","SITUAÇÃO"],...ordens.map(o=>[o.numero,o.cliente,o.descricao,o.setor,o.dataAbertura,o.prazo,o.status,sectorElapsed(o).text,deadlineInfo(o).text])],"arasigns_ordens_servico");toast("CSV das OS gerado!")}
+renderEmployees();renderCategories();renderHistory();
+setInterval(()=>{
+  if(!selectedOS)return;
+  const sectorEl=$("sectorElapsed");
+  const executionEl=$("executionTime");
+  if(sectorEl)sectorEl.textContent=sectorElapsed(selectedOS).text;
+  if(executionEl)executionEl.textContent=executionTime(selectedOS);
+},1000);
+console.log("Arasigns pronto");
 </script></body></html>

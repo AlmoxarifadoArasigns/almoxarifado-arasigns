@@ -238,7 +238,7 @@ input,select,textarea{width:100%;background:#17181b;border:1px solid #35363a;bor
 <div class="card">
   <div class="field">
     <label>🔎 PESQUISAR ORDEM DE SERVIÇO</label>
-    <input type="text" id="osSearch" placeholder="Digite o número da OS..." oninput="renderOSList()" autocomplete="off">
+    <input type="text" id="osSearch" placeholder="Digite o número da OS..." oninput="filterOSSearch()" onsearch="filterOSSearch()" autocomplete="off" inputmode="numeric">
   </div>
   <div class="field" style="margin-top:14px">
     <label>FILTRAR POR STATUS</label>
@@ -659,46 +659,55 @@ function renderNextDelivery(){const o=activeOrders()[0],b=$("nextDelivery");if(!
 function renderQueue(){const b=$("queueList"),lista=activeOrders();if(!lista.length){b.innerHTML='<div class="empty">🎉 Fila vazia. Todas as OS foram finalizadas.</div>';return}b.innerHTML="";lista.forEach((o,i)=>{const d=deadlineInfo(o),rank=i===0?"🥇":i===1?"🥈":i===2?"🥉":`#${i+1}`;const x=document.createElement("div");x.className="os-card";x.onclick=()=>openOSDetail(o.id);x.innerHTML=`<div class="queue-head"><div class="queue-rank">${rank}</div><div class="queue-main"><div class="queue-title">OS #${escapeHtml(o.numero)} — ${escapeHtml(o.cliente)}</div><div class="os-meta">📍 ${escapeHtml(o.setor)} • ⏱️ ${sectorDays(o)} dia${sectorDays(o)!==1?"s":""} no setor</div></div><span class="priority ${d.cls}">${d.text}</span></div><div class="record-line">📅 <b>Prazo:</b> ${o.prazo?new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"Não definido"} • 📝 ${escapeHtml(o.descricao)}</div>`;b.appendChild(x)})}
 function renderSectorChart(){const b=$("sectorChart"),counts={};SETORES.forEach(s=>counts[s]=0);ordens.filter(o=>o.status!=="FINALIZADA").forEach(o=>{counts[o.setor]=(counts[o.setor]||0)+1});const max=Math.max(1,...Object.values(counts));b.innerHTML=Object.entries(counts).map(([s,n])=>`<div class="sector-row"><div>${s}</div><div class="bar"><div style="width:${(n/max)*100}%"></div></div><div>${n}</div></div>`).join("")}
 function openOSList(){renderOSList();showScreen("osView")}
-function renderOSList(){
-  const filter=$("osFilter").value;
-  const search=($("osSearch")?.value||"").trim().toLowerCase();
+function filterOSSearch(){
+  renderOSList();
+}
 
-  let lista=filter==="TODAS"
-    ? [...ordens]
-    : ordens.filter(o=>o.status===filter);
+function normalizeOSNumber(value){
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-zA-Z0-9]/g,"")
+    .toLowerCase();
+}
+
+function renderOSList(){
+  const filterEl=$("osFilter");
+  const searchEl=$("osSearch");
+  const filter=filterEl ? filterEl.value : "TODAS";
+  const rawSearch=searchEl ? searchEl.value.trim() : "";
+  const search=normalizeOSNumber(rawSearch);
+
+  let lista=filter==="TODAS" ? [...ordens] : ordens.filter(o=>o.status===filter);
 
   if(search){
-    lista=lista.filter(o=>String(o.numero??"").toLowerCase().includes(search));
+    lista=lista.filter(o=>normalizeOSNumber(o.numero).includes(search));
   }
 
   lista.sort((a,b)=>{
     if(a.status==="FINALIZADA"&&b.status!=="FINALIZADA")return 1;
     if(b.status==="FINALIZADA"&&a.status!=="FINALIZADA")return -1;
-
     const da=a.prazo?new Date(a.prazo).getTime():Infinity;
     const db=b.prazo?new Date(b.prazo).getTime():Infinity;
     return da-db;
   });
 
   const b=$("osList");
+  if(!b)return;
 
   if(!lista.length){
     b.innerHTML=`<div class="empty">🔎<br><br>${
-      search
-        ? `Nenhuma OS encontrada para "${escapeHtml(search)}".`
-        : "Nenhuma OS encontrada."
+      rawSearch ? `Nenhuma OS encontrada para "${escapeHtml(rawSearch)}".` : "Nenhuma OS encontrada."
     }</div>`;
     return;
   }
 
   b.innerHTML="";
-
   lista.forEach(o=>{
     const d=deadlineInfo(o);
     const x=document.createElement("div");
     x.className="os-card";
     x.onclick=()=>openOSDetail(o.id);
-
     x.innerHTML=`
       <div class="os-top">
         <div class="os-number">🧾 OS #${escapeHtml(o.numero)}</div>
@@ -707,11 +716,8 @@ function renderOSList(){
       <div class="record-line">👤 <b>Cliente:</b> ${escapeHtml(o.cliente)}</div>
       <div class="record-line">📍 <b>Setor:</b> ${escapeHtml(o.setor)} • ⏱️ ${sectorElapsed(o).text} no setor</div>
       <div class="record-line">📅 <b>Prazo:</b> ${
-        o.prazo
-          ? new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"})
-          : "Não definido"
+        o.prazo ? new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}) : "Não definido"
       }</div>`;
-
     b.appendChild(x);
   });
 }

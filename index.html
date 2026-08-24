@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#08090b">
-<title>TESTE 12345</title>
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Arasigns — Almoxarifado e OS</title>
 <style>
 :root{--bg:#08090b;--card:#111214;--card2:#17181b;--line:#303136;--white:#f7f7f7;--muted:#a9aaae;--red:#ff1726;--orange:#ff6a00;--yellow:#ffd000;--green:#16d46b;--blue:#3498ff}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}body{min-height:100vh}.app{width:min(1200px,100%);margin:auto;padding:14px 16px 40px}
@@ -73,7 +75,7 @@ input,select,textarea{width:100%;background:#17181b;border:1px solid #35363a;bor
     font-size:13px;
   }
 }.detail-line{margin-top:10px;padding:12px;background:#151619;border:1px solid var(--line);border-radius:12px}.timeline{margin-top:20px}.timeline-item{padding:12px;border-left:3px solid var(--orange);margin:9px 0;background:#151619}.timeline-item small{display:block;color:#999;margin:5px 0}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,120px);opacity:0;z-index:100;background:#17181b;border:1px solid #404146;border-radius:15px;padding:14px 20px;box-shadow:0 15px 35px rgba(0,0,0,.5);transition:.25s;font-weight:900;max-width:90%;text-align:center}.toast.show{transform:translate(-50%,0);opacity:1}
-@media(max-width:800px){.dashboard-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid .dash-card:last-child{grid-column:1/-1}.sector-row{grid-template-columns:100px 1fr 30px}}@media(max-width:600px){.app{padding:8px 10px 30px}.card{padding:14px;border-radius:18px}.home-grid,.movement-choice,.options-grid,.category-grid,.os-form-grid,.actions,.os-nav{gap:9px}.option{min-height:72px;padding:10px}.option-icon{width:42px;height:42px;flex-basis:42px;font-size:23px}.option-name{font-size:16px}.category{min-height:92px;font-size:15px}.dashboard-grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:1fr 1fr}.home-button{min-height:105px}.sector-row{grid-template-columns:90px 1fr 28px;font-size:13px}}@media(max-width:700px){.sector-buttons{grid-template-columns:1fr}.sector-button{min-height:82px;font-size:19px}}@media(max-width:390px){.options-grid,.category-grid,.home-grid{grid-template-columns:1fr}}
+@media(max-width:800px){.dashboard-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid .dash-card:last-child{grid-column:1/-1}.sector-row{grid-template-columns:100px 1fr 30px}}@media(max-width:600px){.app{padding:8px 10px 30px}.card{padding:14px;border-radius:18px}.home-grid,.movement-choice,.options-grid,.category-grid,.os-form-grid,.actions,.os-nav{gap:9px}.option{min-height:72px;padding:10px}.option-icon{width:42px;height:42px;flex-basis:42px;font-size:23px}.option-name{font-size:16px}.category{min-height:92px;font-size:15px}.dashboard-grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:1fr 1fr}.home-button{min-height:105px}.sector-row{grid-template-columns:90px 1fr 28px;font-size:13px}}@media(max-width:700px){.sector-button{min-height:54px;font-size:15px}}@media(max-width:390px){.options-grid,.category-grid,.home-grid{grid-template-columns:1fr}}
 #history{max-height:430px;overflow-y:auto;padding-right:3px}.history-title{font-size:clamp(17px,3vw,22px)}
 .record-top{align-items:flex-start}
 .record-delete{border:1px solid #4a2a2d;background:#211315;color:#ff6b72;border-radius:11px;width:42px;height:42px;font-size:20px;font-weight:900;cursor:pointer;flex:0 0 auto;margin-left:8px}
@@ -475,7 +477,7 @@ function renderItems(c){const b=$("itemOptions");b.innerHTML="";CATEGORIAS[c].it
 function confirmQuantity(){const q=Number($("quantityInput").value);if(!Number.isFinite(q)||q<=0||!Number.isInteger(q))return toast("Informe uma quantidade válida.");selectedQuantity=q;$("summaryMovement").textContent=selectedMovement;$("summaryEmployee").textContent=selectedEmployee;$("summaryCategory").textContent=selectedCategory;$("summaryItem").textContent=selectedItem;$("summaryQuantity").textContent=selectedQuantity;showScreen("confirm")}
 function confirmMovement(){
 if(!selectedMovement||!selectedEmployee||!selectedCategory||!selectedItem||!selectedQuantity)return toast("Complete todas as etapas.");
-const registro={id:Date.now(),dataHora:new Date().toLocaleString("pt-BR"),movimento:selectedMovement,colaborador:selectedEmployee,categoria:selectedCategory,item:selectedItem,quantidade:Number(selectedQuantity)};
+const registro={id:Date.now().toString()+"_"+Math.random().toString(36).slice(2,8),dataHora:new Date().toLocaleString("pt-BR"),movimento:selectedMovement,colaborador:selectedEmployee,categoria:selectedCategory,item:selectedItem,quantidade:Number(selectedQuantity)};
 movimentacoes.push(registro);
 saveMovements();
 toast(selectedMovement==="RETIRADA"?"Retirada registrada no histórico!":"Devolução registrada no histórico!");
@@ -568,8 +570,8 @@ function clearAlmox(){
 function exportCSV(rows,name){const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(";")).join("\r\n");const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name+"_"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
 function exportAlmoxCSV(){if(!movimentacoes.length)return toast("Não existem movimentações.");exportCSV([["DATA/HORA","MOVIMENTO","COLABORADOR","CATEGORIA","ITEM","QUANTIDADE"],...movimentacoes.map(r=>[r.dataHora,r.movimento,r.colaborador,r.categoria,r.item,r.quantidade??1])],"arasigns_movimentacoes");toast("CSV gerado!")}
 function openOSDashboard(){renderDashboard();showScreen("osDashboard")}
-function openOSRegister(){const s=$("osSetor");s.innerHTML=SETORES.map(x=>`<option>${x}</option>`).join("");$("osPrazo").value="";showScreen("osRegister")}
-function registerOS(){const numero=$("osNumero").value.trim(),cliente=$("osCliente").value.trim(),descricao=$("osDescricao").value.trim(),setor=$("osSetor").value,prazo=$("osPrazo").value,dataAbertura=new Date().toISOString().slice(0,10),status="EM ANDAMENTO",obs=$("osObs").value.trim();if(!numero||!cliente||!descricao)return toast("Preencha OS, cliente e serviço.");if(ordens.some(o=>String(o.numero).toLowerCase()===numero.toLowerCase()))return toast("Esse número de OS já existe.");const agora=new Date().toISOString();ordens.push({id:Date.now(),numero,cliente,descricao,setor,prazo,dataAbertura,status,obs,atualizada:agora,historico:[{setor,dataHora:agora,obs:"OS cadastrada"}]});saveOS();["osNumero","osCliente","osDescricao","osPrazo","osObs"].forEach(id=>$(id).value="");toast("OS cadastrada com sucesso!");setTimeout(openOSDashboard,500)}
+function openOSRegister(){const s=$("osSetor");s.innerHTML=SETORES.map(x=>`<option>${escapeHtml(x)}</option>`).join("");["osNumero","osCliente","osDescricao","osPrazo","osObs"].forEach(id=>$(id).value="");showScreen("osRegister")}
+function registerOS(){const numero=$("osNumero").value.trim(),cliente=$("osCliente").value.trim(),descricao=$("osDescricao").value.trim(),setor=$("osSetor").value,prazo=$("osPrazo").value,dataAbertura=new Date().toISOString().slice(0,10),status="EM ANDAMENTO",obs=$("osObs").value.trim();if(!numero||!cliente||!descricao)return toast("Preencha OS, cliente e serviço.");if(ordens.some(o=>String(o.numero).toLowerCase()===numero.toLowerCase()))return toast("Esse número de OS já existe.");const agora=new Date().toISOString();ordens.push({id:Date.now().toString()+"_"+Math.random().toString(36).slice(2,8),numero,cliente,descricao,setor,prazo,dataAbertura,status,obs,atualizada:agora,historico:[{setor,dataHora:agora,obs:"OS cadastrada"}]});saveOS();["osNumero","osCliente","osDescricao","osPrazo","osObs"].forEach(id=>$(id).value="");toast("OS cadastrada com sucesso!");setTimeout(openOSDashboard,500)}
 function saveOS(){
   localStorage.setItem(OS_STORAGE,JSON.stringify(ordens));
   if(!firebaseReady){
@@ -581,8 +583,17 @@ function saveOS(){
     toast("Erro ao salvar no Firebase.");
   });
 }
-function parseDate(s){return new Date(s+"T00:00:00")}
-function daysDiffFromToday(date){const d=parseDate(date);const today=new Date();today.setHours(0,0,0,0);return Math.round((d-today)/86400000)}
+function parseDate(s){
+  if(!s)return null;
+  const d=new Date(s);
+  return Number.isNaN(d.getTime())?null:d;
+}
+function daysDiffFromToday(date){
+  const d=parseDate(date);
+  if(!d)return Infinity;
+  const today=new Date();today.setHours(0,0,0,0);
+  return Math.floor((d.getTime()-today.getTime())/86400000);
+}
 function sectorElapsed(o){
   const h=o.historico||[];
   if(!h.length)return {days:0,hours:0,minutes:0,text:"0 Dias 0 Horas e 0 Minutos"};
@@ -754,7 +765,7 @@ function renderOSList(){
   });
 }
 
-function openOSDetail(id){selectedOS=ordens.find(o=>o.id===id);if(!selectedOS)return toast("OS não encontrada.");renderOSDetail();showScreen("osDetail")}
+function openOSDetail(id){selectedOS=ordens.find(o=>String(o.id)===String(id));if(!selectedOS)return toast("OS não encontrada.");renderOSDetail();showScreen("osDetail")}
 function renderOSDetail(){const o=selectedOS,d=deadlineInfo(o),h=(o.historico||[]).slice().reverse();$("osDetailContent").innerHTML=`<div class="os-top"><div class="os-number">🧾 OS #${escapeHtml(o.numero)}</div><span class="priority ${d.cls}">${d.text}</span></div><div class="detail-line">👤 <b>Cliente:</b> ${escapeHtml(o.cliente)}</div><div class="detail-line">📝 <b>Serviço:</b> ${escapeHtml(o.descricao)}</div><div class="detail-line">📅 <b>Prazo:</b> ${o.prazo?new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}):"Não definido"}</div><div class="detail-line">🏭 <b>Setor atual:</b> ${escapeHtml(o.setor)}</div><div class="os-days">⏱️ Está há <span id="sectorElapsed">${sectorElapsed(o).text}</span> neste setor. &nbsp;•&nbsp; ⏳ <b>Tempo de Execução:</b> <span id="executionTime">${executionTime(o)}</span></div>${o.obs?`<div class="detail-line">💬 <b>Observação:</b> ${escapeHtml(o.obs)}</div>`:""}<div class="question" style="margin-top:22px;margin-bottom:10px">
 <div class="question-label">ATUALIZAR SETOR</div>
 <div class="question-title" style="font-size:22px">SELECIONE O SETOR</div>
@@ -825,7 +836,7 @@ function clearOSHistory(){
   renderOSDetail();
   toast("Histórico da OS limpo com sucesso.");
 }
-function clearOS(){if(!ordens.length)return toast("Não existem OS.");if(!confirm("Apagar TODAS as OS?"))return;ordens=[];selectedOS=null;saveOS();renderOSList();toast("Todas as OS foram apagadas.")}
+function clearOS(){if(!ordens.length)return toast("Não existem OS.");const senha=prompt("Digite a senha para apagar TODAS as OS:");if(senha===null)return;if(senha!=="007")return toast("Senha incorreta.");if(!confirm("ATENÇÃO: Apagar TODAS as OS permanentemente?"))return;ordens=[];selectedOS=null;saveOS();renderOSList();toast("Todas as OS foram apagadas.")}
 function exportOSCSV(){if(!ordens.length)return toast("Não existem OS.");exportCSV([["OS","CLIENTE","SERVIÇO","SETOR","ABERTURA","PRAZO","STATUS","TEMPO NO SETOR","SITUAÇÃO"],...ordens.map(o=>[o.numero,o.cliente,o.descricao,o.setor,o.dataAbertura,o.prazo,o.status,sectorElapsed(o).text,deadlineInfo(o).text])],"arasigns_ordens_servico");toast("CSV das OS gerado!")}
 renderEmployees();renderCategories();renderHistory();
 

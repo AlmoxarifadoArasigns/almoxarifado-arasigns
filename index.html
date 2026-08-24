@@ -678,7 +678,9 @@ function renderOSList(){
   const rawSearch=searchEl ? searchEl.value.trim() : "";
   const search=normalizeOSNumber(rawSearch);
 
-  let lista=filter==="TODAS" ? [...ordens] : ordens.filter(o=>o.status===filter);
+  let lista=filter==="TODAS"
+    ? [...ordens]
+    : ordens.filter(o=>String(o.status||"")===filter);
 
   if(search){
     lista=lista.filter(o=>normalizeOSNumber(o.numero).includes(search));
@@ -687,8 +689,8 @@ function renderOSList(){
   lista.sort((a,b)=>{
     if(a.status==="FINALIZADA"&&b.status!=="FINALIZADA")return 1;
     if(b.status==="FINALIZADA"&&a.status!=="FINALIZADA")return -1;
-    const da=a.prazo?new Date(a.prazo).getTime():Infinity;
-    const db=b.prazo?new Date(b.prazo).getTime():Infinity;
+    const da=a.prazo ? new Date(a.prazo).getTime() : Infinity;
+    const db=b.prazo ? new Date(b.prazo).getTime() : Infinity;
     return da-db;
   });
 
@@ -715,9 +717,7 @@ function renderOSList(){
       </div>
       <div class="record-line">👤 <b>Cliente:</b> ${escapeHtml(o.cliente)}</div>
       <div class="record-line">📍 <b>Setor:</b> ${escapeHtml(o.setor)} • ⏱️ ${sectorElapsed(o).text} no setor</div>
-      <div class="record-line">📅 <b>Prazo:</b> ${
-        o.prazo ? new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}) : "Não definido"
-      }</div>`;
+      <div class="record-line">📅 <b>Prazo:</b> ${o.prazo ? new Date(o.prazo).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"}) : "Não definido"}</div>`;
     b.appendChild(x);
   });
 }
